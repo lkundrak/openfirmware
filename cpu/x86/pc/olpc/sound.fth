@@ -1,7 +1,8 @@
 purpose: Manage startup sound, with persistent storage for its volume
 \ See license at end of file
 
-h# -9 constant default-volume
+\ h# -9 constant default-volume
+h# -50 constant default-volume
 : set-saved-volume  ( volume -- )  dup h# 80 cmos!  invert h# 81 cmos!  ;
 
 : get-saved-volume  ( -- volume )
