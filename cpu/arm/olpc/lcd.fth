@@ -9,7 +9,7 @@ purpose: Display driver for OLPC ARM/MMP platforms
    " marvell,mmp2-lcd" +compatible
 
    " disp0" " clock-names" string-property
-   " /pmua" encode-phandle 1 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-disp0-clk# encode-int encode+ " clocks" property
    d# 41 " interrupts" integer-property
 
    new-device
