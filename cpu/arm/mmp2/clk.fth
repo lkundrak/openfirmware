@@ -24,6 +24,11 @@ d# 104 constant mmp2-sdh3-clk#
 d# 105 constant mmp2-usb-clk#
 d# 112 constant mmp2-ccic0-clk#
 
+\ FIXME: Not official clock numbers!
+d# 10000 constant mmp2-audio-clk#
+d# 10001 constant mmp2-vmeta-clk#
+d# 10002 constant mmp2-gc-clk#
+
 0 0  " "  " /" begin-package
 " clocks" name
 " marvell,mmp2-clock" +compatible
