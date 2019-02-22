@@ -23,6 +23,7 @@ d# 103 constant mmp2-sdh2-clk#
 d# 104 constant mmp2-sdh3-clk#
 d# 105 constant mmp2-usb-clk#
 d# 112 constant mmp2-ccic0-clk#
+d# 120 constant mmp2-disp0-lcdc-clk#
 
 0 0  " "  " /" begin-package
 " clocks" name
