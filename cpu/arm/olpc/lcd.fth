@@ -375,7 +375,10 @@ d# 256 constant /cursor
             hdisp 2 * " stride" integer-property
             " r5g6b5" " format" string-property
             " /display" encode-phandle " display" property
-            " /clocks" encode-phandle mmp2-disp0-clk# encode-int encode+ " clocks" property
+
+            " /clocks" encode-phandle mmp2-disp0-clk# encode-int encode+
+            " /clocks" encode-phandle encode+ mmp2-disp0-lcdc-clk# encode-int encode+
+            " clocks" property
          finish-device
       device-end
    ;
