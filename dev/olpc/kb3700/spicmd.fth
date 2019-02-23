@@ -37,7 +37,7 @@ my-address      my-space  h# 1000  encode-reg
 0 " #size-cells"     integer-property
 
 0 0 encode-bytes " spi-slave" property
-ec-spi-ack-gpio# 1  " ready-gpios"  gpio-property
+ec-spi-ack-gpio# 0  " ready-gpios"  gpio-property
 
    d# 20 " interrupts" integer-property
    " /apbc" encode-phandle d# 21 encode-int encode+ " clocks" property
@@ -50,7 +50,7 @@ new-device
    " slave" device-name
    " olpc,xo1.75-ec" +compatible
    0 0 encode-bytes " spi-cpha" property
-   ec-spi-cmd-gpio# 1  " cmd-gpios"  gpio-property
+   ec-spi-cmd-gpio# 0  " cmd-gpios"  gpio-property
 finish-device
 
 : encode-unit  ( phys -- adr len )  push-hex  (u.)  pop-base  ;
