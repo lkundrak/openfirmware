@@ -496,30 +496,35 @@
 		phandle = < 10063 >;
 	};
 
-	cpus {
-		phandle = < 10064 >;
-		#size-cells = < 0x00 >;
-		#address-cells = < 0x01 >;
-
-		cpu@0 {
-			phandle = < 10065 >;
-			reg = < 0x00 >;
-			device_type = "cpu";
-		};
-
-		cpu@1 {
-			phandle = < 10066 >;
-			reg = < 0x01 >;
-			device_type = "cpu";
-		};
-	};
-
 	l2-cache-controller@d0020000 {
-		phandle = < 10067 >;
+		phandle = < 10064 >;
 		cache-level = < 0x02 >;
 		cache-unified;
 		reg = < 0xd0020000 0x1000 >;
 		compatible = "marvell,tauros3-cache\0arm,pl310-cache";
+	};
+
+	cpus {
+		phandle = < 10065 >;
+		enable-method = "marvell,mmp3-smp";
+		#size-cells = < 0x00 >;
+		#address-cells = < 0x01 >;
+
+		cpu@0 {
+			phandle = < 10066 >;
+			next-level-cache = < 10064 >;
+			reg = < 0x00 >;
+			compatible = "marvell,pj4b";
+			device_type = "cpu";
+		};
+
+		cpu@1 {
+			phandle = < 10067 >;
+			next-level-cache = < 10064 >;
+			reg = < 0x01 >;
+			compatible = "marvell,pj4b";
+			device_type = "cpu";
+		};
 	};
 
 	camera-i2c@0 {
