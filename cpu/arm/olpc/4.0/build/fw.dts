@@ -509,8 +509,14 @@
 		};
 	};
 
-	camera-i2c@0 {
+	snoop-control-unit@e0000000 {
 		phandle = < 10066 >;
+		reg = < 0xe0000000 0x100 >;
+		compatible = "arm,arm11mp-scu";
+	};
+
+	camera-i2c@0 {
+		phandle = < 10067 >;
 		gpios = < 10051 0xa6 0x06 10051 0xa5 0x06 >;
 		i2c-gpio,timeout-ms = < 0x3e8 >;
 		reg = < 0x00 0x00 >;
@@ -519,19 +525,19 @@
 		compatible = "i2c-gpio";
 
 		image-sensor {
-			phandle = < 10067 >;
+			phandle = < 10068 >;
 			clock-names = "xclk";
-			clocks = < 100128 >;
+			clocks = < 100129 >;
 			reset-gpios = < 10051 0x66 0x01 >;
 			powerdown-gpios = < 10051 0x96 0x01 >;
 			gpios = < 10051 0x96 0x00 10051 0x66 0x00 >;
 
 			port {
-				phandle = < 10068 >;
+				phandle = < 10069 >;
 
 				endpoint {
-					phandle = < 10069 >;
-					remote-endpoint = < 100130 >;
+					phandle = < 10070 >;
+					remote-endpoint = < 100131 >;
 					vsync-active = < 0x01 >;
 					hsync-active = < 0x01 >;
 				};
@@ -540,7 +546,7 @@
 	};
 
 	dcon-i2c@0 {
-		phandle = < 10070 >;
+		phandle = < 10071 >;
 		gpios = < 10051 0xa7 0x06 10051 0xa8 0x06 >;
 		reg = < 0x00 0x00 >;
 		#size-cells = < 0x00 >;
@@ -548,7 +554,7 @@
 		compatible = "i2c-gpio";
 
 		dcon@d {
-			phandle = < 10071 >;
+			phandle = < 10072 >;
 			interrupts = < 0x7e 0x02 >;
 			interrupt-parent = < 10051 >;
 			load-gpios = < 10051 0x8e 0x00 >;
@@ -559,27 +565,27 @@
 			compatible = "himax,hx8837\0olpc,xo1.75-dcon\0olpc,xo1-dcon";
 
 			ports {
-				phandle = < 10072 >;
+				phandle = < 10073 >;
 				#size-cells = < 0x00 >;
 				#address-cells = < 0x01 >;
 
 				port@0 {
-					phandle = < 10073 >;
+					phandle = < 10074 >;
 					reg = < 0x00 >;
 
 					endpoint {
-						phandle = < 10074 >;
-						remote-endpoint = < 100100 >;
+						phandle = < 10075 >;
+						remote-endpoint = < 100101 >;
 					};
 				};
 
 				port@1 {
-					phandle = < 10075 >;
+					phandle = < 10076 >;
 					reg = < 0x01 >;
 
 					endpoint {
-						phandle = < 10076 >;
-						remote-endpoint = < 100147 >;
+						phandle = < 10077 >;
+						remote-endpoint = < 100148 >;
 					};
 				};
 			};
@@ -587,7 +593,7 @@
 	};
 
 	hdmi-i2c@0 {
-		phandle = < 10077 >;
+		phandle = < 10078 >;
 		gpios = < 10051 0x05 0x06 10051 0x04 0x06 >;
 		#size-cells = < 0x00 >;
 		#address-cells = < 0x01 >;
@@ -595,14 +601,14 @@
 		reg = < 0x00 0x00 >;
 
 		hdmi-ddc@50 {
-			phandle = < 10078 >;
+			phandle = < 10079 >;
 			compatible = "eeprom";
 			reg = < 0x50 >;
 		};
 	};
 
 	i2c@d4011000 {
-		phandle = < 10079 >;
+		phandle = < 10080 >;
 		#size-cells = < 0x01 >;
 		#address-cells = < 0x01 >;
 		reg = < 0xd4011000 0x1000 >;
@@ -613,7 +619,7 @@
 		linux,unit# = < 0x02 >;
 
 		audio-codec@1a {
-			phandle = < 10080 >;
+			phandle = < 10081 >;
 			dai-name = "rt5631-hifi";
 			reg = < 0x1a 0x01 >;
 			compatible = "realtek,rt5631\0realtek,alc5631";
@@ -621,7 +627,7 @@
 	};
 
 	i2c@d4031000 {
-		phandle = < 10081 >;
+		phandle = < 10082 >;
 		#size-cells = < 0x01 >;
 		#address-cells = < 0x01 >;
 		reg = < 0xd4031000 0x1000 >;
@@ -633,14 +639,14 @@
 		linux,unit# = < 0x03 >;
 
 		rtc@68 {
-			phandle = < 10082 >;
+			phandle = < 10083 >;
 			reg = < 0x68 0x01 >;
 			compatible = "dallas,ds1338\0idt,idt1338-rtc";
 		};
 	};
 
 	i2c@d4033000 {
-		phandle = < 10083 >;
+		phandle = < 10084 >;
 		#size-cells = < 0x01 >;
 		#address-cells = < 0x01 >;
 		reg = < 0xd4033000 0x1000 >;
@@ -652,7 +658,7 @@
 		linux,unit# = < 0x05 >;
 
 		touchscreen@50 {
-			phandle = < 10084 >;
+			phandle = < 10085 >;
 			dr-gpios = < 10051 0x63 0x01 >;
 			hd-gpios = < 10051 0x0c 0x01 >;
 			test-gpios = < 10051 0x8b 0x01 >;
@@ -663,7 +669,7 @@
 	};
 
 	i2c@d4034000 {
-		phandle = < 10085 >;
+		phandle = < 10086 >;
 		#size-cells = < 0x01 >;
 		#address-cells = < 0x01 >;
 		reg = < 0xd4034000 0x1000 >;
@@ -675,13 +681,13 @@
 		linux,unit# = < 0x04 >;
 
 		accelerometer {
-			phandle = < 10086 >;
+			phandle = < 10087 >;
 			compatible = "st,lis3lv02d\0lis3lv02d";
 		};
 	};
 
 	uart@d4018000 {
-		phandle = < 10087 >;
+		phandle = < 10088 >;
 		status = "disabled";
 		interrupts = < 0x18 >;
 		clocks = < 10034 0x4b >;
@@ -691,7 +697,7 @@
 	};
 
 	uart@d4017000 {
-		phandle = < 10088 >;
+		phandle = < 10089 >;
 		interrupts = < 0x1c >;
 		clocks = < 10034 0x4a >;
 		reg-shift = < 0x02 >;
@@ -700,7 +706,7 @@
 	};
 
 	uart@d4030000 {
-		phandle = < 10089 >;
+		phandle = < 10090 >;
 		status = "disabled";
 		clocks = < 10034 0x49 >;
 		interrupts = < 0x1b >;
@@ -710,7 +716,7 @@
 	};
 
 	uart@d4016000 {
-		phandle = < 10090 >;
+		phandle = < 10091 >;
 		status = "disabled";
 		interrupts = < 0x2e >;
 		clocks = < 10034 0x4c >;
@@ -720,36 +726,36 @@
 	};
 
 	flash@d4035000 {
-		phandle = < 10091 >;
+		phandle = < 10092 >;
 		#address-cells = < 0x01 >;
 		reg = < 0xd4035000 0x100 >;
 		interrupts = < 0x00 >;
 		clocks = < 10034 0x4e >;
 
 		dropins@20000 {
-			phandle = < 10092 >;
+			phandle = < 10093 >;
 			reg = < 0x20000 0x1e0000 >;
 		};
 	};
 
 	mfg-data {
-		phandle = < 10093 >;
+		phandle = < 10094 >;
 	};
 
 	battery@0 {
-		phandle = < 10094 >;
+		phandle = < 10095 >;
 		reg = < 0x00 0x00 >;
 		compatible = "olpc,xo1.5-battery\0olpc,xo1-battery";
 	};
 
 	reserved-memory {
-		phandle = < 10095 >;
+		phandle = < 10096 >;
 		ranges;
 		#size-cells = < 0x01 >;
 		#address-cells = < 0x01 >;
 
 		framebuffer {
-			phandle = < 10096 >;
+			phandle = < 10097 >;
 			no-map;
 			alignment = < 0x2000000 >;
 			size = < 0x2000000 >;
@@ -758,7 +764,7 @@
 	};
 
 	vmeta@f0400000 {
-		phandle = < 10097 >;
+		phandle = < 10098 >;
 		interrupts = < 0x1a >;
 		clock-names = "VMETACLK";
 		clocks = < 10034 0x2711 >;
@@ -767,7 +773,7 @@
 	};
 
 	display@d420b000 {
-		phandle = < 10098 >;
+		phandle = < 10099 >;
 		iso6429-1983-colors;
 		character-set = "ISO8859-1";
 		device_type = "display";
@@ -778,29 +784,29 @@
 		reg = < 0xd420b000 0x1000 >;
 
 		port {
-			phandle = < 10099 >;
+			phandle = < 100100 >;
 
 			endpoint {
-				phandle = < 100100 >;
-				remote-endpoint = < 10074 >;
+				phandle = < 100101 >;
+				remote-endpoint = < 10075 >;
 				bus-width = < 0x12 >;
 			};
 		};
 
 		hdmi {
-			phandle = < 100101 >;
+			phandle = < 100102 >;
 			linux,mode-names = "1280x720@60";
 			linux,timing-modes = < 0x500 0x2d0 0x3c 0x46cf710 0x6e 0xdc 0x05 0x14 0x28 0x05 0x01 0x00 0x00 >;
 			clock-divider-regval = < 0x60010005 >;
 			model = "HDMI";
-			ddc-i2c-bus = < 10077 >;
+			ddc-i2c-bus = < 10078 >;
 			gpios = < 10051 0x0e 0x00 >;
 			compatible = "mrvl,pxa688-hdmi";
 		};
 	};
 
 	gpu@d420d000 {
-		phandle = < 100102 >;
+		phandle = < 100103 >;
 		clock-names = "GCCLK";
 		clocks = < 10034 0x2712 >;
 		interrupt-names = "galcore 3D\0galcore 2D";
@@ -811,7 +817,7 @@
 	};
 
 	fixedregulator0 {
-		phandle = < 100103 >;
+		phandle = < 100104 >;
 		gpio = < 10051 0x22 0x00 >;
 		enable-active-high;
 		regulator-max-microvolt = < 0x325aa0 >;
@@ -821,27 +827,27 @@
 	};
 
 	pwrseq0 {
-		phandle = < 100104 >;
+		phandle = < 100105 >;
 		reset-gpios = < 10051 0x24 0x00 >;
 		powerdown-gpios = < 10051 0x23 0x00 >;
 		compatible = "mmc-pwrseq-sd8787";
 	};
 
 	sd {
-		phandle = < 100105 >;
+		phandle = < 100106 >;
 		ranges = < 0xd4280000 0xd4280000 0x2000 0xd4217000 0xd4217000 0x800 >;
 		compatible = "simple-bus\0sdhci";
 		#size-cells = < 0x01 >;
 		#address-cells = < 0x01 >;
 
 		sdhci@d4280800 {
-			phandle = < 100106 >;
+			phandle = < 100107 >;
 			#size-cells = < 0x00 >;
 			#address-cells = < 0x00 >;
 			reset-gpios = < 10051 0x24 0x01 >;
-			mmc-pwrseq = < 100104 >;
+			mmc-pwrseq = < 100105 >;
 			power-gpios = < 10051 0x22 0x00 >;
-			vmmc-supply = < 100103 >;
+			vmmc-supply = < 100104 >;
 			keep-power-in-suspend;
 			wakeup-source;
 			no-1-8-v;
@@ -858,25 +864,25 @@
 			reg = < 0xd4280800 0x800 >;
 
 			sdio {
-				phandle = < 100107 >;
+				phandle = < 100108 >;
 				#address-cells = < 0x01 >;
 				#size-cells = < 0x01 >;
 
 				wlan@1 {
-					phandle = < 100108 >;
+					phandle = < 100109 >;
 					device_type = "wireless-network";
 					reg = < 0x01 0x01 >;
 				};
 
 				bluetooth@2 {
-					phandle = < 100109 >;
+					phandle = < 100110 >;
 					reg = < 0x02 0x01 >;
 				};
 			};
 		};
 
 		sdhci@d4281000 {
-			phandle = < 100110 >;
+			phandle = < 100111 >;
 			#size-cells = < 0x00 >;
 			#address-cells = < 0x00 >;
 			power-gpios = < 10051 0x61 0x01 >;
@@ -895,7 +901,7 @@
 			reg = < 0xd4281000 0x800 >;
 
 			disk {
-				phandle = < 100111 >;
+				phandle = < 100112 >;
 				slot-name = "internal";
 				device_type = "block";
 				iconname = "sdmmc";
@@ -903,7 +909,7 @@
 		};
 
 		sdhci@d4280000 {
-			phandle = < 100112 >;
+			phandle = < 100113 >;
 			wp-inverted;
 			power-gpios = < 10051 0x73 0x01 >;
 			cd-gpios = < 10051 0x1f 0x01 >;
@@ -920,7 +926,7 @@
 			reg = < 0xd4280000 0x800 >;
 
 			disk {
-				phandle = < 100113 >;
+				phandle = < 100114 >;
 				slot-name = "external";
 				device_type = "block";
 				iconname = "sdmmc";
@@ -928,7 +934,7 @@
 		};
 
 		sdhci@d4217000 {
-			phandle = < 100114 >;
+			phandle = < 100115 >;
 			broken-cd;
 			power-delay-ms = < 0x28 0x01 >;
 			clock-names = "io";
@@ -944,7 +950,7 @@
 			reg = < 0xd4217000 0x800 >;
 
 			disk {
-				phandle = < 100115 >;
+				phandle = < 100116 >;
 				slot-name = "internal";
 				device_type = "block";
 				iconname = "sdmmc";
@@ -953,7 +959,7 @@
 	};
 
 	ec-spi@d4037000 {
-		phandle = < 100116 >;
+		phandle = < 100117 >;
 		int-gpios = < 10051 0x9a 0x01 >;
 		cmd-gpios = < 10051 0x9b 0x01 >;
 		ack-gpios = < 10051 0x71 0x01 >;
@@ -967,7 +973,7 @@
 		compatible = "marvell,mmp2-ssp\0olpc,ec-spi";
 
 		slave {
-			phandle = < 100117 >;
+			phandle = < 100118 >;
 			cmd-gpios = < 10051 0x9b 0x00 >;
 			spi-cpha;
 			compatible = "olpc,xo1.75-ec";
@@ -975,21 +981,21 @@
 	};
 
 	usb2-phy@d4207000 {
-		phandle = < 100118 >;
+		phandle = < 100119 >;
 		#phy-cells = < 0x00 >;
 		compatible = "marvell,mmp3-usb-phy\0mrvl,mmp3-usb2phy";
 		reg = < 0xd4207000 0x100 >;
 	};
 
 	usb@d4208000 {
-		phandle = < 100119 >;
+		phandle = < 100120 >;
 		usb-hub-test-list = "3,2";
 		reg-names = "u2o";
 		compatible = "marvell,pxau2o-ehci\0usb-ehci";
 		device_type = "ehci";
 		#size-cells = < 0x00 >;
 		#address-cells = < 0x02 >;
-		phys = < 100118 >;
+		phys = < 100119 >;
 		phy-names = "usb";
 		usb-hub-reset-gpios = < 10051 0x94 0x01 >;
 		interrupts = < 0x2c >;
@@ -999,7 +1005,7 @@
 	};
 
 	ap-sp@d4290000 {
-		phandle = < 100120 >;
+		phandle = < 100121 >;
 		#size-cells = < 0x00 >;
 		#address-cells = < 0x01 >;
 		reg = < 0xd4290000 0x1000 >;
@@ -1007,14 +1013,14 @@
 		compatible = "olpc,ap-sp";
 
 		keyboard@0 {
-			phandle = < 100121 >;
+			phandle = < 100122 >;
 			device_type = "keyboard";
 			compatible = "pnpPNP,303";
 			reg = < 0x00 >;
 		};
 
 		mouse@1 {
-			phandle = < 100122 >;
+			phandle = < 100123 >;
 			reg = < 0x01 >;
 			compatible = "pnpPNP,f03";
 			device_type = "mouse";
@@ -1022,11 +1028,11 @@
 	};
 
 	gpio-keys {
-		phandle = < 100123 >;
+		phandle = < 100124 >;
 		compatible = "gpio-keys";
 
 		lid {
-			phandle = < 100124 >;
+			phandle = < 100125 >;
 			gpios = < 10051 0x81 0x01 >;
 			wakeup-source;
 			linux,code = < 0x00 >;
@@ -1035,7 +1041,7 @@
 		};
 
 		tablet_mode {
-			phandle = < 100125 >;
+			phandle = < 100126 >;
 			gpios = < 10051 0x82 0x01 >;
 			wakeup-source;
 			linux,code = < 0x01 >;
@@ -1044,7 +1050,7 @@
 		};
 
 		microphone_insert {
-			phandle = < 100126 >;
+			phandle = < 100127 >;
 			gpios = < 10051 0x60 0x00 >;
 			wakeup-source;
 			debounce-interval = < 0x64 >;
@@ -1054,7 +1060,7 @@
 		};
 
 		headphone_insert {
-			phandle = < 100127 >;
+			phandle = < 100128 >;
 			gpios = < 10051 0x0d 0x00 >;
 			wakeup-source;
 			debounce-interval = < 0x64 >;
@@ -1065,11 +1071,11 @@
 	};
 
 	camera@d420a000 {
-		phandle = < 100128 >;
-		i2c-parent = < 10066 >;
+		phandle = < 100129 >;
+		i2c-parent = < 10067 >;
 		clock-output-names = "mclk";
 		#clock-cells = < 0x00 >;
-		image-sensor = < 10067 >;
+		image-sensor = < 10068 >;
 		clock-names = "axi";
 		gpios = < 10051 0x96 0x00 10051 0x66 0x00 >;
 		interrupts = < 0x01 >;
@@ -1079,17 +1085,17 @@
 		compatible = "marvell,mmp2-ccic\0marvell,mmpcam";
 
 		port {
-			phandle = < 100129 >;
+			phandle = < 100130 >;
 
 			endpoint {
-				phandle = < 100130 >;
-				remote-endpoint = < 10069 >;
+				phandle = < 100131 >;
+				remote-endpoint = < 10070 >;
 			};
 		};
 	};
 
 	adma@c0ffd900 {
-		phandle = < 100131 >;
+		phandle = < 100132 >;
 		status = "disabled";
 		interrupts = < 0x14 0x15 >;
 		interrupt-parent = < 10049 >;
@@ -1099,15 +1105,15 @@
 	};
 
 	pcm@1 {
-		phandle = < 100132 >;
+		phandle = < 100133 >;
 		status = "disabled";
 		compatible = "marvell,mmp-pcm-audio";
 		reg = < 0x01 0x00 >;
-		adma-node = < 100131 >;
+		adma-node = < 100132 >;
 	};
 
 	adma@c0ffd800 {
-		phandle = < 100133 >;
+		phandle = < 100134 >;
 		interrupts = < 0x12 0x13 >;
 		interrupt-parent = < 10049 >;
 		compatible = "marvell,mmp-audio-dma";
@@ -1116,21 +1122,21 @@
 	};
 
 	pcm@0 {
-		phandle = < 100134 >;
+		phandle = < 100135 >;
 		marvell,buffer-sizes = < 0xf800 0x1000 0xf800 0x1000 >;
 		compatible = "marvell,mmp-pcm-audio";
 		reg = < 0x00 0x00 >;
-		adma-node = < 100133 >;
+		adma-node = < 100134 >;
 	};
 
 	asram@d1030000 {
-		phandle = < 100135 >;
+		phandle = < 100136 >;
 		compatible = "marvell,mmp-asram";
 		reg = < 0xd1030000 0x20000 >;
 	};
 
 	sspa@c0ffdd00 {
-		phandle = < 100136 >;
+		phandle = < 100137 >;
 		interrupts = < 0x03 >;
 		clocks = < 10034 0x2710 >;
 		status = "unused";
@@ -1139,7 +1145,7 @@
 	};
 
 	audio@c0ffdc00 {
-		phandle = < 100137 >;
+		phandle = < 100138 >;
 		interrupts = < 0x02 >;
 		clocks = < 10034 0x2710 >;
 		compatible = "marvell,mmp3-sspa-dai\0marvell,mmp-sspa-dai";
@@ -1147,10 +1153,10 @@
 	};
 
 	audio-complex@0 {
-		phandle = < 100138 >;
-		platform-node = < 100134 >;
-		cpu-dai-node = < 100137 >;
-		codec-node = < 10080 >;
+		phandle = < 100139 >;
+		platform-node = < 100135 >;
+		cpu-dai-node = < 100138 >;
+		codec-node = < 10081 >;
 		codec-dai-name = "rt5631-hifi";
 		stream-name = "rt5631";
 		dai-link-name = "rt5631";
@@ -1161,7 +1167,7 @@
 	};
 
 	thermal@d403b000 {
-		phandle = < 100139 >;
+		phandle = < 100140 >;
 		clock-names = "THSENS1\0THSENS2\0THSENS3\0THSENS4";
 		clocks = < 10034 0x2713 10034 0x2714 10034 0x2715 10034 0x2716 >;
 		interrupt-parent = < 10047 >;
@@ -1171,7 +1177,7 @@
 	};
 
 	wakeup-rtc@d4010000 {
-		phandle = < 100140 >;
+		phandle = < 100141 >;
 		clocks = < 10034 0x44 >;
 		interrupt-names = "rtc 1Hz\0rtc alarm";
 		interrupt-parent = < 10037 >;
@@ -1181,27 +1187,27 @@
 	};
 
 	prober {
-		phandle = < 100141 >;
-	};
-
-	log {
 		phandle = < 100142 >;
 	};
 
-	nb-updater {
+	log {
 		phandle = < 100143 >;
 	};
 
-	vsram@d1020000 {
+	nb-updater {
 		phandle = < 100144 >;
+	};
+
+	vsram@d1020000 {
+		phandle = < 100145 >;
 		granularity = < 0x40 >;
 		compatible = "marvell,mmp-vsram";
 		reg = < 0xd1020000 0x10000 >;
 	};
 
 	panel {
-		phandle = < 100145 >;
-		control-node = < 10071 >;
+		phandle = < 100146 >;
+		control-node = < 10072 >;
 		clock-divider-regval = < 0x20001102 >;
 		lcd-pn-ctrl0-regval = < 0x8001100 >;
 		lcd-dumb-ctrl-regval = < 0x2000000d >;
@@ -1211,17 +1217,17 @@
 		compatible = "innolux,ls075at011\0simple-panel\0mrvl,dumb-panel";
 
 		port {
-			phandle = < 100146 >;
+			phandle = < 100147 >;
 
 			endpoint {
-				phandle = < 100147 >;
-				remote-endpoint = < 10076 >;
+				phandle = < 100148 >;
+				remote-endpoint = < 10077 >;
 			};
 		};
 	};
 
 	switches@0 {
-		phandle = < 100148 >;
+		phandle = < 100149 >;
 		reg = < 0x00 0x00 >;
 		lid-gpios = < 10051 0x81 0x01 >;
 		ebook-gpios = < 10051 0x82 0x01 >;
@@ -1229,18 +1235,18 @@
 	};
 
 	ols@0 {
-		phandle = < 100149 >;
+		phandle = < 100150 >;
 		reg = < 0x00 0x00 >;
 		compatible = "olpc,xo-light-sensor";
 	};
 
 	leds@0 {
-		phandle = < 100150 >;
+		phandle = < 100151 >;
 		compatible = "gpio-leds";
 		reg = < 0x00 0x00 >;
 
 		storage-led {
-			phandle = < 100151 >;
+			phandle = < 100152 >;
 			gpios = < 10051 0x0a 0x00 >;
 			linux,default-trigger = "mmc-block";
 		};
