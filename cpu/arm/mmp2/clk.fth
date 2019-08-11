@@ -37,6 +37,10 @@ d# 0 constant mmp2-gpu-power-domain#
 d# 10000 constant mmp2-audio-clk#
 d# 10001 constant mmp2-vmeta-clk#
 d# 10003 constant mmp3-sdh4-clk#
+d# 10003 constant mmp3-thermal0-clk#
+d# 10004 constant mmp3-thermal1-clk#
+d# 10005 constant mmp3-thermal2-clk#
+d# 10006 constant mmp3-thermal3-clk#
 
 0 0  " "  " /" begin-package
 " clocks" name
