@@ -820,7 +820,7 @@
 	gpu@d420d000 {
 		phandle = < 100104 >;
 		clock-names = "GCCLK";
-		clocks = < 10034 0x0b >;
+		clocks = < 10036 0x2712 >;
 		interrupt-names = "galcore 3D\0galcore 2D";
 		interrupt-parent = < 10041 >;
 		interrupts = < 0x00 0x02 >;
