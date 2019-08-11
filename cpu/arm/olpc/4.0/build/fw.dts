@@ -1180,7 +1180,7 @@
 	thermal@d403b000 {
 		phandle = < 100141 >;
 		clock-names = "THSENS1\0THSENS2\0THSENS3\0THSENS4";
-		clocks = < 10035 0x22 10035 0x24 10035 0x25 10035 0x26 >;
+		clocks = < 10036 0x2713 10036 0x2714 10036 0x2715 10036 0x2716 >;
 		interrupt-parent = < 10049 >;
 		interrupts = < 0x0b >;
 		reg = < 0xd403b000 0x1000 >;
