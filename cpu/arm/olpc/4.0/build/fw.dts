@@ -926,8 +926,8 @@
 			power-gpios = < 10053 0x73 0x01 >;
 			cd-gpios = < 10053 0x1f 0x01 >;
 			power-delay-ms = < 0x28 0x01 >;
-			clock-names = "PXA-SDHCLK";
-			clocks = < 10034 0x03 >;
+			clock-names = "io";
+			clocks = < 10036 0x65 >;
 			no-1-8-v;
 			interrupts = < 0x27 >;
 			#size-cells = < 0x00 >;
@@ -949,8 +949,8 @@
 			phandle = < 100116 >;
 			broken-cd;
 			power-delay-ms = < 0x28 0x01 >;
-			clock-names = "PXA-SDHCLK";
-			clocks = < 10034 0x1b >;
+			clock-names = "io";
+			clocks = < 10036 0x2713 >;
 			non-removable;
 			interrupts = < 0x00 >;
 			interrupt-parent = < 10048 >;

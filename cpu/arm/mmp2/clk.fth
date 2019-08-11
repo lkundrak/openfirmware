@@ -29,6 +29,7 @@ d# 120 constant mmp2-disp0-lcdc-clk#
 d# 10000 constant mmp2-audio-clk#
 d# 10001 constant mmp2-vmeta-clk#
 d# 10002 constant mmp2-gc-clk#
+d# 10003 constant mmp3-sdh4-clk#
 
 0 0  " "  " /" begin-package
 " clocks" name
