@@ -37,6 +37,7 @@ d# 0 constant mmp2-gpu-power-domain#
 \ FIXME: Not official clock numbers!
 d# 10000 constant mmp2-audio-clk#
 d# 10001 constant mmp2-vmeta-clk#
+d# 10003 constant mmp3-sdh4-clk#
 
 0 0  " "  " /" begin-package
 " clocks" name
