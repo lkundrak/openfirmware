@@ -242,7 +242,7 @@
 		#size-cells = < 0x01 >;
 		#address-cells = < 0x01 >;
 		ranges;
-		compatible = "simple-bus\0mrvl,mmp3-intc";
+		compatible = "simple-bus\0mrvl,mmp3-intc\0marvell,mmp3-intc";
 		reg = < 0xd4282000 0x1000 0xd4284000 0x100 >;
 
 		interrupt-controller@150 {
