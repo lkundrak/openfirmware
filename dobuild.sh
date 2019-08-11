@@ -2,6 +2,7 @@
 set -e
 
 F=cpu/arm/olpc/1.75/build
+F=cpu/arm/olpc/4.0/build
 
 for DIR in $F; do
         CROSS=arm-linux-gnu- make -C $DIR

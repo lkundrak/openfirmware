@@ -7,3 +7,4 @@ macro: EC_VERSION 7_0_5_01
 \ macro: GET_EC cp ~rsmith/olpc/ec/ec-code15/image/ecimage.bin ec.img
 \ macro: GET_EC wget -q http://dev.laptop.org/pub/ec/ec_test.img -O ec.img
 \ macro: GET_EC cp no_event.bin ec.img
+macro: GET_EC stat ec.img
