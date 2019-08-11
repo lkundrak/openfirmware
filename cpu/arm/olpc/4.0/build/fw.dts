@@ -514,10 +514,12 @@
 		};
 	};
 
-	l2-cache {
+	l2-cache-controller@d0020000 {
 		phandle = < 10067 >;
-		marvell,tauros2-cache-features = < 0x03 >;
-		compatible = "marvell,tauros2-cache";
+		cache-level = < 0x02 >;
+		cache-unified;
+		reg = < 0xd0020000 0x1000 >;
+		compatible = "marvell,tauros3-cache\0arm,pl310-cache";
 	};
 
 	camera-i2c@0 {
