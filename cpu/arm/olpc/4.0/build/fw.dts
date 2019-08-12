@@ -976,7 +976,8 @@
 
 	usb2-phy@d4207000 {
 		phandle = < 100118 >;
-		compatible = "mrvl,mmp3-usb2phy";
+		#phy-cells = < 0x00 >;
+		compatible = "marvell,mmp3-usb-phy\0mrvl,mmp3-usb2phy";
 		reg = < 0xd4207000 0x100 >;
 	};
 
