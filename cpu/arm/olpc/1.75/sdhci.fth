@@ -11,9 +11,12 @@ dev /sd
       d# 39 " interrupts" integer-property
       0 0 encode-bytes  " no-1-8-v" property
 
-      " /pmua" encode-phandle 3 encode-int encode+ " clocks" property
-      " PXA-SDHCLK" " clock-names" string-property
+      " /clocks" encode-phandle mmp2-sdh0-clk# encode-int encode+ " clocks" property
+      " io" " clock-names" string-property
       d# 40 encode-int  1 encode-int encode+  " power-delay-ms" property
+      d# 50000000 " clock-frequency" integer-property
+      d# 31 " mrvl,clk-delay-cycles" integer-property
+      0 0 encode-bytes " broken-cd" property
 
       new-device
          fload ${BP}/dev/mmc/sdhci/sdmmc.fth

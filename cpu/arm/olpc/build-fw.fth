@@ -93,6 +93,12 @@ devalias rom     /dropin-fs
 
 fload ${BP}/cpu/x86/pc/cpunode.fth  \ The PC CPU node is actually fairly generic
 
+0 0  " "  " /" begin-package
+   " l2-cache" device-name
+   " marvell,tauros2-cache" +compatible
+   3 " marvell,tauros2-cache-features" integer-property
+end-package
+
 : cpu-mhz  ( -- n )
    " /cpu@0" find-package drop	( phandle )
    " clock-frequency" rot get-package-property  if  0 exit  then  ( adr )
@@ -108,13 +114,13 @@ fload ${BP}/cpu/arm/olpc/twsi-i2c.fth
 
 0 0  " d4018000"  " /" begin-package  \ UART3
    fload ${BP}/cpu/arm/mmp2/uart.fth
-   " /apbc" encode-phandle d# 12 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-uart2-clk# encode-int encode+ " clocks" property
    d# 24 " interrupts" integer-property
 end-package
 
 0 0  " d4017000"  " /" begin-package  \ UART2
    fload ${BP}/cpu/arm/mmp2/uart.fth
-   " /apbc" encode-phandle d# 11 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-uart1-clk# encode-int encode+ " clocks" property
    d# 28 " interrupts" integer-property
 end-package
 
@@ -125,12 +131,12 @@ devalias com1 /uart
 0 0  " d4030000"  " /" begin-package  \ UART1
    fload ${BP}/cpu/arm/mmp2/uart.fth
    d# 27 " interrupts" integer-property
-   " /apbc" encode-phandle d# 10 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-uart0-clk# encode-int encode+ " clocks" property
 end-package
 
 0 0  " d4016000"  " /" begin-package  \ UART4
    fload ${BP}/cpu/arm/mmp2/uart.fth
-   " /apbc" encode-phandle d# 32 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-uart3-clk# encode-int encode+ " clocks" property
    d# 46 " interrupts" integer-property
 end-package
 
@@ -148,7 +154,7 @@ fload ${BP}/cpu/arm/mmp2/sspspi.fth        \ Synchronous Serial Port SPI interfa
 0 0  " d4035000"  " /" begin-package
    " flash" device-name
 
-   " /apbc" encode-phandle d# 19 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-ssp1-clk# encode-int encode+ " clocks" property
    d# 0 " interrupts" integer-property
    /rom value /device
    my-address my-space h# 100 reg
@@ -194,6 +200,23 @@ load-base constant flash-buf
 
 fload ${BP}/cpu/arm/olpc/ecflash.fth
 
+\ Reserve memory for the framebuffer
+0 0  " "  " /" begin-package
+   " reserved-memory" name
+   1 " #address-cells" integer-property
+   1 " #size-cells" integer-property
+   0 0 encode-bytes " ranges" property
+
+   new-device
+       " framebuffer" device-name
+       " marvell,armada-framebuffer" +compatible
+       " marvell,mmp2-framebuffer" +compatible
+       h# 02000000 " size" integer-property
+       h# 02000000 " alignment" integer-property
+       0 0 encode-bytes " no-map" property
+   finish-device
+end-package
+
 : ec-spi-reprogrammed   ( -- )
    use-edi-spi  spi-start
    set-ec-reboot
@@ -236,15 +259,36 @@ fload ${BP}/cpu/x86/pc/olpc/setwp.fth
 
    " mrvl,mmp2-vmeta" +compatible
 
-   " /pmua" encode-phandle d# 10 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-vmeta-clk# encode-int encode+ " clocks" property
    " VMETACLK" " clock-names" string-property
    d# 26 " interrupts" integer-property
 end-package
 
 fload ${BP}/cpu/arm/olpc/lcd.fth
+[ifdef] mmp2
+fload ${BP}/cpu/arm/mmp2/galcore.fth
+[then]
 [ifdef] mmp3
 fload ${BP}/cpu/arm/mmp3/galcore.fth
 [then]
+
+0 0  " "  " /" begin-package
+   " fixedregulator0" device-name
+   " regulator-fixed" +compatible
+   " wlan" " regulator-name" string-property
+   d# 3300000 " regulator-min-microvolt" integer-property
+   d# 3300000 " regulator-max-microvolt" integer-property
+   0 0 encode-bytes " enable-active-high" property
+   " /gpio" encode-phandle en-wlan-pwr-gpio# encode-int encode+ d# 0 encode-int encode+ " gpio" property
+end-package
+
+0 0  " "  " /" begin-package
+   " pwrseq0" device-name
+   " mmc-pwrseq-sd8787" +compatible
+   " /gpio" encode-phandle wlan-pd-gpio# encode-int encode+ d# 0 encode-int encode+ " powerdown-gpios" property
+   " /gpio" encode-phandle wlan-reset-gpio# encode-int encode+ d# 0 encode-int encode+ " reset-gpios" property
+end-package
+
 fload ${BP}/cpu/arm/olpc/sdhci.fth
 
 devalias net /wlan
@@ -319,6 +363,8 @@ devalias keyboard /ap-sp/keyboard
 devalias mouse    /ap-sp/mouse
 [then]
 
+fload ${BP}/dev/olpc/gpio-keys.fth
+
 fload ${BP}/dev/olpc/mmp2camera/loadpkg.fth
 
 fload ${BP}/cpu/arm/firfilter.fth
@@ -351,7 +397,7 @@ warning @ warning off
       model-version$   2dup model     ( name$ )
       " OLPC " encode-bytes  2swap encode-string  encode+  " banner-name" property
       board-revision " board-revision-int" integer-property
-      compatible$  " compatible" string-property
+      platform$ encode-string  compatible$ encode-string encode+  " compatible" property
       " SN" find-tag  if  ?-null  else  " Unknown"  then  " serial-number" string-property
 
       ec-api-ver@ " ec-version" integer-property
@@ -715,7 +761,7 @@ stand-init: xid
    sound-end
 [ifdef] mmp3
    \ XXX Delete this when Linux is ready to turn on the audio island
-   " audio-island-on" " /pmua" execute-device-method drop
+   " audio-island-on" " /clocks" execute-device-method drop
 [then]
 ;
 ' pre-setup-for-linux to linux-pre-hook

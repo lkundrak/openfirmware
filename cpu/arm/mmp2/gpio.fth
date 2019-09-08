@@ -44,6 +44,7 @@ create gpio-offsets
 0 0  " d4019000" " /" begin-package
    " gpio" name
 
+   " marvell,mmp2-gpio" +compatible
    " mrvl,mmp-gpio" encode-string +compatible
 
    my-address my-space  h# 1000 reg
@@ -53,9 +54,10 @@ create gpio-offsets
    " " " gpio-controller" property
    2 " #gpio-cells" integer-property
    " " " interrupt-controller" property
-   1 " #interrupt-cells" integer-property
+   2 " #interrupt-cells" integer-property
+   0 0 " ranges" property
 
-   " /apbc" encode-phandle d# 13 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-gpio-clk# encode-int encode+ " clocks" property
    " GPIO" " clock-names" string-property
 
 
