@@ -236,24 +236,6 @@ dconload constant out-gpios
 
 0 value dcon-found?
 
-d# 440 8 /  constant dcon-flag
-
-: msr@  ( l -- d )  " rdmsr" eval  ;
-: msr!  ( d l -- )  " wrmsr" eval  ;
-
-\ This depends on a jumper on the board
-: tft-mode?  ( -- flag )
-   gx?  if
-      h# c000.2001 msr@  drop h# 40 and  0<>
-   else
-      true
-   then
-;
-
-: maybe-set-cmos  ( -- )
-   tft-mode?  1 and  dcon-flag cmos!
-;
-
 \ LICENSE_BEGIN
 \ Copyright (c) 2006 FirmWorks
 \ 
