@@ -234,8 +234,6 @@ dconload constant out-gpios
    \ ['] dcon-interrupt 5 request_irq
 ;
 
-0 value dcon-found?
-
 \ LICENSE_BEGIN
 \ Copyright (c) 2006 FirmWorks
 \ 
