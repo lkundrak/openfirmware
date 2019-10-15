@@ -91,15 +91,22 @@ previous definitions
       0 0  " non-removable" property
       d# 52 " interrupts" integer-property
 
-      " /pmua" encode-phandle 4 encode-int encode+ " clocks" property
-      " PXA-SDHCLK" " clock-names" string-property
+      " /clocks" encode-phandle mmp2-sdh1-clk# encode-int encode+ " clocks" property
+      " io" " clock-names" string-property
       d# 50 encode-int  d# 500 encode-int encode+  " power-delay-ms" property
       0 0 " broken-cd" property
+      d# 50000000 " clock-frequency" integer-property
+      0 0 encode-bytes " no-1-8-v" property
+      0 0 encode-bytes " wakeup-source" property
+      0 0 encode-bytes " keep-power-in-suspend" property
+
 [ifdef] en-wlan-pwr-gpio#
+      " /fixedregulator0" encode-phandle " vmmc-supply" property
       \ Active high
       " /gpio" encode-phandle  en-wlan-pwr-gpio# encode-int encode+  0 encode-int encode+  " power-gpios" property
 [then]
 [ifdef] wlan-reset-gpio#
+      " /pwrseq0" encode-phandle " mmc-pwrseq" property
       \ Active low
       " /gpio" encode-phandle  wlan-reset-gpio# encode-int encode+  1 encode-int encode+  " reset-gpios" property
 [then]
@@ -120,10 +127,13 @@ previous definitions
       d# 15 encode-int " clk-delay-cycles" property
       d# 53 " interrupts" integer-property
 
-      " /pmua" encode-phandle d# 14 encode-int encode+ " clocks" property
-      " PXA-SDHCLK" " clock-names" string-property
+      " /clocks" encode-phandle  mmp2-sdh2-clk# encode-int encode+ " clocks" property
+      " io" " clock-names" string-property
       d# 40 encode-int  1 encode-int encode+  " power-delay-ms" property
       0 0 " broken-cd" property
+      d# 50000000 " clock-frequency" integer-property
+      d# 31 " mrvl,clk-delay-cycles" integer-property
+      0 0 encode-bytes " no-1-8-v" property
 [ifdef] en-emmc-pwr-gpio#
       \ Active low
       " /gpio" encode-phandle  en-emmc-pwr-gpio# encode-int encode+  1 encode-int encode+  " power-gpios"  property

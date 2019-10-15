@@ -1,6 +1,7 @@
 \ ========== Copyright Header Begin ==========================================
 \ 
 \ Copyright (c) 2006 Sun Microsystems, Inc. All Rights Reserved.
+\ Copyright (c) 2018,2019 Lubomir Rintel <lkundrak@v3.sk>
 \ 
 \  - Do no alter or remove copyright notices
 \ 
@@ -2971,6 +2972,9 @@ root-device
 
    new-device				\ Reports firmware run-time choices
       " chosen" device-name
+      0 0 " ranges"	  property
+      1 " #size-cells"	  integer-property
+      1 " #address-cells" integer-property
    finish-device
 
    new-device				\ Node describing the firmware
@@ -4233,6 +4237,21 @@ d# 32 buffer: canon-prop
 ;
 
 \
+\ Device graph helpers
+\
+
+: link-endpoint                                   ( $endpoint1 $endpoint2 -- )
+   find-device                                    ( $endpoint1)
+       encode-phandle " remote-endpoint" property ( )
+   device-end
+;
+
+: link-endpoints               ( $endpoint1 $endpoint2 -- )
+   2over 2over  link-endpoint  ( $endpoint1 $endpoint2 )
+   2swap        link-endpoint  ( )
+;
+
+\
 \ Generic Client Interface Services
 \
 
@@ -4514,6 +4533,24 @@ also client-services definitions
    r> push-device
 ;
 previous definitions
+
+h# 100 buffer: xbuf
+: phandle>basename ( phandle -- adr len )
+  push-device
+  root-device?  if  pop-device 0 0 exit  then
+  canon-buf canon-len canon-max
+  xbuf to canon-buf
+  0 to canon-len
+  h# 100 to canon-max
+  get-node-name canon+
+  append-instance-address
+  pop-device
+  canon-len
+  swap to canon-max
+  swap to canon-len
+  swap to canon-buf
+  xbuf swap
+;
 
 \ From deladdr.fth
 purpose: Delete stale address properties for virtual addresses

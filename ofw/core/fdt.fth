@@ -53,7 +53,7 @@ purpose: Construct a flattened device tree blob for Linux
 ;
 
 : flatten-path  ( -- )
-   the-node phandle>devname       ( adr len )
+   the-node phandle>basename      ( adr len )
    fdt$,  0 fdt-c,  4 fdt-align   ( )
 ;
 : (flatten-property)  ( propname$ propvalue$ -- )
@@ -138,7 +138,7 @@ variable fdt-phandle
    0 peer  flatten-node  
    9 fdt,            \ OF_DT_END
 
-\  fdt-ptr  fdt h# 80 +  -  fdt h# 24 +  be-l!  \ Set struct size
+   fdt-ptr  fdt h# 80 +  -  fdt h# 24 +  be-l!  \ Set struct size
    fdt-strings-len          fdt h# 20 +  be-l!  \ Set strings size
 
    fdt-ptr /fdt-align round-up  to fdt-ptr
@@ -183,7 +183,7 @@ variable fdt-phandle
    then                             ( adr,len #ints )
    drop                             ( adr,len )
 
-   to-display-column  h# 10 min  cdump                             ( )
+   to-display-column  h# 10 min  cdump cr                          ( )
 ;
 : .fdt-property  ( -- )
    [ also hidden ] indent [ previous ]

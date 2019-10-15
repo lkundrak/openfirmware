@@ -8,16 +8,14 @@ purpose: USB features common to most OLPC ARM platforms
       my-space swap  " map-in" $call-parent  h# 100 +  ( adr )
    ;
    : my-map-out  ( adr len -- )  swap h# 100 - swap " map-out" $call-parent  ;
-   " USBPHYCLK" " clock-names" string-property
-   " /pmua" encode-phandle 5 encode-int encode+ " clocks" property
+   " USBCLK" " clock-names" string-property
+   " /clocks" encode-phandle mmp2-usb-clk# encode-int encode+ " clocks" property
    d# 44 " interrupts" integer-property
 
    usb-hub-reset-gpio# 1  " usb-hub-reset-gpios" gpio-property
 
-   " host" " dr_mode"  string-property
-   " utmi" " phy_type" string-property
-
-   " /usb2-phy" encode-phandle " transceiver" property
+   " usb" " phy-names" string-property
+   " /usb2-phy" encode-phandle " phys" property
 
    false constant has-dbgp-regs?
    false constant needs-dummy-qh?

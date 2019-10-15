@@ -26,8 +26,9 @@ headerless
 " ec-spi"     device-name
 
 0 0 encode-bytes
-   " olpc,ec-spi"  encode-string encode+
-" compatible" property
+
+" olpc,ec-spi" +compatible
+" marvell,mmp2-ssp" +compatible
 
 my-address      my-space  h# 1000  encode-reg
 " reg" property
@@ -35,12 +36,22 @@ my-address      my-space  h# 1000  encode-reg
 1 " #address-cells"  integer-property
 0 " #size-cells"     integer-property
 
+0 0 encode-bytes " spi-slave" property
+ec-spi-ack-gpio# 0  " ready-gpios"  gpio-property
+
    d# 20 " interrupts" integer-property
-   " /apbc" encode-phandle d# 21 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-ssp2-clk# encode-int encode+ " clocks" property
 
    ec-spi-ack-gpio# 1  " ack-gpios"  gpio-property
    ec-spi-cmd-gpio# 1  " cmd-gpios"  gpio-property
    ec-spi-int-gpio# 1  " int-gpios"  gpio-property
+
+new-device
+   " slave" device-name
+   " olpc,xo1.75-ec" +compatible
+   0 0 encode-bytes " spi-cpha" property
+   ec-spi-cmd-gpio# 0  " cmd-gpios"  gpio-property
+finish-device
 
 : encode-unit  ( phys -- adr len )  push-hex  (u.)  pop-base  ;
 : decode-unit  ( adr len -- phys )  push-hex  $number  if  0  then  pop-base  ;
@@ -338,6 +349,11 @@ defer upstream
    set-ack
    open-count 1 =  if
       ssp-base h# 1000  " map-out" $call-parent  0 is ssp-base
+
+      \ Reset the SSP3. There doesn't seem to be any other
+      \ way to drain the TXFIFO and we need to ensure we didn't
+      \ leave garbage there.
+      ssp3-clk-on
    then
    open-count 1- 0 max to open-count
 ;

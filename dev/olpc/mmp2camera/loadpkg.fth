@@ -1,8 +1,9 @@
 " "  " d420a000" " /"  begin-package
    " camera" device-name
    " marvell,mmpcam" +compatible
+   " marvell,mmp2-ccic" +compatible
    my-address my-space  h# 800  reg
-   " /pmua" encode-phandle 2 encode-int encode+ " clocks" property
+   " /clocks" encode-phandle mmp2-ccic0-clk# encode-int encode+ " clocks" property
 [ifdef] mmp3
    \ The CCIC interrupt is shared between CCIC1 and CCIC2 on MMP3
    " /interrupt-controller/interrupt-controller@1cc" encode-phandle " interrupt-parent" property
@@ -16,7 +17,11 @@
       cam-rst-gpio# 0 encode-gpio
    " gpios" property
 
+   " axi" " clock-names" string-property
    " /image-sensor" encode-phandle  " image-sensor" property
+
+   0 " #clock-cells" integer-property
+   " mclk" " clock-output-names" string-property
 
 0 [if]
    : alloc-capture-buffer  ( len -- vadr padr )
@@ -45,7 +50,7 @@
       my-self >r  0 to my-self
       " /image-sensor" find-device  ( name$ i2c-addr )
       " reg" get-property  if       ( name$ i2c-addr )
-         1 reg                      ( name$ )
+         " reg" integer-property    ( name$ )
          +compatible                ( )
       else                          ( name$ i2c-addr regval$ )
          2drop 3drop                ( )
@@ -60,7 +65,21 @@
    warning !
    fload ${BP}/dev/olpc/mmp2camera/ccic.fth
    fload ${BP}/dev/olpc/cameratest.fth
+
+   new-device
+      " port" device-name
+      new-device
+         " endpoint" device-name
+      finish-device
+   finish-device
 end-package
 : probe-image-sensor  ( -- )
    " /camera" open-dev close-dev
 ;
+
+" /image-sensor" find-device
+   " /camera" encode-phandle  " clocks" property
+   " xclk" " clock-names" string-property
+device-end
+
+" /image-sensor/port/endpoint" " /camera/port/endpoint" link-endpoints

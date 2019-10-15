@@ -1,5 +1,7 @@
 purpose: Device tree nodes for I2C buses implemented with GPIOs
 
+\ 6 constant GPIO_OPEN_DRAIN
+
 : encode-gpio  ( propval$ gpio# low? -- propval$' )
    >r >r                            ( propval$  r: low? gpio# )
    " /gpio" encode-phandle encode+  ( propval$' r: low? gpio# )
@@ -14,35 +16,23 @@ purpose: Device tree nodes for I2C buses implemented with GPIOs
    2r> property                 ( )
 ;
 
-: make-sensor-node  ( name$ i2c-addr -- )
-   " /camera-i2c" find-device  ( name$ i2c-addr )
-   new-device                  ( name$ i2c-addr )
-      1 reg                    ( name$ )
-      +compatible              ( )
-      " image-sensor" device-name
-      0 0 encode-bytes
-         cam-pwr-gpio# 0 encode-gpio
-         cam-rst-gpio# 0 encode-gpio
-      " gpios" property
-   finish-device
-   device-end
-;
-
 dev /
    new-device
       " camera-i2c" device-name
       " i2c-gpio" +compatible
       1 " #address-cells" integer-property
-      1 " #size-cells" integer-property
+      0 " #size-cells" integer-property
 
       0 0 reg  \ So linux will assign a static device name
 
+      d# 1000 " i2c-gpio,timeout-ms" integer-property
+
       : encode-unit  ( phys.. -- str )  push-hex (u.) pop-base  ;
       : decode-unit  ( str -- phys.. )  push-hex  $number  if  0  then  pop-base  ;
-      
+
       0 0 encode-bytes
-         cam-sda-gpio# 0 encode-gpio
-         cam-scl-gpio# 0 encode-gpio
+         cam-sda-gpio# 6 encode-gpio
+         cam-scl-gpio# 6 encode-gpio
       " gpios" property
 
       0 instance value slave-address
@@ -65,12 +55,24 @@ dev /
         \ The reg and compatible properties are set by probing, based on the actual
         \ image sensor encountered.  For example:
         \  h# 21 1 reg
-        \  " omnivision,ov7670" +compatible
+        \  " ovti,ov7670" +compatible
 
          0 0 encode-bytes
             cam-pwr-gpio# 0 encode-gpio
             cam-rst-gpio# 0 encode-gpio
          " gpios" property
+
+         0 0 encode-bytes  cam-pwr-gpio# 1 encode-gpio  " powerdown-gpios" property
+         0 0 encode-bytes  cam-rst-gpio# 1 encode-gpio  " reset-gpios" property
+
+         new-device
+            " port" device-name
+            new-device
+               " endpoint" device-name
+               h# 1 " hsync-active" integer-property
+               h# 1 " vsync-active" integer-property
+            finish-device
+         finish-device
       finish-device
    finish-device
 
@@ -78,7 +80,7 @@ dev /
       " dcon-i2c" device-name
       " i2c-gpio" +compatible
       1 " #address-cells" integer-property
-      1 " #size-cells" integer-property
+      0 " #size-cells" integer-property
 
       0 0 reg  \ So linux will assign a static device name
 
@@ -86,8 +88,8 @@ dev /
       : decode-unit  ( str -- phys.. )  push-hex  $number  if  0  then  pop-base  ;
 
       0 0 encode-bytes
-         dcon-sda-gpio# 0 encode-gpio
-         dcon-scl-gpio# 0 encode-gpio
+         dcon-sda-gpio# 6 encode-gpio
+         dcon-scl-gpio# 6 encode-gpio
       " gpios" property
 
       0 instance value slave-address
@@ -117,13 +119,13 @@ dev /
       0 0 reg
       " i2c-gpio" +compatible
       1 " #address-cells" integer-property
-      1 " #size-cells" integer-property
+      0 " #size-cells" integer-property
       : encode-unit  ( phys.. -- str )  push-hex (u.) pop-base  ;
       : decode-unit  ( str -- phys.. )  push-hex  $number  if  0  then  pop-base  ;
-      
+
       0 0 encode-bytes
-         hdmi-sda-gpio# 0 encode-gpio
-         hdmi-scl-gpio# 0 encode-gpio
+         hdmi-sda-gpio# 6 encode-gpio
+         hdmi-scl-gpio# 6 encode-gpio
       " gpios" property
 
       h# 50 instance value slave-address
@@ -143,7 +145,7 @@ dev /
 
       new-device
          " hdmi-ddc" device-name    
-         h# 50 1 reg
+         h# 50 " reg" integer-property
          " eeprom" +compatible
          : close  ( -- )  ;
          h# 80 constant /edid-chunk

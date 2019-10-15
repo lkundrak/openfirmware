@@ -11,7 +11,8 @@
 " dcon" device-name
 " olpc,xo1-dcon" +compatible
 " olpc,xo1.75-dcon" +compatible
-my-space 1 reg
+" himax,hx8837" +compatible
+my-space " reg" integer-property
 
 0 0 encode-bytes
 dcon-stat0-gpio# 0 encode-gpio
@@ -25,6 +26,48 @@ dcon-irq-gpio#   0 encode-gpio
 " load"  encode-string encode+
 " irq"   encode-string encode+
 " gpio-names" property
+
+0 0 encode-bytes
+dcon-stat0-gpio# 0 encode-gpio
+dcon-stat1-gpio# 0 encode-gpio
+" stat-gpios" property
+
+0 0 encode-bytes
+dcon-load-gpio# 0 encode-gpio
+" load-gpios" property
+
+" /gpio" encode-phandle " interrupt-parent" property
+
+dcon-irq-gpio# encode-int
+2 encode-int encode+ \ IRQ_TYPE_EDGE_FALLING
+" interrupts" property
+
+new-device
+   " ports" device-name
+   1 " #address-cells" integer-property
+   0 " #size-cells" integer-property
+
+   : decode-unit  ( adr len -- phys )  $number  if  0  then  ;
+   : encode-unit  ( phys -- adr len )  (u.)  ;
+   : open  ( -- true )  true  ;
+   : close  ( -- )  ;
+
+   new-device
+      " port" device-name
+      0 " reg" integer-property
+      new-device
+         " endpoint" device-name
+      finish-device
+   finish-device
+
+   new-device
+      " port" device-name
+      1 " reg" integer-property
+      new-device
+         " endpoint" device-name
+      finish-device
+   finish-device
+finish-device
 
 \ DCON internal registers, accessed via I2C
 \ 0 constant DCON_ID
@@ -256,8 +299,6 @@ h# f value default-bright
    default-bright bright!
 ;
 
-0 value dcon-found?
-
 : maybe-set-cmos  ( -- )  ;
 
 [ifdef] old-way
@@ -307,6 +348,9 @@ h# f value default-bright
 ' (dcon-unjam)  to dcon-unjam
 
 end-package
+
+" /display/port/endpoint" " /dcon/ports/port@0/endpoint" link-endpoints
+" /panel/port/endpoint"   " /dcon/ports/port@1/endpoint" link-endpoints
 
 stand-init:
    has-dcon-ram?  0=  if

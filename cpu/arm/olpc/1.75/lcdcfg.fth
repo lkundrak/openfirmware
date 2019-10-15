@@ -9,11 +9,9 @@ new-device
    " marvell,mmp-vsram" +compatible
    d# 64 " granularity" integer-property
 finish-device
-device-end
 
-dev /display
-new-device
-   " panel" device-name
+fload ${BP}/dev/olpc/panel.fth
+dev /panel
    " mrvl,dumb-panel" +compatible
 
    " OLPC DCON panel" model
@@ -35,14 +33,12 @@ new-device
 \ so the high nibble changed from 4 (MMP2) to 2 (MMP3) for the same
 \ field value 1.
 [ifdef] mmp3  h# 20001102  [else]  h# 40001102  [then]  " clock-divider-regval" integer-property
-
-finish-device
 device-end
 
 [ifdef] has-dcon
 fload ${BP}/dev/olpc/dcon/mmp2dcon.fth        \ DCON control
 
-dev /display/panel
+dev /panel
    " /dcon" encode-phandle  " control-node" property
 device-end
 [then]
