@@ -91,13 +91,15 @@ fload ${BP}/ofw/fs/dropinfs.fth
 \ This devalias lets us say, for example, "dir rom:"
 devalias rom     /dropin-fs
 
+[ifdef] mmp3
+fload ${BP}/cpu/arm/mmp3/l2cache.fth
+fload ${BP}/cpu/arm/mmp3/cpunode.fth
+fload ${BP}/cpu/arm/mmp3/scu.fth
+fload ${BP}/cpu/arm/mmp3/twd.fth
+[else]
+fload ${BP}/cpu/arm/mmp2/l2cache.fth
 fload ${BP}/cpu/x86/pc/cpunode.fth  \ The PC CPU node is actually fairly generic
-
-0 0  " "  " /" begin-package
-   " l2-cache" device-name
-   " marvell,tauros2-cache" +compatible
-   3 " marvell,tauros2-cache-features" integer-property
-end-package
+[then]
 
 : cpu-mhz  ( -- n )
    " /cpu@0" find-package drop	( phandle )

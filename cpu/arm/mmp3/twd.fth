@@ -1,41 +1,34 @@
 \ See license at end of file
-purpose: CPU node
+purpose: Timer and Watchdog nodes
 
 decimal
 
-headers
-' cpu-node  " cpu" chosen-variable
+0 0  " e0000600" " /" begin-package
+   " local-timer" device-name
+   " arm,arm11mp-twd-timer" +compatible
+   my-address my-space  h# 20 reg
 
-0 0  " "  " /"  begin-package
-" cpus" device-name
-1 " #address-cells" integer-property
-0 " #size-cells" integer-property
-
-: decode-unit  ( adr len -- phys )  $number  if  0  then  ;
-: encode-unit  ( phys -- adr len )  (u.)  ;
-
-: open  ( -- true )  true  ;
-: close  ( -- )  ;
-
-new-device
-   " cpu" device-name
-   " cpu" device-type
-   0 " reg" integer-property
-   
-   \ XXX probe CPU to derive cache parameters
-
-   : open true ;
-   : close ;
-
-finish-device
-
+   \ Assumes GIC is the interrupt parent
+   1 encode-int \ Per-processor interrupt
+      13 encode-int encode+
+      h# 301 encode-int encode+ \ GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_EDGE_RISING
+      " interrupts" property
 end-package
 
-stand-init: CPU nodes
-   " /cpus/cpu@0" open-dev cpu-node !
-;
+0 0  " e0000620" " /" begin-package
+   " watchdog" device-name
+   " arm,arm11mp-twd-wdt" +compatible
+   my-address my-space  h# 20 reg
+
+   \ Assumes GIC is the interrupt parent
+   1 encode-int \ Per-processor interrupt
+      14 encode-int encode+
+      h# 301 encode-int encode+ \ GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_EDGE_RISING
+      " interrupts" property
+end-package
+
 \ LICENSE_BEGIN
-\ Copyright (c) 2006 FirmWorks
+\ Copyright (c) 2019 Lubomir Rintel
 \ 
 \ Permission is hereby granted, free of charge, to any person obtaining
 \ a copy of this software and associated documentation files (the
