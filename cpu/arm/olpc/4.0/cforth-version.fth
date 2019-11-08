@@ -12,6 +12,6 @@
 
 \ Otherwise, the source code will be will be downloaded as a tarball via gitweb.
 \ macro: CFORTH_VERSION 59859f04454bc2574ab68cf0fd76ebdbc5f26fb6
-macro: CFORTH_VERSION HEAD
+macro: CFORTH_VERSION lr/olpc-cl4
 
 macro: CFORTH_BUILD_DIR cforth/build/arm-xo-cl4
