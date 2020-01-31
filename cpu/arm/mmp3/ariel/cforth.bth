@@ -1,0 +1,9 @@
+purpose: Fetch and compile CForth for IPL on the MM core
+
+command: &builder &this
+build-now
+
+macro: CFORTH_VERSION d3370770888eca85c2a64e5da551091f90c341cb
+macro: CFORTH_BUILD_DIR cforth/build/arm-ariel
+
+fload ${BP}/cpu/arm/olpc/build-cforth.fth
