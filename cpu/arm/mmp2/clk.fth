@@ -49,6 +49,9 @@ d# 10006 constant mmp3-thermal3-clk#
 0 0  " "  " /" begin-package
 " clocks" name
 " marvell,mmp2-clock" +compatible
+[ifdef] mmp3
+" marvell,mmp3-clock" +compatible
+[then]
 
 h# d405.0000 encode-int          h# 1000 encode-int encode+
 h# d428.2800 encode-int encode+  h#  400 encode-int encode+
