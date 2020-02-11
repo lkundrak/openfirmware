@@ -1,6 +1,3 @@
 armforth
-build
+build/build
 cforth
-multicast-nand
-sourceurl
-testicons

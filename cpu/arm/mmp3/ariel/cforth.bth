@@ -1,7 +1,9 @@
-purpose: Fetch and compile CForth for the Security Processor
+purpose: Fetch and compile CForth for IPL on the MM core
 
 command: &builder &this
 build-now
 
-fload ${BP}/cpu/arm/olpc/4.0/cforth-version.fth
+macro: CFORTH_VERSION d3370770888eca85c2a64e5da551091f90c341cb
+macro: CFORTH_BUILD_DIR cforth/build/arm-ariel
+
 fload ${BP}/cpu/arm/olpc/build-cforth.fth

@@ -1,4 +1,4 @@
-purpose: Common code for build OFW Forth dictionaries for OLPC ARM platforms
+purpose: Common code for build OFW Forth dictionaries for Dell Ariel (Wyse 3020)
 \ See license at end of file
 
 hex
@@ -8,7 +8,7 @@ hex
 \ ' noop is include-hook
 
 : init-stuff
-   acgr-clocks-on
+   \ acgr-clocks-on ( defaults to on on power-on )
    init-timers
 ;
 warning @ warning off
@@ -19,10 +19,9 @@ warning @ warning off
 warning !
 
 dev /
-   model$  model
-   " OLPC" encode-string  " architecture" property
-\ The clock frequency of the root bus may be irrelevant, since the bus is internal to the SOC
-\    d# 1,000,000,000 " clock-frequency" integer-property
+   " Dell Ariel" model
+   " marvell,mmp3" +compatible
+   " dell,wyse-ariel" +compatible
 device-end
 
 fload ${BP}/cpu/arm/olpc/fbnums.fth
@@ -41,8 +40,6 @@ fload ${BP}/forth/lib/sysuart.fth	\ Set console I/O vectors to UART
 : install-abort  ( -- )  ['] poll-tty d# 100 alarm  ;
 
 0 value dcon-ih
-: $call-dcon  ( ... -- ... )   dcon-ih $call-method  ;
-
 0 value keyboard-ih
 
 fload ${BP}/ofw/core/muxdev.fth          \ I/O collection/distribution device
@@ -91,68 +88,70 @@ fload ${BP}/ofw/fs/dropinfs.fth
 \ This devalias lets us say, for example, "dir rom:"
 devalias rom     /dropin-fs
 
-[ifdef] mmp3
 fload ${BP}/cpu/arm/mmp3/l2cache.fth
 fload ${BP}/cpu/arm/mmp3/cpunode.fth
 fload ${BP}/cpu/arm/mmp3/scu.fth
-[else]
-fload ${BP}/cpu/arm/mmp2/l2cache.fth
-fload ${BP}/cpu/x86/pc/cpunode.fth  \ The PC CPU node is actually fairly generic
-[then]
-
-: cpu-mhz  ( -- n )
-   " /cpu@0" find-package drop	( phandle )
-   " clock-frequency" rot get-package-property  if  0 exit  then  ( adr )
-   decode-int nip nip  d# 1000000 /  
-;
 
 fload ${BP}/cpu/arm/mmp2/watchdog.fth	\ reset-all using watchdog timer
 
-fload ${BP}/cpu/arm/olpc/smbus.fth         \ Bit-banged SMBUS (I2C) using GPIOs
-
-fload ${BP}/cpu/arm/olpc/gpio-i2c.fth
-
-\ The unit# properties are chosen so that GPIO I2C nodes get lower addresses.
-\ Some Linux drivers expect to find devices on specific I2C bus numbers.
 fload ${BP}/cpu/arm/mmp2/twsi-i2c.fth
-devalias i2c2 /i2c@d4011000
 dev /i2c@d4011000
-   2 " linux,unit#" integer-property
-device-end
-devalias i2c3 /i2c@d4031000
-dev /i2c@d4031000
-   3 " linux,unit#" integer-property
+   new-device
+      \ XXX cpu/arm/olpc/rtc.fth
+      " rtc" name
+      " idt,idt1338-rtc" +compatible
+      " dallas,ds1338" +compatible
+      h# 68 1 reg
+   finish-device
+   new-device
+      fload ${BP}/dev/88pm867.fth
+   finish-device
 device-end
 dev /i2c@d4032000
-   " disabled" " status" string-property
+   new-device
+      fload ${BP}/dev/video/dacs/ch7033.fth
+   finish-device
 device-end
-devalias i2c5 /i2c@d4033000
 dev /i2c@d4033000
-   5 " linux,unit#" integer-property
+   new-device
+      fload ${BP}/dev/kb3930.fth
+   finish-device
 device-end
-dev /i2c@d4033800
-   " disabled" " status" string-property
-device-end
-devalias i2c4 /i2c@d4034000
-dev /i2c@d4034000
-   4 " linux,unit#" integer-property
-device-end
+dev /i2c@d4031000  " disabled" " status" string-property  device-end
+dev /i2c@d4034000  " disabled" " status" string-property  device-end
 
-[ifdef] soon-olpc-cl2  \ this breaks cl4-a1 boards, which ofw calls cl2.
-dev /i2c@d4033000  \ TWSI4
-new-device
-   h# 30 1 reg
-   " touchscreen" name
-   " raydium_ts" +compatible
-finish-device
-device-end
-[then]
+0 0  " "  " /" begin-package
+   " dvi-connector" name
+   " dvi-connector" +compatible
+   " /i2c@d4033800" encode-phandle " ddc-i2c-bus" property
+
+   \ XXX LR gpio-property
+   " /gpio" encode-phandle
+      dvi1-hpd-gpio# encode-int encode+
+      d# 1 encode-int encode+
+      " hpd-gpios" property
+
+   0 0 " digital" property
+   0 0 " analog" property
+
+   new-device
+      " port" device-name
+      new-device
+         " endpoint" device-name
+      finish-device
+   finish-device
+end-package
+
+" /dvi-connector/port/endpoint"   " /vga-dvi-encoder/ports/port@1/endpoint" link-endpoints
 
 fload ${BP}/cpu/arm/mmp2/uart.fth
+dev /uart@d4030000  " disabled" " status" string-property  device-end
+dev /uart@d4017000  " disabled" " status" string-property  device-end
+dev /uart@d4016000  " disabled" " status" string-property  device-end
 
-devalias com1 /uart@d4017000
-: com1  " com1"  ;
-' com1 is fallback-device   
+devalias serial2 /uart@d4018000
+: com1  " /uart@d4018000"  ;
+' com1 is fallback-device
 
 \needs md5init  fload ${BP}/ofw/ppp/md5.fth                \ MD5 hash
 
@@ -164,16 +163,28 @@ fload ${BP}/dev/olpc/spiflash/spiflash.fth \ SPI FLASH programming
 
 fload ${BP}/cpu/arm/mmp2/sspspi.fth        \ Synchronous Serial Port SPI interface
 
-\ Create the top-level device node to access the entire boot FLASH device
-0 0  " d4035000"  " /" begin-package
-   " flash" device-name
+fload ${BP}/cpu/arm/mmp2/ssp-spi.fth       \ SSP device nodes
+dev /spi@d4035000
+   " /gpio" encode-phandle
+      spi-flash-cs-gpio# encode-int encode+
+      d# 1 encode-int encode+
+      " cs-gpios" property
 
-   " /clocks" encode-phandle mmp2-ssp1-clk# encode-int encode+ " clocks" property
-   d# 0 " interrupts" integer-property
-   /rom value /device
-   my-address my-space h# 100 reg
-   fload ${BP}/dev/nonmmflash.fth
-end-package
+   \ Create the top-level device node to access the entire boot FLASH device
+   new-device
+      " flash" device-name
+      " jedec,spi-nor" +compatible
+      " winbond,w25q32" +compatible
+      d# 104000000 " spi-max-frequency" integer-property
+      0 0 " m25p,fast-read" property
+      0 " reg" integer-property
+      /rom value /device
+      fload ${BP}/dev/nonmmflash.fth
+   finish-device
+device-end
+dev /spi@d4036000  " disabled" " status" string-property  device-end
+dev /spi@d4037000  " disabled" " status" string-property  device-end
+dev /spi@d4039000  " disabled" " status" string-property  device-end
 
 \ Create a node below the top-level FLASH node to accessing the portion
 \ containing the dropin modules
@@ -186,33 +197,9 @@ end-package
 
 devalias dropins /dropins
 
-fload ${BP}/dev/olpc/confirm.fth             \ Selftest interaction modalities
-fload ${BP}/cpu/arm/olpc/getmfgdata.fth      \ Get manufacturing data
-fload ${BP}/cpu/x86/pc/olpc/mfgdata.fth      \ Manufacturing data
-fload ${BP}/cpu/x86/pc/olpc/mfgtree.fth      \ Manufacturing data in device tree
-
-fload ${BP}/dev/olpc/kb3700/eccmds.fth
-: dcon-off  ( -- )  dcon-ih  if  " dcon-off" $call-dcon  then  ;
-: stand-power-off  ( -- )  dcon-off ec-power-off  begin wfi again  ;
-' stand-power-off to power-off
-
-: olpc-reset-all  ( -- )  dcon-off ec-power-cycle  begin wfi again  ;
-' olpc-reset-all to reset-all
-stand-init:
-   ['] reset-all to bye
-;
-
-fload ${BP}/dev/olpc/kb3700/batstat.fth      \ Battery status reports
-fload ${BP}/cpu/arm/olpc/boardrev.fth        \ Board revision decoding
-
-false constant tethered?                     \ We only support reprogramming our own FLASH
-
-fload ${BP}/cpu/arm/olpc/bbedi.fth
-fload ${BP}/cpu/arm/olpc/edi.fth
-
 load-base constant flash-buf
 
-fload ${BP}/cpu/arm/olpc/ecflash.fth
+fload ${BP}/cpu/arm/mmp3/ariel/spiui.fth      \ User interface for SPI FLASH programming
 
 \ Reserve memory for the framebuffer
 0 0  " "  " /" begin-package
@@ -231,42 +218,6 @@ fload ${BP}/cpu/arm/olpc/ecflash.fth
    finish-device
 end-package
 
-: ec-spi-reprogrammed   ( -- )
-   use-edi-spi  spi-start
-   set-ec-reboot
-   unreset-8051
-   use-ssp-spi
-;
-
-: ignore-power-button  ( -- )
-   use-edi-spi
-   edi-open-active
-   ['] reset-8051 catch if
-      ['] reset-8051 catch if ." Write Protected EC" cr then
-   then
-   use-ssp-spi
-   ['] ec-spi-reprogrammed to spi-reprogrammed
-;
-: flash-vulnerable(  ( -- )
-   ignore-power-button
-   disable-interrupts
-;
-: )flash-vulnerable  ( -- )
-   enable-interrupts
-   d# 850 ms  \ allow time for 8051 to finish reset and power us down
-;
-
-fload ${BP}/dev/olpc/spiflash/spiui.fth      \ User interface for SPI FLASH programming
-\ fload ${BP}/dev/olpc/spiflash/recover.fth    \ XO-to-XO SPI FLASH recovery
-
-\ This must be defined after spiui.fth,
-\ otherwise spiui will choose some wrong code
-: rom-pa  ( -- adr )  mfg-data-buf mfg-data-offset -  ;  \ Fake out setwp.fth
-fload ${BP}/cpu/x86/pc/olpc/setwp.fth
-
-: ofw-fw-filename$  " disk:\boot\olpc.rom"  ;
-' ofw-fw-filename$ to fw-filename$
-
 0 0  " f0400000"  " /" begin-package
    " vmeta" name
    my-address my-space h# 400000 reg
@@ -278,54 +229,55 @@ fload ${BP}/cpu/x86/pc/olpc/setwp.fth
    d# 26 " interrupts" integer-property
 end-package
 
-fload ${BP}/cpu/arm/olpc/lcdcfg.fth
+fload ${BP}/cpu/arm/mmp3/ariel/lcdcfg.fth
 fload ${BP}/cpu/arm/olpc/lcd.fth
-
-[ifdef] use-small-font
-create cp881-16  " ${BP}/ofw/termemu/cp881-16.obf" $file,
-' cp881-16 to romfont
-[else]
-create 15x30pc  " ${BP}/ofw/termemu/15x30pc.psf" $file,
-' 15x30pc to romfont
-[then]
-
-[ifdef] mmp2
-fload ${BP}/cpu/arm/mmp2/galcore.fth
-[then]
-[ifdef] mmp3
 fload ${BP}/cpu/arm/mmp3/galcore.fth
-[then]
 
-0 0  " "  " /" begin-package
-   " fixedregulator0" device-name
-   " regulator-fixed" +compatible
-   " wlan" " regulator-name" string-property
-   d# 3300000 " regulator-min-microvolt" integer-property
-   d# 3300000 " regulator-max-microvolt" integer-property
-   0 0 encode-bytes " enable-active-high" property
-   " /gpio" encode-phandle en-wlan-pwr-gpio# encode-int encode+ d# 0 encode-int encode+ " gpio" property
+" /display/port/endpoint" " /vga-dvi-encoder/ports/port@0/endpoint" link-endpoints
+
+fload ${BP}/cpu/arm/mmp2/sdhci.fth
+dev /sdhci@d4281000
+   d# 50000000 " max-frequency" integer-property
+   d# 8 " bus-width" integer-property
+   0 0 " non-removable" property
+   0 0 " cap-mmc-highspeed" property
+device-end
+dev /sdhci@d4280000  " disabled" " status" string-property  device-end
+dev /sdhci@d4280800  " disabled" " status" string-property  device-end
+dev /sdhci@d4281800  " disabled" " status" string-property  device-end
+
+0 0 " " " /" begin-package
+   " spi" device-name
+   " spi-gpio" +compatible
+   1 " #address-cells" integer-property
+   0 " #size-cells" integer-property
+
+   : decode-unit  ( adr len -- phys )  $number  if  0  then  ;
+   : encode-unit  ( phys -- adr len )  (u.)  ;
+   : open  ( -- true )  true  ;
+   : close  ( -- )  ;
+
+   " /gpio" encode-phandle d# 55 encode-int encode+ d# 0 encode-int encode+ " gpio-sck" property
+   " /gpio" encode-phandle d# 57 encode-int encode+ d# 0 encode-int encode+ " gpio-miso" property
+   " /gpio" encode-phandle d# 58 encode-int encode+ d# 0 encode-int encode+ " gpio-mosi" property
+   " /gpio" encode-phandle d# 56 encode-int encode+ d# 0 encode-int encode+ " cs-gpios" property
+
+   new-device
+      " power-button" name
+      0 " reg" integer-property
+      " ene,kb3930-input" +compatible
+      " dell,wyse-ariel-ec-input" +compatible
+      d# 33000000 " spi-max-frequency" integer-property
+      " /gpio" encode-phandle " interrupt-parent" property
+      d# 60 encode-int d# 1 encode-int encode+ " interrupts" property
+   finish-device
 end-package
-
-0 0  " "  " /" begin-package
-   " pwrseq0" device-name
-   " mmc-pwrseq-sd8787" +compatible
-   " /gpio" encode-phandle wlan-pd-gpio# encode-int encode+ d# 0 encode-int encode+ " powerdown-gpios" property
-   " /gpio" encode-phandle wlan-reset-gpio# encode-int encode+ d# 0 encode-int encode+ " reset-gpios" property
-end-package
-
-fload ${BP}/cpu/arm/olpc/sdhci.fth
-
-devalias net /wlan
-
-fload ${BP}/dev/olpc/kb3700/spicmd.fth           \ EC SPI Command Protocol
-
-: wlan-reset  ( -- )  wlan-reset-gpio# gpio-clr  d# 20 ms  wlan-reset-gpio# gpio-set  ;
 
 fload ${BP}/ofw/core/fdt.fth
-[ifdef] mmp3
-   autoload: mmp3-gic-  defines: mmp3-gic
-   0 value no-mmp3-gic?
-[then]
+
+autoload: mmp3-gic-  defines: mmp3-gic
+0 value no-mmp3-gic?
+
 fload ${BP}/cpu/arm/linux.fth
 
 \ Create the alias unless it already exists
@@ -343,104 +295,38 @@ fload ${BP}/cpu/arm/linux.fth
 ;
 
 : report-disk  ( -- )
-   " disk"  " /usb/disk" ?report-device
+   " disk"  " /usb@d4208000/disk" ?report-device
 ;
 
 : report-keyboard  ( -- )
-   \ Prefer direct-attached
-   " usb-keyboard"  " /usb/keyboard" ?report-device  \ USB 2   (keyboard behind a hub)
+   " usb-keyboard"  " /usb@d4208000/keyboard" ?report-device
 ;
 
-\ If there is a USB ethernet adapter, use it as the default net device.
-\ We can't use ?report-device here because we already have net aliased
-\ to /wlan, and ?report-device won't override an existing alias.
 : report-net  ( -- )
-   " /usb/ethernet" 2dup locate-device  0=  if  ( name$ phandle )
-      drop                                      ( name$ )
-
-      \ Don't recreate the alias if it is already correct
-      " net" aliased?  if                       ( name$ existing-name$ )
-         2over $=  if                           ( name$ )
-            2drop exit                          ( -- )
-         then                                   ( name$ )
-      then                                      ( name$ )
-
-      " net" 2swap $devalias                    ( )
-   else                                         ( name$ )
-      2drop                                     ( )
-   then
+   " net"  " /usb@f0001000/ethernet" ?report-device
 ;
 
-[ifdef] mmp3
 fload ${BP}/cpu/arm/mmp3/usb2phy.fth
-[else]
-fload ${BP}/cpu/arm/marvell/utmiphy.fth
-[then]
 fload ${BP}/cpu/arm/olpc/usb.fth
-
-[ifdef] has-sp-kbd
-\ Load this after the USB driver so the ambiguous pathname /keyboard will
-\ resolve to /ap-sp/keyboard instead of /usb/keyboard after a USB keyboard
-\ has been attached.  Manufacturing test scripts need that behavior.
-fload ${BP}/cpu/arm/olpc/spcmd.fth   \ Security Processor communication protocol
-devalias keyboard /ap-sp/keyboard
-devalias mouse    /ap-sp/mouse
-[then]
-
-fload ${BP}/dev/olpc/gpio-keys.fth
-
-fload ${BP}/dev/olpc/mmp2camera/loadpkg.fth
+fload ${BP}/cpu/arm/mmp3/hsic.fth
 
 fload ${BP}/cpu/arm/firfilter.fth
 
 fload ${BP}/cpu/x86/adpcm.fth            \ ADPCM decoding
 d# 32 is playback-volume
 
-fload ${BP}/cpu/arm/olpc/sound.fth
-fload ${BP}/cpu/arm/olpc/rtc.fth
-stand-init: RTC
-   " /i2c@d4031000/rtc" open-dev  clock-node !
-   \ use RTC 32kHz clock as SoC external slow clock
-   h# 38 mpmu@ 1 or h# 38 mpmu!
-   \ if the clock valid tag is absent, clear the stop flag and add the tag
-   " cv" find-tag  0=  if
-      ." RTC oscillator stop flag one-off wipe (no cv tag)" cr
-      " unstop" clock-node @ $call-method
-      " "(00)" " cv" $add-tag \ a reboot expected here
-      begin wfi again
-   then
-   2drop
-   \ check the clock stop flag and reinit if necessary
-   " verify" clock-node @ $call-method
-;
-
 warning @ warning off
 : stand-init
    stand-init
    root-device
-      model-version$   2dup model     ( name$ )
-      " OLPC " encode-bytes  2swap encode-string  encode+  " banner-name" property
-      board-revision " board-revision-int" integer-property
-      platform$ encode-string  compatible$ encode-string encode+  " compatible" property
-      " SN" find-tag  if  ?-null  else  " Unknown"  then  " serial-number" string-property
-
-      ec-api-ver@ " ec-version" integer-property
-
-      ['] ec-name$  catch  0=  if  " ec-name" string-property  then
-      ['] ec-date$  catch  0=  if  " ec-date" string-property  then
-      ['] ec-user$  catch  0=  if  " ec-user" string-property  then
+      \ LR KEK!
       " /interrupt-controller@d4282000" encode-phandle " interrupt-parent" property
-\      " /interrupt-controller@d4282000"  find-package  if
-\         " interrupt-parent" integer-property
-\      then
       0 0 " ranges" property
    dend
 
    " /openprom" find-device
       flash-open  pad d# 16  2dup  signature-offset  flash-read  ( adr len )
       " model" string-property
-
-      " sourceurl" find-drop-in  if  " source-url" string-property  then
    dend
 ;
 
@@ -450,16 +336,8 @@ stand-init: More memory
    extra-mem-va /extra-mem add-memory
 ;
 
-[ifdef] mmp3
 fload ${BP}/cpu/arm/mmp3/thermal.fth
-[else]
-fload ${BP}/cpu/arm/mmp2/thermal.fth
-[then]
 fload ${BP}/cpu/arm/mmp2/fuse.fth
-[ifdef] bsl-uart-base
-fload ${BP}/cpu/arm/olpc/bsl.fth
-fload ${BP}/cpu/arm/olpc/nnflash.fth
-[then]
 
 [ifndef] virtual-mode
 warning off
@@ -477,66 +355,13 @@ warning on
 : olpc-mapped-limit  ( -- adr )  dma-mem-va >physical  ;
 ' olpc-mapped-limit to mapped-limit
 
+\ LR
 machine-type to arm-linux-machine-type
-
-\ Add a tag describing the linear frame buffer
-: mmp-fb-tag,  ( -- )
-   8 tag-l,
-   h# 54410008 tag-l, \ ATAG_VIDEOLFB
-   screen-wh over tag-w,            \ Width  ( width height )
-   dup tag-w,                       \ Height ( width height )
-   " depth" $call-screen dup tag-w, \ Depth  ( width height depth )
-   rot * 8 /  dup tag-w,            \ Pitch  ( height pitch )
-   fb-mem-va tag-l,                 \ Base address  ( height pitch )
-   *  tag-l,                        \ Total size - perhaps could be larger
-   \ The following assumes depth is 16 bpp
-   5     tag-b,       \ Red size
-   d# 11 tag-b,       \ Red position
-   6     tag-b,       \ Green size
-   d#  5 tag-b,       \ Green position
-   5     tag-b,       \ Blue size
-   d#  0 tag-b,       \ Blue position
-   0     tag-b,       \ Rsvd size
-   d# 16 tag-b,       \ Rsvd position
-;
-' mmp-fb-tag, to fb-tag,
-
-\ Add a tag describing the OFW callback
-3 constant MT_DEVICE_WC
-9 constant MT_MEMORY
-: (ofw-tag,)  ( -- )
-   4 2 * 3 +    tag-l,    \ size
-   h# 41000502  tag-l,    \ ATAG_MEM
-   cif-handler  tag-l,    \ Client interface handler callback address
-
-   \ Each of these groups is a struct map_desc as defined in arch/arm/include/asm/mach/
-   extra-mem-va dup                        tag-l,  \ VA of OFW memory
-   >physical pageshift rshift              tag-l,  \ Page frame number of OFW memory
-   fw-mem-va /fw-mem +  extra-mem-va -     tag-l,  \ Size of OFW memory
-   MT_MEMORY                               tag-l,  \ Mapping type of OFW memory
-
-   fb-mem-va dup                           tag-l,  \ VA of OFW Frame Buffer
-   >physical pageshift rshift              tag-l,  \ PA of OFW Frame Buffer
-   /fb-mem                                 tag-l,  \ Size of OFW memory
-   MT_DEVICE_WC                            tag-l,  \ Mapping type of OFW frame buffer
-;
-' (ofw-tag,) to ofw-tag,
 
 false to stand-init-debug?
 \ true to stand-init-debug?
 
-: sec-trg   ( -- )      sec-trg-gpio# gpio-set  ;  \ rising edge latches SPI_WP# low
-: sec-trg?  ( -- bit )  sec-trg-gpio# gpio-pin@  ;
-
-alias ec-indexed-io-off sec-trg
-alias ec-indexed-io-off? sec-trg?
-alias ec-ixio-reboot ec-power-cycle  \ clears latch, brings SPI_WP# high
-
-false value secure?
-
-: protect-fw  ( -- )  secure?  if  flash-protect sec-trg  then  ;
-
-fload ${BP}/cpu/x86/pc/olpc/countdwn.fth	\ Startup countdown
+fload ${BP}/ofw/core/countdwn.fth   \ Startup countdown
 
 hex
 : i-key-wait  ( ms -- pressed? )
@@ -560,23 +385,16 @@ warning @  warning off
    standalone?  if
       disable-interrupts
 \     d# 1000  i-key-wait  if
-      rotate-button? if
-         protect-fw
-         \ Make the frame buffer visible so CForth won't complain about OFW not starting
-         h# 8009.1100 h# 20.b190 io!
-         ." Interacting" cr  hex interact
-      then
+\ LR \       rotate-button? if
+\ LR \          \ Make the frame buffer visible so CForth won't complain about OFW not starting
+\ LR \          h# 8009.1100 h# 20.b190 io!
+\ LR \          ." Interacting" cr  hex interact
+\ LR \       then
       \ Turn on USB power here to overlap the time with other startup actions
-      usb-power-on
+\ LR \       usb-power-on
    then
 ;
 warning !
-
-: (.firmware)  ( -- )
-   ." Open Firmware  "  .built  cr
-   ." Copyright 2010 FirmWorks  All Rights Reserved" cr
-;
-' (.firmware) to .firmware
 
 \ Uninstall the diag menu from the general user interface vector
 \ so exiting from emacs doesn't invoke the diag menu.
@@ -603,37 +421,10 @@ true value text-on?
    then
 ;
 
-\ idt1338 rtc and ram address map
-\     00 -> 0f  rtc
-\     10 -> 3d  cmos
-\     3e -> 3f  driver magic number
-
-: >rtc  ( index -- rtc-address )  h# 3f and  h# 10 +  ;
-\ : rtc>  ( rtc-address -- index )  h# 10 - h# 80 or  ;
-
-: cmos@  ( index -- data )
-   >rtc " rtc@" clock-node @  ( index adr len ih )
-   ['] $call-method catch  if  4drop 0  then
-;
-: cmos!  ( data index -- )
-   >rtc " rtc!" clock-node @  ( data index adr len ih )
-   ['] $call-method catch  if  2drop 3drop  then
-;
-
-\ cmos address map
-\     80 audio volume
-\     81 audio volume
-\     82 alternate boot
-\     83 nfs rpc xid
-\     84 android vs linux dual boot state
-\     80 -> 8f (erased by driver when magic number wrong)
-\     85 -> ad (unallocated)
-
 fload ${BP}/cpu/arm/mmp2/clocks.fth
-fload ${BP}/cpu/arm/olpc/banner.fth
 
 : console-start  ( -- )
-   " /dcon" open-dev to dcon-ih
+   " /vga-dvi-encoder" open-dev to dcon-ih
    install-mux-io
    cursor-off
    true to text-on?
@@ -664,7 +455,6 @@ fload ${BP}/cpu/arm/olpc/banner.fth
    teardown-mux-io
    timers-off
    unload-crypto
-   close-ec
    \ Change the sleep state of EC_SPI_ACK from 1 (OFW value) to 0 (Linux value)
    d# 125 af@  h# 100 invert and  d# 125 af!
 ;
@@ -672,53 +462,39 @@ fload ${BP}/cpu/arm/olpc/banner.fth
 \ This must precede the loading of gui.fth, which chains from linux-hook's behavior
 ' quiesce to linux-hook
 
-[ifdef] olpc-cl4
-: linux-hook-emmc  ( -- )
-   [ ' linux-hook behavior compile, ]  \ Chain to old behavior
-   connect-emmc
-;
-' linux-hook-emmc to linux-hook
-[then]
+\ LR \ [ifdef] olpc-cl4
+\ LR \ : linux-hook-emmc  ( -- )
+\ LR \    [ ' linux-hook behavior compile, ]  \ Chain to old behavior
+\ LR \    connect-emmc
+\ LR \ ;
+\ LR \ ' linux-hook-emmc to linux-hook
+\ LR \ [then]
 
-fload ${BP}/cpu/arm/olpc/help.fth
-fload ${BP}/cpu/x86/pc/olpc/gui.fth
-fload ${BP}/cpu/x86/pc/olpc/via/mfgtest.fth
+\ LR \ fload ${BP}/cpu/arm/olpc/help.fth
+\ LR \ fload ${BP}/cpu/x86/pc/olpc/gui.fth
+\ LR \ fload ${BP}/cpu/x86/pc/olpc/via/mfgtest.fth
 fload ${BP}/cpu/x86/pc/olpc/strokes.fth
 fload ${BP}/cpu/x86/pc/olpc/plot.fth
 
 fload ${BP}/cpu/arm/mmp2/showirqs.fth
-fload ${BP}/cpu/arm/mmp2/wakeups.fth
+\ LR \ fload ${BP}/cpu/arm/mmp2/wakeups.fth
 
-[ifdef] mmp3
 fload ${BP}/cpu/arm/mmp3/dramrecal.fth
 : linux-hook-smp ( -- )
    [ ' linux-hook behavior compile, ]  \ Chain to old behavior
    enable-smp
 ;
 ' linux-hook-smp to linux-hook
-[then]
-[ifdef] mmp2
-fload ${BP}/cpu/arm/mmp2/dramrecal.fth
-[then]
-fload ${BP}/cpu/arm/olpc/suspend.fth
 
 code halt  ( -- )  wfi   c;
 
 fload ${BP}/cpu/arm/mmp2/rtc.fth       \ Internal RTC, used for wakeups
 
-fload ${BP}/cpu/x86/pc/olpc/via/factory.fth  \ Manufacturing tools
-
-fload ${BP}/cpu/arm/olpc/accelerometer.fth
-
-\ When reprogramming this machine's SPI FLASH, rebooting the EC is unnecessary 
-: no-kbc-reboot  ['] noop to spi-reprogrammed  ;
-: kbc-on ;
-
 \ Pseudo device that appears in the boot order before net booting
 0 0 " " " /" begin-package
    " prober" device-name
    : open
-      visible
+\ LR \       visible
       false
    ;
    : close ;
@@ -726,36 +502,11 @@ end-package
 
 fload ${BP}/cpu/x86/pc/olpc/gamekeynames.fth
 
-defer game-key@  ' 0 to game-key@   \ Implementation will be loaded later
-
-fload ${BP}/cpu/x86/pc/olpc/gamekeys.fth
-
 fload ${BP}/dev/logdev.fth
 
-fload ${BP}/cpu/x86/pc/olpc/disptest.fth
-
-[ifdef] has-sp-kbd
-dev /ap-sp/keyboard
-fload ${BP}/dev/olpc/keyboard/selftest.fth   \ Keyboard diagnostic
-device-end
-stand-init: Keyboard
-   " /ap-sp/keyboard" " set-keyboard-type" execute-device-method drop
-;
-dev /ap-sp/mouse
-fload ${BP}/dev/olpc/touchpad/syntpad.fth    \ Touchpad diagnostic
-device-end
-[then]
-
 fload ${BP}/cpu/x86/pc/olpc/gridmap.fth      \ Gridded display tools
+
 fload ${BP}/cpu/x86/pc/olpc/via/copynand.fth
-
-\- use-screen-kbd devalias keyboard /keyboard
-\+ use-screen-kbd fload ${BP}/dev/softkeyboard.fth             \ On-screen keyboard
-
-fload ${BP}/cpu/arm/olpc/roller.fth     \ Accelerometer test
-
-\ fload ${BP}/cpu/arm/olpc/pinch.fth  \ Touchscreen gestures
-\ : pinch  " pinch" screen-ih $call-method  ;
 
 : emacs  ( -- )
    false to already-go?
@@ -765,53 +516,16 @@ defer rm-go-hook  \ Not used, but makes security happy
 : tsc@  ( -- d.ticks )  timer0@ u>d  ;
 d# 6500 constant ms-factor
 
-: dimmer  ( -- )  dcon-ih  if  " dimmer" dcon-ih $call-method  then  ;
-: brighter  ( -- )  dcon-ih  if  " brighter" dcon-ih $call-method  then  ;
-
-fload ${BP}/cpu/x86/pc/olpc/sound.fth
-fload ${BP}/cpu/x86/pc/olpc/guardrtc.fth
-fload ${BP}/cpu/arm/olpc/chooseos.fth
-fload ${BP}/cpu/arm/olpc/bootmenu.fth
-fload ${BP}/cpu/x86/pc/olpc/security.fth
-
-stand-init: xid
-   h# 83 cmos@  dup 1+  h# 83 cmos!   ( n )
-   d# 24 lshift               ( new-xid )
-   " dev /obp-tftp  to rpc-xid  dend" evaluate
-;
-
-: pre-setup-for-linux  ( -- )
-   [ ' linux-pre-hook behavior compile, ]    \ Chain to old behavior
-   sound-end
-[ifdef] mmp3
-   \ XXX Delete this when Linux is ready to turn on the audio island
-   " audio-island-on" " /clocks" execute-device-method drop
-[then]
-;
-' pre-setup-for-linux to linux-pre-hook
-
-: show-temperature  ( -- )  space cpu-temperature .d  ;
 fload ${BP}/cpu/arm/bootascall.fth
-create use-thinmac
-fload ${BP}/cpu/x86/pc/olpc/wifichannel.fth
-fload ${BP}/cpu/x86/pc/olpc/via/nbtx.fth
-fload ${BP}/cpu/x86/pc/olpc/via/nbrx.fth
-fload ${BP}/cpu/x86/pc/olpc/via/blockfifo.fth
-
-alias fast-hash crypto-hash   \ fast-hash uses acceleration when available
-fload ${BP}/cpu/x86/pc/olpc/via/fsupdate.fth
-fload ${BP}/cpu/x86/pc/olpc/via/fsverify.fth
-fload ${BP}/cpu/x86/pc/olpc/via/fssave.fth
-fload ${BP}/cpu/x86/pc/olpc/via/fsload.fth
-devalias fsdisk int:0
-
-\ create pong-use-touchscreen
-\ fload ${BP}/ofw/gui/ofpong.fth
 
 d# 999 ' screen-#rows    set-config-int-default  \ Expand the terminal emulator to fill the screen
 d# 999 ' screen-#columns set-config-int-default  \ Expand the terminal emulator to fill the screen
 
-" u:\boot\olpc.fth ext:\boot\olpc.fth int:\boot\olpc.fth ext:\zimage /prober /usb/ethernet /wlan"
+fload ${BP}/ofw/gui/ofpong.fth
+fload ${BP}/cpu/x86/pc/olpc/life.fth
+
+\ LR \ " u:\boot\olpc.fth ext:\boot\olpc.fth int:\boot\olpc.fth ext:\zimage /prober /usb/ethernet /wlan"
+" disk:\boot\olpc.fth ext:\boot\olpc.fth int:\boot\olpc.fth ext:\zimage /prober /net"
    ' boot-device  set-config-string-default
 
 \needs ramdisk  " " d# 128 config-string ramdisk
@@ -846,7 +560,7 @@ fload ${BP}/forth/lib/lfsr.fth
 fload ${BP}/dev/hdaudio/noiseburst.fth  \ audio-test support package
 
 \ Because visible doesn't work sometimes when calling back from Linux
-dev /client-services  patch noop visible enter  dend
+\ LR \ dev /client-services  patch noop visible enter  dend
 
 : interpreter-init  ( -- )
    hex
@@ -862,220 +576,74 @@ dev /client-services  patch noop visible enter  dend
 ;
 
 
-: factory-test?  ( -- flag )
-   \ TS is the "test station" tag, whose value is set to "SHIP" at the
-   \ end of manufacturing test.
-   " TS" find-tag  if         ( adr len )
-      ?-null  " SHIP" $=  0=  ( in-factory? )
-   else                       ( )
-      \ Missing TS tag is treated as not in factory test
-      false
-   then                       ( in-factory? )
-;
-
-: ?sound  ( -- )
-   \ Suppress the jingle if a game key is pressed, because we don't want
-   \ the jingle to interfere with diags and stuff
-   -1 game-key?  if  exit  then
-   ['] sound catch drop
-;
-
-: ?games  ( -- )
-   rocker-right game-key?  if
-      protect-fw
-\      ['] pong guarded
-      power-off
-   then
-;
-: ?diags  ( -- )
-   rocker-left game-key?  if
-      protect-fw
-      text-on  ['] gamekey-auto-menu guarded
-      ." Tests complete - powering off" cr  d# 5000 ms  power-off
-   then
-;
-
-: ?fs-update  ( -- )
-   button-check button-x or  button-o or  button-square or   ( mask )
-   game-key-mask =  if  protect-fw try-fs-update  then
-;
-
-: ?boot-menu  ( -- )
-   rocker-down game-key?  if
-      protect-fw  visible  bootmenu  show-child invisible
-   then
-;
-
-[ifdef] use-screen-kbd
-0 value screen-kbd-ih
-: open-screen-keyboard  ( -- )
-   " /touchscreen/keyboard" open-dev to screen-kbd-ih
-   screen-kbd-ih  if
-      0 background  0 0  d# 1024 d# 400 set-text-region
-      screen-kbd-ih add-input
-   then
-;
-: close-screen-keyboard  ( -- )
-   screen-kbd-ih  if
-      screen-kbd-ih remove-input
-      screen-kbd-ih close-dev
-      0 to screen-kbd-ih
-   then
-;
-\ ' open-screen-keyboard to scroller-on
-\ ' close-screen-keyboard to scroller-off
-' close-screen-keyboard to save-scroller
-' open-screen-keyboard to restore-scroller
-
-: (go-hook)  ( -- )
-   [ ' go-hook behavior compile, ]
-   close-screen-keyboard
-;
-' (go-hook) to go-hook
-
-0 value screen-hot-ih
-: open-hotspot  ( -- )
-   " /touchscreen/hotspot" open-dev to screen-hot-ih
-   screen-hot-ih  if
-      d# 412 d# 284  d# 200 d# 200 " "(00)"  " set-hotspot" screen-hot-ih $call-method
-      screen-hot-ih add-input
-   then
-;
-: close-hotspot  ( -- )
-   screen-hot-ih  if
-      screen-hot-ih remove-input
-      screen-hot-ih close-dev
-      0 to screen-hot-ih
-   then
-;
-: ?text-on  ( -- )  key?  if  text-on visible  then  ;
-[then]
-
 : startup  ( -- )
    standalone?  0=  if  exit  then
 
-   block-exceptions
    no-page
-
-   ?factory-mode
 
    disable-user-aborts
    console-start
 
-   read-game-keys
-
-   factory-test? 0=  if  text-off  then
-
    " probe-" do-drop-in
 
-   [ifdef] unused-core-off  unused-core-off  [then]
-   show-child
-
-   update-ec-flash?  if
-      ['] ?enough-power catch  ?dup  if  ( error )
-         show-no-power
-         .error
-         ." Skipping EC reflash, not enough power" cr
-         d# 1000 ms
-      else
-         jots-ec  ['] jot to edi-progress
-         update-ec-flash
-      then
-   then
-[ifdef] update-nn-flash?
-   ['] update-nn-flash?  catch  ?dup if  ( error )
-      .error
-   else
-      if
-         ['] ?enough-power catch  ?dup  if  ( error )
-            show-no-power
-            .error
-            ." Skipping NN reflash, not enough power" cr
-            d# 1000 ms
-         else
-            jots-nn  ['] jot to bsl-progress
-            update-nn-flash
-         then
-      then
-   then
-[then]
-\+ use-screen-kbd  open-hotspot
+   unused-core-off
 
    install-alarm
-   ?sound
 
-   ?games
+   auto-banner?  if  banner  then
 
    ['] false to interrupt-auto-boot?
-\+ use-screen-kbd  ?text-on
-[ifdef] probe-usb
-   factory-test?  if  d# 1000 ms  then  \ Extra USB probe delay in the factory
    probe-usb
    report-disk
    report-keyboard
-[then]
-[ifdef] probe-image-sensor  probe-image-sensor  [then]
+
    " probe+" do-drop-in
 
    interpreter-init
 
-\+ use-screen-kbd  ?text-on
-   ?diags
-   ?fs-update
-   ?boot-menu
-
-   factory-test? 0=  if  secure-startup  then
-   unblock-exceptions
    ['] (interrupt-auto-boot?) to interrupt-auto-boot?
 
-\+ use-screen-kbd  ?text-on
    ?usb-keyboard
 
-   auto-banner?  if  banner  then
-
-\+ use-screen-kbd  ?text-on
    auto-boot
-\+ use-screen-kbd  close-hotspot
 
-\+ use-screen-kbd  open-screen-keyboard  banner
-
-   frozen? text-on? 0=  and  ( no-banner? )
-   unfreeze visible cursor-on ( no-banner? )
-   if  banner  then  \ Reissue banner if it was suppressed
-
-   blue-letters ." Type 'help' for more information." cancel
-   cr cr
+   cursor-on
 
    enable-user-aborts
-   stop-sound   
    quit
 ;
 
-[ifdef] olpc-cl4
-: deploy-android
-   " ia" find-tag  0=  if
-      " "(00)" " ia" $add-tag
-      begin wfi again
-   then
-   2drop
-;
-
-: deploy-linux
-   " ia" find-tag  if
-      2drop
-      " ia" $delete-tag
-      begin wfi again
-   then
-;
-[then]
-
 : enable-serial ;
 fload ${BP}/cpu/x86/pc/olpc/terminal.fth   \ Serial terminal emulator
-fload ${BP}/cpu/x86/pc/olpc/apt.fth        \ Common developer utilities
+
+\ Embedded Controller interface
+
+0 value ec-ih
+
+: ec-power-off  ( -- )  " power-off" ec-ih $call-method ;
+: ec-reboot     ( -- )  " reboot"    ec-ih $call-method ;
+' ec-power-off to power-off
+
+stand-init: Embedded Controller
+   " /embedded-controller" open-dev to ec-ih
+   ['] ec-reboot to bye
+   \ Start turn off amber, turn on green LED
+   " leds-start" ec-ih $call-method
+   \ Power on the USB ports, just in case EC had them disabled
+   " usb-ports-power-on" ec-ih $call-method
+;
+
+: (go-hook)  ( -- )
+   [ ' go-hook behavior compile, ]
+   \ Start flashing green upon booot
+   " leds-boot" ec-ih $call-method
+;
+' (go-hook) to go-hook
 
 \ LICENSE_BEGIN
 \ Copyright (c) 2010 FirmWorks
-\ 
+\ Copyright (c) 2020 Lubomir Rintel <lkundrak@v3.sk>
+\
 \ Permission is hereby granted, free of charge, to any person obtaining
 \ a copy of this software and associated documentation files (the
 \ "Software"), to deal in the Software without restriction, including

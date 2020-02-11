@@ -1,4 +1,4 @@
-ROMNAME=olpc
+ROMNAME=ofw
 
 BASEDIR= `(cd ../../../../..; pwd;)`
 
@@ -37,7 +37,7 @@ build:
 	@ln -sf ${BUILDSH} build
 
 clean:
-	rm -f *.dic *.log headers *~ *.elf *.di *.img builton.fth build *.rom *.version tags *.tag
+	rm -f *.dic *.log headers *~ *.elf *.di *.img builton.fth build *.rom tags *.tag
 
 clean-all: clean
 	@make -C ../../build clean

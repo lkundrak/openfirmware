@@ -1,4 +1,4 @@
-purpose: Build OFW Forth dictionary for OLPC XO-4
+purpose: Build OFW Forth dictionary for Dell Ariel (Wyse 3020)
 \ See license at end of file
 
 dictionary: ${BP}/cpu/arm/build/basefw.dic
@@ -9,5 +9,5 @@ build-now
 \ in config.fth will be tagged.
 " prefw.tag" r/w create-file drop  tag-file !
 
-fload ${BP}/cpu/arm/olpc/4.0/config.fth
+fload ${BP}/cpu/arm/mmp3/ariel/config.fth
 fload ${BP}/cpu/arm/olpc/prefw.fth
