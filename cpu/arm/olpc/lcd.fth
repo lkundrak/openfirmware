@@ -383,7 +383,9 @@ d# 256 constant /cursor
    ' display-selftest is-selftest
 
 [ifdef] mmp3
+[ifdef] hdmi-hp-det-gpio#
 fload ${BP}/cpu/arm/mmp3/hdmi.fth
+[then]
 [then]
 end-package
 
