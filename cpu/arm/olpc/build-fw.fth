@@ -811,6 +811,8 @@ devalias fsdisk int:0
 d# 999 ' screen-#rows    set-config-int-default  \ Expand the terminal emulator to fill the screen
 d# 999 ' screen-#columns set-config-int-default  \ Expand the terminal emulator to fill the screen
 
+fload ${BP}/cpu/x86/pc/olpc/life.fth
+
 " u:\boot\olpc.fth ext:\boot\olpc.fth int:\boot\olpc.fth ext:\zimage /prober /usb/ethernet /wlan"
    ' boot-device  set-config-string-default
 
