@@ -70,13 +70,20 @@ dev /timer                      h# 0d irqdef  dend
 dev /sspa                       h# 03 irqdef  dend
 dev /ap-sp                      h# 28 irqdef  dend
 dev /usb                        h# 2c irqdef  dend
-dev /ec-spi                     h# 14 irqdef  dend
+[ifdef] olpc
+   dev /flash                   h# 00 irqdef  dend
+   dev /ec-spi                  h# 14 irqdef  dend
+[else]
+   dev /spi@d4039000            h# 15 irqdef  dend
+   dev /spi@d4036000            h# 01 irqdef  dend
+   dev /spi@d4035000            h# 00 irqdef  dend
+   dev /spi@d4037000            h# 14 irqdef  dend
+[then]
 dev /sd/sdhci@d4280000          h# 27 irqdef  dend
 dev /sd/sdhci@d4281000          h# 35 irqdef  dend
 dev /sd/sdhci@d4280800          h# 34 irqdef  dend
 dev /display                    h# 29 irqdef  dend
 dev /vmeta                      h# 1a irqdef  dend
-dev /flash                      h# 00 irqdef  dend
 dev /uart@d4016000              h# 2e irqdef  dend
 dev /uart@d4030000              h# 1b irqdef  dend
 dev /uart@d4017000              h# 1c irqdef  dend
