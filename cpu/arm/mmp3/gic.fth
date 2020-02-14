@@ -69,7 +69,8 @@ dev /interrupt-controller@1d0   gicparent  dend
 dev /timer                      h# 0d irqdef  dend
 dev /sspa                       h# 03 irqdef  dend
 dev /ap-sp                      h# 28 irqdef  dend
-dev /usb                        h# 2c irqdef  dend
+dev /usb@d4208000               h# 2c irqdef  dend
+dev /usb@f0001000               h# 44 irqdef  dend
 [ifdef] olpc
    dev /flash                   h# 00 irqdef  dend
    dev /ec-spi                  h# 14 irqdef  dend
