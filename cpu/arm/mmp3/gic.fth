@@ -79,9 +79,12 @@ dev /usb                        h# 2c irqdef  dend
    dev /spi@d4035000            h# 00 irqdef  dend
    dev /spi@d4037000            h# 14 irqdef  dend
 [then]
-dev /sd/sdhci@d4280000          h# 27 irqdef  dend
-dev /sd/sdhci@d4281000          h# 35 irqdef  dend
-dev /sd/sdhci@d4280800          h# 34 irqdef  dend
+dev /sdhci@d4280000             h# 27 irqdef  dend
+dev /sdhci@d4280800             h# 34 irqdef  dend
+dev /sdhci@d4281000             h# 35 irqdef  dend
+[ifndef] olpc
+   dev /sdhci@d4281800          h# 36 irqdef  dend
+[then]
 dev /display                    h# 29 irqdef  dend
 dev /vmeta                      h# 1a irqdef  dend
 dev /uart@d4016000              h# 2e irqdef  dend
