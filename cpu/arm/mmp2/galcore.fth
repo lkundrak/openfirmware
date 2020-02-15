@@ -22,12 +22,12 @@ new-device
    " /clocks" encode-phandle mmp2-gpu-power-domain# encode-int encode+
    " power-domains" property
 
-   " /clocks" encode-phandle mmp2-gpu-gc-mux-clk# encode-int encode+
-   " /clocks" encode-phandle encode+ mmp2-gpu-bus-mux-clk# encode-int encode+
-   " assigned-clocks" property
-
-   " /clocks" encode-phandle mmp2-usb-pll-clk# encode-int encode+
-   " /clocks" encode-phandle encode+ mmp2-usb-pll-clk# encode-int encode+
-   " assigned-clock-parents" property
+\    " /clocks" encode-phandle mmp2-gpu-gc-mux-clk# encode-int encode+
+\    " /clocks" encode-phandle encode+ mmp2-gpu-bus-mux-clk# encode-int encode+
+\    " assigned-clocks" property
+\
+\    " /clocks" encode-phandle mmp2-usb-pll-clk# encode-int encode+
+\    " /clocks" encode-phandle encode+ mmp2-usb-pll-clk# encode-int encode+
+\    " assigned-clock-parents" property
 finish-device
 device-end
