@@ -37,9 +37,12 @@ defer usb-power-on  ' noop to usb-power-on
 defer reset-usb-hub ' noop to reset-usb-hub
 
 : init-usb  ( -- )
-   h# 9 h# 5c pmua!  \ Enable clock to USB block
+   h# 09 h# 5c pmua!  \ Enable clock to USB block
    reset-usb-hub
    " /usb2-phy" " init" execute-device-method drop
+
+   h# 1b h# f8 pmua!  \ Enable clock to HSIC1 block
+   " /hsic-phy@f0001800" " init" execute-device-method drop
 ;
 
 stand-init: Init USB Phy
