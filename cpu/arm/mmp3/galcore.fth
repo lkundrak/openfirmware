@@ -9,7 +9,7 @@ new-device
    " mrvl,galcore" +compatible
    gpu-pa /gpu reg
    d# 0 encode-int  2 encode-int encode+ " interrupts" property
-   " /interrupt-controller/interrupt-controller@1c0" encode-phandle " interrupt-parent" property
+   " /interrupt-controller@1c0" encode-phandle " interrupt-parent" property
 
    " galcore 3D" encode-string " galcore 2D" encode-string  encode+ " interrupt-names" property
 
