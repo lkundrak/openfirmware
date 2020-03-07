@@ -97,11 +97,7 @@ fload ${BP}/cpu/arm/mmp2/watchdog.fth	\ reset-all using watchdog timer
 fload ${BP}/cpu/arm/mmp2/twsi-i2c.fth
 dev /i2c@d4011000
    new-device
-      \ XXX cpu/arm/olpc/rtc.fth
-      " rtc" name
-      " idt,idt1338-rtc" +compatible
-      " dallas,ds1338" +compatible
-      h# 68 1 reg
+      fload ${BP}/dev/ds1338.fth
    finish-device
    new-device
       fload ${BP}/dev/88pm867.fth
@@ -314,6 +310,14 @@ fload ${BP}/cpu/arm/firfilter.fth
 
 fload ${BP}/cpu/x86/adpcm.fth            \ ADPCM decoding
 d# 32 is playback-volume
+
+stand-init: RTC
+   " /i2c@d4011000/rtc@68" open-dev  clock-node !
+   \ use RTC 32kHz clock as SoC external slow clock
+   h# 38 mpmu@ 1 or h# 38 mpmu!
+   \ check the clock stop flag and reinit if necessary
+   " verify" clock-node @ $call-method
+;
 
 warning @ warning off
 : stand-init
