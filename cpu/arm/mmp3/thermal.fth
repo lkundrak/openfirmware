@@ -10,7 +10,7 @@ purpose: Driver for the MMP3 thermal sensor
    " /interrupt-controller@188" encode-phandle " interrupt-parent" property
 
    " /clocks" encode-phandle
-      mmp3-thermal0-clk# encode-int encode+
+      mmp2-thermal0-clk# encode-int encode+
    " /clocks" encode-phandle encode+
       mmp3-thermal1-clk# encode-int encode+
    " /clocks" encode-phandle encode+
@@ -24,6 +24,36 @@ purpose: Driver for the MMP3 thermal sensor
    " THSENS4" encode-string encode+ " clock-names" property
 
 end-package
+
+dev /
+new-device
+   " thermal-zones" device-name
+   new-device
+      " cpu-thermal" device-name
+      d# 1000 " polling-delay" integer-property
+      0 " polling-delay-passive" integer-property
+      " /thermal" encode-phandle " thermal-sensors" property
+      new-device
+         " trips" device-name
+         new-device
+            " cpu-crit" device-name
+            d# 100500 " temperature" integer-property
+            0 " hysteresis" integer-property
+            " critical" " type" string-property
+         finish-device
+         new-device
+            " cpu-hot" device-name
+            d#  85000 " temperature" integer-property
+            0 " hysteresis" integer-property
+            " hot" " type" string-property
+         finish-device
+      finish-device
+      new-device
+         " cooling-maps" device-name
+      finish-device
+   finish-device
+finish-device
+device-end
 
 \ FIXME: characterise the observations using an IR thermometer,
 \ because the datasheet and the registers manual disagree on
