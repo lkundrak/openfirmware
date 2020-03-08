@@ -7,15 +7,17 @@ purpose: Display driver for OLPC ARM/MMP platforms
 
    " mrvl,pxa168fb" +compatible
    " marvell,armada-lcdc" +compatible
-   [ifdef] mmp3  " marvell,mmp3-lcd"   [else]  " marvell,mmp2-lcd"  [then]  +compatible
+[ifdef] mmp3
+   " marvell,mmp3-lcd" +compatible
+[else]
+   " marvell,mmp2-lcd" +compatible
+[then]
 
    " periph" encode-string
    " ext_ref_clk0" encode-string encode+
    " clock-names" property
 
-   " /clocks" encode-phandle
-      [ifdef] mmp3  mmp2-disp0-clk#  [else]  mmp2-disp0-lcdc-clk#  [then]
-      encode-int encode+
+   " /clocks" encode-phandle mmp2-disp0-lcdc-clk# encode-int encode+
    " /clocks" encode-phandle encode+ mmp2-disp0-clk# encode-int encode+
    " clocks" property
 
@@ -363,9 +365,7 @@ d# 256 constant /cursor
             " /display" encode-phandle " display" property
 
             " /clocks" encode-phandle mmp2-disp0-clk# encode-int encode+
-            " /clocks" encode-phandle encode+
-               [ifdef] mmp3  mmp2-disp0-clk#  [else]  mmp2-disp0-lcdc-clk#  [then]
-               encode-int encode+
+            " /clocks" encode-phandle encode+ mmp2-disp0-lcdc-clk# encode-int encode+
             " clocks" property
          finish-device
       device-end
