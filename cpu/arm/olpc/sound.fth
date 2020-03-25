@@ -71,6 +71,14 @@ new-device
    audio-sram-pa /audio-sram reg
 
    " marvell,mmp-asram" +compatible
+   " mmio-sram" +compatible
+   1 " #address-cells" integer-property
+   1 " #size-cells" integer-property
+
+   0 encode-int
+   audio-sram-pa encode-int encode+
+   /audio-sram encode-int encode+
+   " ranges" property
 finish-device
 
 new-device
