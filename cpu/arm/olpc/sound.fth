@@ -61,6 +61,13 @@ finish-device
 [then]
 
 new-device
+   " asram" device-name
+   audio-sram-pa /audio-sram reg
+
+   " marvell,mmp-asram" +compatible
+finish-device
+
+new-device
    " adma" device-name
    h# 800 +audio  h# 100 reg
    3 encode-int 2 encode-int encode+ " mmp-mav-dma-channels" property
@@ -100,13 +107,6 @@ new-device
    /audio-sram-mps encode-int encode+
    " marvell,buffer-sizes" property
 [then]
-finish-device
-
-new-device
-   " asram" device-name
-   audio-sram-pa /audio-sram reg
-
-   " marvell,mmp-asram" +compatible
 finish-device
 
 new-device
