@@ -9,6 +9,13 @@ new-device
    : close  ( -- )  ;
    : codec@  ( reg# -- w )  " reg-w@" $call-parent  ;
    : codec!  ( w reg# -- )  " reg-w!" $call-parent  ;
+
+   new-device
+      " port" device-name
+      new-device
+         " endpoint" device-name
+      finish-device
+   finish-device
 finish-device
 device-end
 
@@ -163,6 +170,17 @@ d# 2 " interrupts" integer-property
    " /adma@d42a0800" encode-phandle encode+  1 encode-int encode+
 " dmas" property
 " tx" encode-string " rx" encode-string encode+ " dma-names" property
+
+new-device
+   " port" device-name
+   new-device
+      " endpoint" device-name
+      " i2s" " dai-format" string-property
+      0 0 " bitclock-master" property
+      0 0 " frame-master" property
+      d# 256 " mclk-fs" integer-property
+   finish-device
+finish-device
 
 0 value sspa-base  \ E.g. h# 2a.0c00 +io
 0 value adma-base  \ E.g. h# 2a.0800 +io
@@ -1004,13 +1022,25 @@ device-end
 [ifdef] olpc-cl2
    " olpc,xo1.75-audio" +compatible
 [then]
+   : +string  encode-string encode+  ;
+
+   " audio-graph-card" +compatible
+   " OLPC XO" " label" string-property
+   0 0 encode-bytes
+      " Headphone Jack" +string " HPOL"     +string
+      " Headphone Jack" +string " HPOR"     +string
+      " MIC2"           +string " Mic Jack" +string
+   " routing" property
+   0 0 encode-bytes
+      " Headphone"  +string " Headphone Jack" +string
+      " Microphone" +string " Mic Jack"       +string
+   " widgets" property
+   " /audio/port" encode-phandle " dais" property
 
    \ The name that was hardcoded in the Linux driver was OLPC XO-1.75
    " OLPC XO" " model" string-property
 
    0 0 reg  \ So linux will assign a static device name
-
-   : +string  encode-string encode+  ;
 
    0 0 encode-bytes
       " Headphone Jack" +string " HPOL"     +string
@@ -1032,6 +1062,8 @@ device-end
    \ 0001 is ..I2S     - standard I2S bit positions
    h# 4101  " dai-format" encode-int
 end-package
+
+" /audio/port/endpoint"  " /audio-codec/port/endpoint" link-endpoints
 
 \ LICENSE_BEGIN
 \ Copyright (c) 2011 FirmWorks
