@@ -158,10 +158,6 @@ h# 240 constant audio-sram-pwr
 [then]
    0 audio-clk pmua!
 ;
-: audio-on/off  ( on? -- )
-   if  audio-island-on  else  audio-island-off  then
-;
-
 [ifdef] mmp3
 : ccic0-isp-island-off  ( -- )
    h# 600 h# 1fc pmua!  \ Isolation enabled
@@ -240,7 +236,6 @@ h# 240 constant audio-sram-pwr
    dup mmp2-sdh2-clk#   =  if drop  sdh2-clk  generic-on/off  exit then
    dup mmp2-sdh3-clk#   =  if drop  sdh3-clk  generic-on/off  exit then
    dup mmp2-ccic0-clk#  =  if drop  ccic0-on/off              exit then
-   dup mmp2-audio-clk#  =  if drop  audio-on/off              exit then
 
    " clock=" type .d " on=" type .d cr
    abort " Unimplemented clock"
