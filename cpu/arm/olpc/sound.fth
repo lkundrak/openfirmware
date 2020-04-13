@@ -84,6 +84,7 @@ new-device
    d# 48 " interrupts" integer-property
 [then]
 
+   " /asram" encode-phandle  " iram" property
    current-device  ( adma0-ph )
 finish-device
 
