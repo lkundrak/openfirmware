@@ -39,6 +39,8 @@ new-device
    h# 900 +audio  h# 100 reg
    5 encode-int 4 encode-int encode+ " mmp-mav-dma-channels" property
    " marvell,mmp-audio-dma" +compatible
+   " marvell,adma-1.0" +compatible
+   1 " #dma-cells" integer-property
 
 [ifdef] mmp3
    " /interrupt-controller@128" encode-phandle  " interrupt-parent" property
@@ -76,6 +78,8 @@ new-device
    h# 800 +audio  h# 100 reg
    3 encode-int 2 encode-int encode+ " mmp-mav-dma-channels" property
    " marvell,mmp-audio-dma" +compatible
+   " marvell,adma-1.0" +compatible
+   1 " #dma-cells" integer-property
 
 [ifdef] mmp3
    " /interrupt-controller@128" encode-phandle  " interrupt-parent" property
@@ -84,6 +88,7 @@ new-device
    d# 48 " interrupts" integer-property
 [then]
 
+   " /asram" encode-phandle  " asram" property
    " /asram" encode-phandle  " iram" property
    current-device  ( adma0-ph )
 finish-device
@@ -143,6 +148,12 @@ h# c00 +audio  h# 100 reg
 
 " /clocks" encode-phandle mmp2-audio-clk# encode-int encode+ " clocks" property
 d# 2 " interrupts" integer-property
+
+0 0 encode-bytes
+   " /adma@d42a0800" encode-phandle encode+  0 encode-int encode+
+   " /adma@d42a0800" encode-phandle encode+  1 encode-int encode+
+" dmas" property
+" tx" encode-string " rx" encode-string encode+ " dma-names" property
 
 0 value sspa-base  \ E.g. h# 2a.0c00 +io
 0 value adma-base  \ E.g. h# 2a.0800 +io
