@@ -139,8 +139,18 @@ new-device
 
    " unused" " status" string-property
 
-   " /clocks" encode-phandle mmp2-audio-clk# encode-int encode+ " clocks" property
    d# 3 " interrupts" integer-property
+   0 0 encode-bytes
+      " /clocks" encode-phandle encode+ mmp2-audio-clk# encode-int encode+
+      " /audio-clocks" encode-phandle encode+ mmp2-audio-sspa1-clk# encode-int encode+
+      " clocks" property
+   0 0 encode-bytes
+      " audio" encode-string encode+
+      " bitclk" encode-string encode+
+      " clock-names" property
+   " /clocks" encode-phandle mmp2-audio-pd# encode-int encode+
+      " power-domains" property
+   0 " #sound-dai-cells" integer-property
 finish-device
 
 new-device
@@ -153,9 +163,21 @@ h# c00 +audio encode-int h#  30 encode-int encode+
 " marvell,mmp-sspa-dai" +compatible
 [ifdef] mmp2 " marvell,mmp2-sspa-dai" +compatible  [then]
 [ifdef] mmp3 " marvell,mmp3-sspa-dai" +compatible  [then]
+" marvell,mmp-sspa" +compatible
 
-" /clocks" encode-phandle mmp2-audio-clk# encode-int encode+ " clocks" property
 d# 2 " interrupts" integer-property
+
+0 0 encode-bytes
+   " /clocks" encode-phandle encode+ mmp2-audio-clk# encode-int encode+
+   " /audio-clocks" encode-phandle encode+ mmp2-audio-sspa0-clk# encode-int encode+
+   " clocks" property
+0 0 encode-bytes
+   " audio" encode-string encode+
+   " bitclk" encode-string encode+
+   " clock-names" property
+" /clocks" encode-phandle mmp2-audio-pd# encode-int encode+
+   " power-domains" property
+0 " #sound-dai-cells" integer-property
 
 0 0 encode-bytes
    " /adma" encode-phandle encode+  0 encode-int encode+
@@ -172,7 +194,7 @@ d# 2 " interrupts" integer-property
 
 : audio-clock-off  ( -- )
    0 h# 38 sspa!
-   my-clock-off
+   " /clocks" " audio-island-off" execute-device-method drop
 ;
 : start-audio-pll  ( -- error? )
    \ For VCXO=26 MHz, OCLK=12.2880 MHz
@@ -194,7 +216,7 @@ d# 2 " interrupts" integer-property
 
 true value use-audio-pll?
 : audio-clock-on  ( -- error? )
-   my-clock-on
+   " /clocks" " audio-island-on" execute-device-method drop
 
    use-audio-pll?  if
       start-audio-pll  if  true exit  then
