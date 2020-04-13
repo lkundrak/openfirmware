@@ -153,6 +153,7 @@ h# c00 +audio  h# 100 reg
 " marvell,mmp-sspa-dai" +compatible
 [ifdef] mmp2 " marvell,mmp2-sspa-dai" +compatible  [then]
 [ifdef] mmp3 " marvell,mmp3-sspa-dai" +compatible  [then]
+" marvell,mmp-sspa" +compatible
 
 " /clocks" encode-phandle mmp2-audio-clk# encode-int encode+ " clocks" property
 d# 2 " interrupts" integer-property
