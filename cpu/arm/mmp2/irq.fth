@@ -98,6 +98,7 @@ d# 64 " mrvl,intc-nr-irqs" integer-property
    h# 184 h# 17c d# 55     4 make-mux-node \ intcmux55 - MMC5, res, res, HSI_INT_1
    h# 188 h# 180 d# 57 d# 20 make-mux-node \ intcmux57 - (various)
    h# 1d0 h# 1b8 d# 58     5 make-mux-node \ intcmux58 - MSP_CARD, KERMIT_INT_0, KERMIT_INT_1, res, HSI_INT_0
+   h# 128 h# 11c d# 48 d# 24 make-mux-node \ DMA mux - 16 PDMA, 4 ADMA, 2 VDMA channels
 [else]
    h# 150 h# 168     4     2 make-mux-node \ intcmux4 - USB_CHARGER, PMIC
    h# 154 h# 16c     5     2 make-mux-node \ intcmux5 - RTC_ALARM, RTC
@@ -107,7 +108,6 @@ d# 64 " mrvl,intc-nr-irqs" integer-property
    h# 160 h# 178 d# 51     2 make-mux-node \ intcmux51 - HSI_CAWAKE(1?), MIPI_HSI_INT1
    h# 188 h# 184 d# 55     2 make-mux-node \ intcmux55 - HSA_CAWAKE(0?), MIPI_HSI_INT0
 [then]
-   h# 128 h# 11c d# 48 d# 24 make-mux-node \ DMA mux - 16 PDMA, 4 ADMA, 2 VDMA channels
 
 end-package
 
