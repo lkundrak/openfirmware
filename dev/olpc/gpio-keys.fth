@@ -43,34 +43,6 @@ new-device
    " gpios" property
 finish-device
 
-new-device
-   " microphone_insert" device-name
-   " Microphone Plug" " label" string-property
-   5 " linux,input-type" integer-property  \ EV_SW
-   4 " linux,code" integer-property  \ SW_MICROPHONE_INSERT
-   d# 100 " debounce-interval" integer-property
-   0 0 encode-bytes " wakeup-source" property
-
-   " /gpio" encode-phandle
-   mic-plug-gpio# encode-int encode+
-   0 encode-int encode+  \ GPIO_ACTIVE_HIGH
-   " gpios" property
-finish-device
-
-new-device
-   " headphone_insert" device-name
-   " Headphone Plug" " label" string-property
-   5 " linux,input-type" integer-property  \ EV_SW
-   2 " linux,code" integer-property  \ SW_HEADPHONE_INSERT
-   d# 100 " debounce-interval" integer-property
-   0 0 encode-bytes " wakeup-source" property
-
-   " /gpio" encode-phandle
-   hp-plug-gpio# encode-int encode+
-   0 encode-int encode+  \ GPIO_ACTIVE_HIGH
-   " gpios" property
-finish-device
-
 end-package
 
 \ LICENSE_BEGIN
