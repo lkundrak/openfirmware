@@ -1090,6 +1090,16 @@ device-end
    " widgets" property
    " /audio/port" encode-phandle " dais" property
 
+   " /gpio" encode-phandle
+      mic-plug-gpio# encode-int encode+
+      0 encode-int encode+  \ GPIO_ACTIVE_HIGH
+      " mic-det-gpio" property
+
+   " /gpio" encode-phandle
+      hp-plug-gpio# encode-int encode+
+      0 encode-int encode+  \ GPIO_ACTIVE_HIGH
+      " hp-det-gpio" property
+
    \ The name that was hardcoded in the Linux driver was OLPC XO-1.75
    " OLPC XO" " model" string-property
 
