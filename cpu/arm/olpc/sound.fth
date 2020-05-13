@@ -1,3 +1,7 @@
+: +audio  ( offset -- address )
+   [ifdef] mmp3  h# c0ffd000  [else]  h# d42a0000  [then]  +
+;
+
 dev /i2c@d4011000
 new-device
    " audio-codec" name
@@ -11,10 +15,6 @@ new-device
    : codec!  ( w reg# -- )  " reg-w!" $call-parent  ;
 finish-device
 device-end
-
-: +audio  ( offset -- address )
-   [ifdef] mmp3  h# c0ffd000  [else]  h# d42a0000  [then]  +
-;
 
 \ "mav" stands for M(DMA), A(DMA), V(DMA), distinct from
 \ the 16 "peripheral" PDMA channels.
