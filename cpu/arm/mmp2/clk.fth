@@ -40,7 +40,7 @@ d# 125 constant mmp3-gpu-2d-clk#
 d# 126 constant mmp3-sdh4-clk#
 
 \ From include/dt-bindings/power/marvell,mmp2.h
-d# 0 constant mmp2-gpu-power-domain#
+d# 0 constant mmp2-gpu-pd#
 
 \ FIXME: Not official clock numbers!
 d# 10000 constant mmp2-audio-clk#
