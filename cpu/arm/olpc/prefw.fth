@@ -224,6 +224,7 @@ fload ${BP}/ofw/gui/loadmenu.fth
 
 \ Marvell MMP low-level stuff
 fload ${BP}/cpu/arm/mmp2/clk.fth
+fload ${BP}/cpu/arm/mmp2/audio-clk.fth
 fload ${BP}/cpu/arm/mmp2/irq.fth
 fload ${BP}/cpu/arm/mmp2/timer.fth
 fload ${BP}/cpu/arm/mmp2/gpio.fth
