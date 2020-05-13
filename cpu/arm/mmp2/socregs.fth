@@ -35,6 +35,10 @@ purpose: Register access words for MMP2 registers used by many functional units
 : apbc@  ( offset -- l )  +apbc io@  ;
 : apbc!  ( l offset -- )  +apbc io!  ;
 
+: +audio  ( offset -- address )
+   [ifdef] mmp3  h# c0ffd000  [else]  h# d42a0000  [then]  +
+;
+
 \ LICENSE_BEGIN
 \ Copyright (c) 2011 FirmWorks
 \ 

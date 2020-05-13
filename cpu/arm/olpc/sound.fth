@@ -12,10 +12,6 @@ new-device
 finish-device
 device-end
 
-: +audio  ( offset -- address )
-   [ifdef] mmp3  h# c0ffd000  [else]  h# d42a0000  [then]  +
-;
-
 \ "mav" stands for M(DMA), A(DMA), V(DMA), distinct from
 \ the 16 "peripheral" PDMA channels.
 \ The number space for mmp-mav-dma-channels is as follows:
