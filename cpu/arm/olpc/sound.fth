@@ -129,7 +129,9 @@ finish-device
 
 new-device
    " sspa" name
-   h# d00 +audio  h# 100 reg
+   h# d00 +audio encode-int h#  30 encode-int encode+
+      h# d80 +audio encode-int encode+ h# 30 encode-int encode+
+      " reg" property
 
    " marvell,mmp-sspa-dai" +compatible
 [ifdef] mmp2 " marvell,mmp2-sspa-dai" +compatible  [then]
@@ -144,7 +146,9 @@ finish-device
 new-device
 
 " audio" name
-h# c00 +audio  h# 100 reg
+h# c00 +audio encode-int h#  30 encode-int encode+
+   h# c80 +audio encode-int encode+ h# 30 encode-int encode+
+   " reg" property
 
 " marvell,mmp-sspa-dai" +compatible
 [ifdef] mmp2 " marvell,mmp2-sspa-dai" +compatible  [then]
