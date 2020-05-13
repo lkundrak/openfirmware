@@ -2,7 +2,10 @@
 purpose: MMP2 clock management
 
 \ From include/dt-bindings/clock/marvell,mmp2.h
+d#   2 constant mmp2-vctcxo-clk#
 d#  27 constant mmp2-usb-pll-clk#
+d#  31 constant mmp2-i2s0-clk#
+d#  32 constant mmp2-i2s1-clk#
 d#  60 constant mmp2-twsi0-clk#
 d#  61 constant mmp2-twsi1-clk#
 d#  62 constant mmp2-twsi2-clk#
@@ -38,13 +41,19 @@ d# 123 constant mmp2-gpu-bus-clk#
 d# 124 constant mmp2-gpu-3d-clk#
 d# 125 constant mmp3-gpu-2d-clk#
 d# 126 constant mmp3-sdh4-clk#
+d# 127 constant mmp2-audio-clk#
+
+\ From include/dt-bindings/clock/marvell,mmp2-audio.h
+d# 0 constant mmp2-audio-sys-clk#
+d# 1 constant mmp2-audio-sspa0-clk#
+d# 2 constant mmp2-audio-sspa1-clk#
 
 \ From include/dt-bindings/power/marvell,mmp2.h
 d# 0 constant mmp2-gpu-pd#
+d# 1 constant mmp2-audio-pd#
 d# 2 constant mmp3-camera-pd#
 
 \ FIXME: Not official clock numbers!
-d# 10000 constant mmp2-audio-clk#
 d# 10001 constant mmp2-vmeta-clk#
 
 0 0  " "  " /" begin-package
