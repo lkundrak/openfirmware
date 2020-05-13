@@ -266,4 +266,14 @@ dev /display@d420b000/port
    h# 20001102 " clock-divider-regval" integer-property
 dend
 
+dev /audio
+   " reg" delete-property
+   h# c00 +audio  h# 100 reg
+dend
+
+dev /sspa
+   " reg" delete-property
+   h# d00 +audio  h# 100 reg
+dend
+
 : olpc-compat  ;
