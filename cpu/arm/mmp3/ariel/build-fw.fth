@@ -573,6 +573,11 @@ stand-init: Embedded Controller
 ;
 ' (go-hook) to go-hook
 
+\ These allow booting Fedora XO images
+: show-sad ;
+: visible ;
+: unfreeze ;
+
 \ LICENSE_BEGIN
 \ Copyright (c) 2010 FirmWorks
 \ Copyright (c) 2020 Lubomir Rintel <lkundrak@v3.sk>
