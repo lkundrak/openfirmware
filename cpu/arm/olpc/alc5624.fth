@@ -1,6 +1,24 @@
 \ See license at end of file
 purpose: Driver for Realtek ALC5624 audio CODEC chip
 
+" audio-codec" name
+" realtek,alc5624" +compatible
+h# 1a 1 reg
+" rt5624-hifi" " dai-name" string-property  \ snd_soc_dai_link.codec_dai_name
+: open  ( -- true )     my-unit " set-address" $call-parent  true  ;
+: close  ( -- )  ;
+: codec@  ( reg# -- w )  " reg-w@" $call-parent  ;
+: codec!  ( w reg# -- )  " reg-w!" $call-parent  ;
+
+: codec-set  ( bitmask reg# -- )  tuck codec@  or  swap codec!  ;
+: codec-clr  ( bitmask reg# -- )  tuck codec@  swap invert and  swap codec!  ;
+: codec-field  ( value-mask field-mask reg# -- )
+   >r r@ codec@      ( value-mask field-mask value r: reg# )
+   swap invert and   ( value-mask masked-value r: reg# )
+   or                ( final-value  r: reg# )
+   r> codec!         ( )
+;
+
 : codec-bias-off  ( -- )
    h# 8080 h# 02 codec-set
    h# 8080 h# 04 codec-set
@@ -168,6 +186,17 @@ false value external-mic?
    endcase   ( reg62val2 reg60val )
    h# 60 codec!  h# 62 codec!
 ;
+
+new-device
+   " port" device-name
+   new-device
+      " endpoint" device-name
+      d# 256 " mclk-fs" integer-property
+      " /audio-clocks" encode-phandle
+         mmp2-audio-sys-clk# encode-int encode+
+         " clocks" property
+   finish-device
+finish-device
 
 \ LICENSE_BEGIN
 \ Copyright (c) 2011 FirmWorks
