@@ -14,20 +14,42 @@ purpose: Display driver for OLPC ARM/MMP platforms
 [then]
 
    " periph" encode-string
-   " ext_ref_clk0" encode-string encode+
+   " disp0" encode-string encode+
+   " vctcxo" encode-string encode+
    " clock-names" property
 
    " /clocks" encode-phandle mmp2-disp0-lcdc-clk# encode-int encode+
    " /clocks" encode-phandle encode+ mmp2-disp0-clk# encode-int encode+
+   " /clocks" encode-phandle encode+ mmp2-vctcxo-clk# encode-int encode+
    " clocks" property
 
    d# 41 " interrupts" integer-property
 
    new-device
-      " port" device-name
+      " ports" device-name
+      1 " #address-cells" integer-property
+      0 " #size-cells" integer-property
+
+      : decode-unit  ( adr len -- phys )  $number  if  0  then  ;
+      : encode-unit  ( phys -- adr len )  (u.)  ;
+      : open  ( -- true )  true  ;
+      : close  ( -- )  ;
+
       new-device
-         " endpoint" device-name
-         bpp d# 24 <  if  d# 18 " bus-width" integer-property  then
+         " port" device-name
+         0 " reg" integer-property
+         new-device
+            " endpoint" device-name
+            bpp d# 24 <  if  d# 18 " bus-width" integer-property  then
+         finish-device
+      finish-device
+
+      new-device
+         " port" device-name
+         1 " reg" integer-property
+         new-device
+            " endpoint" device-name
+         finish-device
       finish-device
    finish-device
 

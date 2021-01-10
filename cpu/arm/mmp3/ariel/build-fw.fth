@@ -116,7 +116,7 @@ device-end
 dev /i2c@d4031000  " disabled" " status" string-property  device-end
 
 0 0  " "  " /" begin-package
-   " dvi-connector" name
+   " dvi-connector-0" name
    " dvi-connector" +compatible
    " /i2c@d4033800" encode-phandle " ddc-i2c-bus" property
 
@@ -136,7 +136,25 @@ dev /i2c@d4031000  " disabled" " status" string-property  device-end
    finish-device
 end-package
 
-" /dvi-connector/port/endpoint"  " /vga-dvi-encoder/ports/port@1/endpoint" link-endpoints
+0 0  " "  " /" begin-package
+   " dvi-connector-1" name
+   " dvi-connector" +compatible
+   " /i2c@d4034000" encode-phandle " ddc-i2c-bus" property
+
+   " /gpio" encode-phandle
+      hdmi-hp-det-gpio# encode-int encode+
+      d# 1 encode-int encode+
+      " hpd-gpios" property
+
+   0 0 " digital" property
+
+   new-device
+      " port" device-name
+      new-device
+         " endpoint" device-name
+      finish-device
+   finish-device
+end-package
 
 fload ${BP}/cpu/arm/mmp2/uart.fth
 dev /uart@d4030000  " disabled" " status" string-property  device-end
@@ -226,7 +244,9 @@ end-package
 fload ${BP}/cpu/arm/mmp3/ariel/lcdcfg.fth
 fload ${BP}/cpu/arm/olpc/lcd.fth
 
-" /display/port/endpoint" " /vga-dvi-encoder/ports/port@0/endpoint" link-endpoints
+" /display/ports/port@0/endpoint" " /vga-dvi-encoder/ports/port@0/endpoint" link-endpoints
+" /vga-dvi-encoder/ports/port@1/endpoint" " /dvi-connector-0/port/endpoint" link-endpoints
+" /display/ports/port@1/endpoint" " /dvi-connector-1/port/endpoint" link-endpoints
 
 fload ${BP}/cpu/arm/mmp3/galcore.fth
 

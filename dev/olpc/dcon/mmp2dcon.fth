@@ -349,7 +349,7 @@ h# f value default-bright
 
 end-package
 
-" /display/port/endpoint" " /dcon/ports/port@0/endpoint" link-endpoints
+" /display/ports/port@0/endpoint" " /dcon/ports/port@0/endpoint" link-endpoints
 " /panel/port/endpoint"   " /dcon/ports/port@1/endpoint" link-endpoints
 
 stand-init:
