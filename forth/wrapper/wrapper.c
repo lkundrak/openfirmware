@@ -756,16 +756,16 @@ set_bp(void)
 	pret = getcwd(here, MAXPATHLEN);
 	pret = getcwd(bpval, MAXPATHLEN);
 	while (1) {
-                // If HOSTDIR is set in environment, prefer it.
-                if ((pret = getenv("HOSTDIR")) != NULL) {
-                  strcpy(hostdirval, pret);
-                } else {
+		// If HOSTDIR is set in environment, prefer it.
+		if ((pret = getenv("HOSTDIR")) != NULL) {
+			strcpy(hostdirval, pret);
+		} else if (access(host_cpu, F_OK) == 0) {
 			pret = getcwd(hostdirval, MAXPATHLEN);
 			strcat(hostdirval, "/");
 			strcat(hostdirval, host_cpu);
 			strcat(hostdirval, "/");
 			strcat(hostdirval, host_os);
-                }
+		}
 		if (access("ofw", F_OK) == 0)
 			break;
 		ret = chdir("..");
