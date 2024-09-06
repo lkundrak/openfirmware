@@ -15,6 +15,7 @@ warning !
 : \t8-t  ( -- ) [compile] \  ; immediate
 : \t16-t ( -- ) [compile] \  ; immediate
 : \t32-t ( -- )              ; immediate
+: \t64-t ( -- ) [compile] \  ; immediate
 : \tagvoc-t ( -- )                 ; immediate
 : \nottagvoc-t ( -- ) [compile] \  ; immediate      
 \ LICENSE_BEGIN
