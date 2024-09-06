@@ -50,7 +50,7 @@ xinflate.o: xinflate.lo
 	${LD} -melf_i386 -T inflate.ld $< -o $@
 
 ../build/inflate.bin: xinflate.o
-	objcopy -O binary $< $@
+	objcopy -O binary -j text_inflate -j .text_spare $< $@
 
 %.o: ${WRDIR}/%.c
 	${CC} -c ${OPT} ${CFLAGS} $< -o $@
