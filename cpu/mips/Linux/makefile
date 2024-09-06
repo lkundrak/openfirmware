@@ -24,7 +24,7 @@ wrapper.o: ${BP}/forth/wrapper/wrapper.c
 	${CC} ${CFLAGS} -c ${BP}/forth/wrapper/wrapper.c
 
 xinflate.lo: ${ZIPDIR}/inflate.c
-	${CC} -c ${CFLAGS} -mabi=32 -mfp32 -mips1 -EL -O $< -o $@
+	${CC} -c ${CFLAGS} -mno-shared -mabi=32 -mfp32 -mips1 -EL -O $< -o $@
 
 xinflate.o: xinflate.lo
 	${LD} -T inflate.ld -EL -G0 -N $< -o $@
