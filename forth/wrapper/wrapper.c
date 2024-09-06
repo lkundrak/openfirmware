@@ -1066,39 +1066,27 @@ main(int argc, char **argv
 #  endif
 # endif
 
-#if defined(__linux__) && defined(ARM)
-	/* This is a hack to make sure loadaddr is page-aligned for mprotect() in s_flushcache() */
-	loadaddr = (char *)sbrk(memsize);
-#elif defined(ARM64SIM)
-	loadaddr = m_alloc_dictionary(memsize);
-#else
-	loadaddr = (char *)m_alloc(memsize);
-#endif
-	if ((loadaddr == (char *) -1) || (loadaddr == (char *) 0)) {
-		error("forth: Can't get memory","");
-		exit(1);
-	}
-
-	/* Align loadaddr to 16-byte boundary; some mallocs align less stringently */
-	loadaddr = (char *)(((long)loadaddr + 15) & ~15);
-
-	memsize -= 16;  // Leave room for initial stack pointer
-	(void)memcpy(loadaddr, (char *)&header, sizeof(header));
-
-#if !defined(ARMSIM) && !defined(ARM64SIM)
-        if (mprotect(loadaddr, memsize, PROT_READ | PROT_WRITE | PROT_EXEC) != 0) {
-                perror("forth: mprotect");
-                exit(1);
-        }
-#endif
-
 #if defined(ARM64SIM)
+	loadaddr = m_alloc_dictionary(memsize);
+
 	// Don't preserve the header for ARM64SIM.
 	char *adjusted_loadaddr = loadaddr;
 #else
+	loadaddr = mmap(NULL, memsize,
+		PROT_READ | PROT_WRITE | PROT_EXEC,
+		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if (loadaddr == MAP_FAILED) {
+		perror("forth: Can't get memory");
+		exit(1);
+	}
+
 	// Leave the header intact and load the rest of the image above it.
+	(void)memcpy(loadaddr, (char *)&header, sizeof(header));
 	char *adjusted_loadaddr = loadaddr + sizeof(header);
 #endif
+
+	memsize -= 16;  // Leave room for initial stack pointer
+
 	if( f_read(f, adjusted_loadaddr, imagesize) != imagesize ) {
 		error("forth: The dictionary file is too short","");
 		exit(1);
