@@ -34,6 +34,7 @@ true value assembler?                    \ False to discard assembler after comp
 resident
 
 fload ${BP}/forth/lib/loadcomm.fth       \ CPU-independent Forth tools
+fload ${BP}/cpu/arm64/1x0.fth
 fload ${BP}/cpu/arm64/utils.fth          \ 
 fload ${BP}/cpu/arm64/loadmach.fth       \ CPU and OS-specific extensions
 
