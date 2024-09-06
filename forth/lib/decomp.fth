@@ -37,7 +37,7 @@
       else
          false
       then  or
-      swap create-cf?  or  \ there could be more cf tests here
+      \ swap create-cf?  or  \ there could be more cf tests here
    else
       drop false
    then
