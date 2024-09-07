@@ -13,12 +13,36 @@ accesses to 0x14000000. The console muxes the serial port, i8082 keyboard
 and VGA screen in text mode (the emulated graphics card is a very basic
 VGA, framebuffer is not available).
 
-Linux (as of 5.9) doesn't really support the machine mainly because drivers
-for the original PC hardware are about the oldest ones and many don't bind
-to device tree nodes. If you still want to try it, run:
+Legacy warning
+==============
+
+Note that Linux dropped support for the "mips" machine long ago and (as of
+5.9) the generic device tree doesn't help because most drivers it would
+utilize don't bind to device tree nodes (mainly because they are some of
+the oldest ones).
+
+QEMU followed the suit and dropped the machine in 5.1 (around 2020 or so).
+
+Building on Fedora
+==================
+
+  # dnf install /usr/bin/mips64-linux-gnu-gcc /usr/lib/libc.so
+  $ make -C cpu/mips/qemu/build/
+
+Building on Debian
+==================
+
+  # apt install gcc-mips64el-linux-gnuabi64 gcc-multilib
+  $ make CROSS=mips64el-linux-gnuabi64- -C cpu/mips/qemu/build/
+
+Running
+=======
+
+If you still want to try it (with QEMU 5.1 or older), run:
 
   $ qemu-system-mips64el -cpu MIPS64R2-generic -M mips \
       -bios mipsel_bios.bin -serial stdio
 
+---
 Lubomir Rintel
 2020-09-24
