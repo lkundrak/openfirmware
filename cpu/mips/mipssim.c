@@ -47,7 +47,7 @@ static uint32_t Hi, Lo;
 			 (0x00008000 & INSN ? 0xffff0000 : 0))
 #define	ZeroExtImm	 (0x0000ffff & INSN)
 
-const char * const rn[] = {
+static const char * const rn[] = {
 	"zero", "at", "v0", "v1", "a0", "a1", "a2", "a3",
 	"t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
 	"s0", "a1", "s2", "s3", "s4", "s5", "s6", "s7",
