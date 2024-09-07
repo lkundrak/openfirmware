@@ -30,7 +30,7 @@ uint32_t trace;
 static uint32_t R[32];
 static uint32_t oPC, PC, nPC;
 static uint32_t Hi, Lo;
-#define INSN (*(uint32_t *)oPC)
+#define INSN (*(uint32_t *)(mem + oPC))
 
 #define	rs		((0x03e00000 & INSN) >> 21)
 #define	rt		((0x001f0000 & INSN) >> 16)
@@ -72,7 +72,7 @@ dumpregs(void)
 }
 
 static void
-trace_insn(const char *fmt, ...)
+trace_insn(uint8_t *mem, const char *fmt, ...)
 {
 	va_list ap;
 
@@ -96,7 +96,8 @@ static void
 quit_handler(int signum)
 {
 	trace = 3;
-	trace_insn("(fatal signal received)\n");
+	fprintf(stderr, "(fatal signal received)\n");
+	dumpregs();
 	restoremode();
 	exit(1);
 }
@@ -134,29 +135,30 @@ next:
 	nPC += 4;
 	R[0] = 0;
 
+fprintf(stderr, "=============\n");
 	switch (INSN) {
 	case 0x00000000:
 		/* Just a sll zero, zero, 0,
 		 * but this way we get nicer traces */
-		trace_insn("nop");
+		trace_insn(mem, "nop");
 		goto next;
 	}
 
 	switch (INSN & 0xffff07ff) {
 	case 0x00000010:
-		trace_insn("mfhi %s", rn[rd]);
+		trace_insn(mem, "mfhi %s", rn[rd]);
 		R[rd] = Hi;
 		goto next;
 
 	case 0x00000012:
-		trace_insn("mflo %s", rn[rd]);
+		trace_insn(mem, "mflo %s", rn[rd]);
 		R[rd] = Lo;
 		goto next;
 	}
 
 	switch (INSN & 0xfc00003f) {
 	case 0x0000000c:
-		trace_insn("syscall %d", syscall_nr);
+		trace_insn(mem, "syscall %d", syscall_nr);
 
 		if (syscall_nr == 0) {
 			R[2] = (*(long (*) ())(*(long *)(syscall_vec + R[20]))) (R[4], R[5], R[6], R[7]);
@@ -168,50 +170,50 @@ next:
 		}
 
 		trace = 2;
-		trace_insn("Unhandled syscall: %d\n", syscall_nr);
+		trace_insn(mem, "Unhandled syscall: %d\n", syscall_nr);
 		return;
 
 	case 0x00000004:
-		trace_insn("sllv %s, %s, %s", rn[rd], rn[rt], rn[rs]);
+		trace_insn(mem, "sllv %s, %s, %s", rn[rd], rn[rt], rn[rs]);
 		R[rd] = R[rt] << R[rs];
 		goto next;
 
 	case 0x00000026:
-		trace_insn("xor %s, %s, %s", rn[rd], rn[rs], rn[rt]);
+		trace_insn(mem, "xor %s, %s, %s", rn[rd], rn[rs], rn[rt]);
 		R[rd] = R[rs] ^ R[rt];
 		goto next;
 
 	case 0x00000000:
-		trace_insn("sll %s, %s, %d", rn[rd], rn[rt], shamt);
+		trace_insn(mem, "sll %s, %s, %d", rn[rd], rn[rt], shamt);
 		R[rd] = R[rt] << shamt;
 		goto next;
 
 	case 0x00000002:
-		trace_insn("srl %s, %s, %d", rn[rd], rn[rt], shamt);
+		trace_insn(mem, "srl %s, %s, %d", rn[rd], rn[rt], shamt);
 		R[rd] = R[rt] >> shamt;
 		goto next;
 
 	case 0x00000003:
-		trace_insn("sra %s, %s, %d", rn[rd], rn[rt], shamt);
+		trace_insn(mem, "sra %s, %s, %d", rn[rd], rn[rt], shamt);
 		R[rd] = (int32_t)R[rt] >> shamt;
 		goto next;
 
 	case 0x00000007:
-		trace_insn("srav %s, %s, %s", rn[rd], rn[rt], rn[rs]);
+		trace_insn(mem, "srav %s, %s, %s", rn[rd], rn[rt], rn[rs]);
 		R[rd] = (int32_t)R[rt] >> R[rs];
 		goto next;
 	}
 
 	switch (INSN & 0xfc1fffff) {
 	case 0x00000008:
-		trace_insn("jr %s", rn[rs]);
+		trace_insn(mem, "jr %s", rn[rs]);
 		nPC = R[rs];
 		goto next;
 	}
 
 	switch (INSN & 0xfc00ffff) {
 	case 0x00000018:
-		trace_insn("mult %s, %s", rn[rs], rn[rt]);
+		trace_insn(mem, "mult %s, %s", rn[rs], rn[rt]);
 		{
 			uint64_t prod = R[rs] * R[rt];
 			Lo = prod & 0xffffffff;
@@ -220,7 +222,7 @@ next:
 		goto next;
 
 	case 0x00000019:
-		trace_insn("multu %s, %s", rn[rs], rn[rt]);
+		trace_insn(mem, "multu %s, %s", rn[rs], rn[rt]);
 		{
 			uint64_t prod = R[rs] * R[rt];
 			Lo = prod & 0xffffffff;
@@ -229,13 +231,13 @@ next:
 		goto next;
 
 	case 0x0000001a:
-		trace_insn("div %s, %s", rn[rs], rn[rt]);
+		trace_insn(mem, "div %s, %s", rn[rs], rn[rt]);
 		Lo = (int32_t)R[rs] / (int32_t)R[rt];
 		Hi = (int32_t)R[rs] % (int32_t)R[rt];
 		goto next;
 
 	case 0x0000001b:
-		trace_insn("divu %s, %s", rn[rs], rn[rt]);
+		trace_insn(mem, "divu %s, %s", rn[rs], rn[rt]);
 		Lo = R[rs] / R[rt];
 		Hi = R[rs] % R[rt];
 		goto next;
@@ -243,42 +245,42 @@ next:
 
 	switch (INSN & 0xfc0007ff) {
 	case 0x00000006:
-		trace_insn("srlv %s, %s, %s", rn[rd], rn[rt], rn[rs]);
+		trace_insn(mem, "srlv %s, %s, %s", rn[rd], rn[rt], rn[rs]);
 		R[rd] = R[rt] >> R[rs];
 		goto next;
 
 	case 0x00000020:
-		trace_insn("add %s, %s, %s", rn[rd], rn[rs], rn[rt]);
+		trace_insn(mem, "add %s, %s, %s", rn[rd], rn[rs], rn[rt]);
 		R[rd] = (int32_t)R[rs] + (int32_t)R[rt];
 		goto next;
 
 	case 0x00000021:
-		trace_insn("addu %s, %s, %s", rn[rd], rn[rs], rn[rt]);
+		trace_insn(mem, "addu %s, %s, %s", rn[rd], rn[rs], rn[rt]);
 		R[rd] = R[rs] + R[rt];
 		goto next;
 
 	case 0x00000022:
-		trace_insn("sub %s, %s, %s", rn[rd], rn[rs], rn[rt]);
+		trace_insn(mem, "sub %s, %s, %s", rn[rd], rn[rs], rn[rt]);
 		R[rd] = (int32_t)R[rs] - (int32_t)R[rt];
 		goto next;
 
 	case 0x00000023:
-		trace_insn("subu %s, %s, %s", rn[rd], rn[rs], rn[rt]);
+		trace_insn(mem, "subu %s, %s, %s", rn[rd], rn[rs], rn[rt]);
 		R[rd] = R[rs] - R[rt];
 		goto next;
 
 	case 0x00000024:
-		trace_insn("and %s, %s, %s", rn[rd], rn[rs], rn[rt]);
+		trace_insn(mem, "and %s, %s, %s", rn[rd], rn[rs], rn[rt]);
 		R[rd] = R[rs] & R[rt];
 		goto next;
 
 	case 0x00000025:
-		trace_insn("or %s, %s, %s", rn[rd], rn[rs], rn[rt]);
+		trace_insn(mem, "or %s, %s, %s", rn[rd], rn[rs], rn[rt]);
 		R[rd] = R[rs] | R[rt];
 		goto next;
 
 	case 0x0000002a:
-		trace_insn("slt %s, %s, %s", rn[rd], rn[rs], rn[rt]);
+		trace_insn(mem, "slt %s, %s, %s", rn[rd], rn[rs], rn[rt]);
 		if ((int32_t)R[rs] < (int32_t)R[rt])
 			R[rd] = 1;
 		else
@@ -286,7 +288,7 @@ next:
 		goto next;
 
 	case 0x0000002b:
-		trace_insn("sltu %s, %s, %s", rn[rd], rn[rs], rn[rt]);
+		trace_insn(mem, "sltu %s, %s, %s", rn[rd], rn[rs], rn[rt]);
 		if (R[rs] < R[rt])
 			R[rd] = 1;
 		else
@@ -296,19 +298,19 @@ next:
 
 	switch (INSN & 0xfc1f0000) {
 	case 0x04000000:
-		trace_insn("bltz %s, 0x%x", rn[rs], BranchAddr);
+		trace_insn(mem, "bltz %s, 0x%x", rn[rs], BranchAddr);
 		if ((int32_t)R[rs] < 0)
 			nPC = PC + BranchAddr;
 		goto next;
 
 	case 0x04010000:
-		trace_insn("bgez %s, 0x%x", rn[rs], BranchAddr);
+		trace_insn(mem, "bgez %s, 0x%x", rn[rs], BranchAddr);
 		if ((int32_t)R[rs] >= 0)
 			nPC = PC + BranchAddr;
 		goto next;
 
 	case 0x04100000:
-		trace_insn("bltzal %s, 0x%x", rn[rs], BranchAddr);
+		trace_insn(mem, "bltzal %s, 0x%x", rn[rs], BranchAddr);
 		if ((int32_t)R[rs] < 0) {
 			R[31] = PC + 8;
 			nPC = PC + BranchAddr;
@@ -316,7 +318,7 @@ next:
 		goto next;
 
 	case 0x04110000:
-		trace_insn("bgezal %s, 0x%x", rn[rs], BranchAddr);
+		trace_insn(mem, "bgezal %s, 0x%x", rn[rs], BranchAddr);
 		if ((int32_t)R[rs] >= 0) {
 			R[31] = PC + 8;
 			nPC = PC + BranchAddr;
@@ -324,13 +326,13 @@ next:
 		goto next;
 
 	case 0x18000000:
-		trace_insn("blez %s, 0x%x", rn[rs], BranchAddr);
+		trace_insn(mem, "blez %s, 0x%x", rn[rs], BranchAddr);
 		if ((int32_t)R[rs] <= 0)
 			nPC = PC + BranchAddr;
 		goto next;
 
 	case 0x1c000000:
-		trace_insn("bgtz %s, 0x%x", rn[rs], BranchAddr);
+		trace_insn(mem, "bgtz %s, 0x%x", rn[rs], BranchAddr);
 		if ((int32_t)R[rs] > 0)
 			nPC = PC + BranchAddr;
 		goto next;
@@ -338,40 +340,40 @@ next:
 
 	switch (INSN & 0xfc000000) {
 	case 0x08000000:
-		trace_insn("j 0x%x", (PC & 0xf0000000) | address);
+		trace_insn(mem, "j 0x%x", (PC & 0xf0000000) | address);
 		nPC = (PC & 0xf0000000) | address;
 		goto next;
 
 	case 0x0c000000:
-		trace_insn("jal 0x%x", (PC & 0xf0000000) | address);
+		trace_insn(mem, "jal 0x%x", (PC & 0xf0000000) | address);
 		R[31] = PC + 8;
 		nPC = (PC & 0xf0000000) | address;
 		goto next;
 
 	case 0x10000000:
-		trace_insn("beq %s, %s, 0x%x", rn[rs], rn[rt], BranchAddr);
+		trace_insn(mem, "beq %s, %s, 0x%x", rn[rs], rn[rt], BranchAddr);
 		if (R[rs] == R[rt])
 			nPC = PC + BranchAddr;
 		goto next;
 
 	case 0x14000000:
-		trace_insn("bne %s, %s, 0x%x", rn[rs], rn[rt], BranchAddr);
+		trace_insn(mem, "bne %s, %s, 0x%x", rn[rs], rn[rt], BranchAddr);
 		if (R[rs] != R[rt])
 			nPC = PC + BranchAddr;
 		goto next;
 
 	case 0x20000000:
-		trace_insn("addi %s, %s, 0x%x", rn[rt], rn[rs], SignExtImm);
+		trace_insn(mem, "addi %s, %s, 0x%x", rn[rt], rn[rs], SignExtImm);
 		R[rt] = R[rs] + SignExtImm;
 		goto next;
 
 	case 0x24000000:
-		trace_insn("addiu %s, %s, 0x%x", rn[rt], rn[rs], SignExtImm);
+		trace_insn(mem, "addiu %s, %s, 0x%x", rn[rt], rn[rs], SignExtImm);
 		R[rt] = R[rs] + SignExtImm;
 		goto next;
 
 	case 0x28000000:
-		trace_insn("slti %s, %s, 0x%x", rn[rt], rn[rs], SignExtImm);
+		trace_insn(mem, "slti %s, %s, 0x%x", rn[rt], rn[rs], SignExtImm);
 		if ((int32_t)R[rs] < (int32_t)SignExtImm)
 			R[rt] = 1;
 		else
@@ -379,7 +381,7 @@ next:
 		goto next;
 
 	case 0x2c000000:
-		trace_insn("sltiu %s, %s, 0x%x", rn[rt], rn[rs], SignExtImm);
+		trace_insn(mem, "sltiu %s, %s, 0x%x", rn[rt], rn[rs], SignExtImm);
 		if (R[rs] < SignExtImm)
 			R[rt] = 1;
 		else
@@ -387,114 +389,114 @@ next:
 		goto next;
 
 	case 0x30000000:
-		trace_insn("andi %s, %s, 0x%x", rn[rt], rn[rs], ZeroExtImm);
+		trace_insn(mem, "andi %s, %s, 0x%x", rn[rt], rn[rs], ZeroExtImm);
 		R[rt] = R[rs] & ZeroExtImm;
 		goto next;
 
 	case 0x34000000:
-		trace_insn("ori %s, %s, 0x%x", rn[rt], rn[rs], ZeroExtImm);
+		trace_insn(mem, "ori %s, %s, 0x%x", rn[rt], rn[rs], ZeroExtImm);
 		R[rt] = R[rs] | ZeroExtImm;
 		goto next;
 
 	case 0x38000000:
-		trace_insn("xori %s, %s, 0x%x", rn[rt], rn[rs], ZeroExtImm);
+		trace_insn(mem, "xori %s, %s, 0x%x", rn[rt], rn[rs], ZeroExtImm);
 		R[rt] = R[rs] ^ ZeroExtImm;
 		goto next;
 
 	case 0x3c000000:
-		trace_insn("lui %s, 0x%x", rn[rt], ZeroExtImm << 16);
+		trace_insn(mem, "lui %s, 0x%x", rn[rt], ZeroExtImm << 16);
 		R[rt] = (ZeroExtImm << 16);
 		goto next;
 
 	case 0x80000000:
-		trace_insn("lb %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		trace_insn(mem, "lb %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
 		R[rt] = *(int8_t *)(R[rs] + SignExtImm);
 		goto next;
 
 	case 0x8c000000:
-		trace_insn("lw %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
-		R[rt] = *(int32_t *)(R[rs] + SignExtImm);
+		trace_insn(mem, "lw %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		R[rt] = *(int32_t *)(mem + R[rs] + SignExtImm);
 		goto next;
 
 	case 0xa0000000:
-		trace_insn("sb %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		trace_insn(mem, "sb %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
 		{
 			uint32_t addr = (R[rs] + SignExtImm) & 0xfffffffc;
 			int off = 8 * ((R[rs] + SignExtImm) % 4);
 
-			*(uint32_t *)addr &= ~(0xff << off);
-			*(uint32_t *)addr |= ((0xff & R[rt]) << off);
+			*(uint32_t *)(mem + addr) &= ~(0xff << off);
+			*(uint32_t *)(mem + addr) |= ((0xff & R[rt]) << off);
 		}
 		goto next;
 
 	case 0xa4000000:
-		trace_insn("sh %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		trace_insn(mem, "sh %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
 		{
 			uint32_t addr = (R[rs] + SignExtImm) & 0xfffffffc;
 			int off = 8 * ((R[rs] + SignExtImm) % 4);
 
-			*(uint32_t *)addr &= ~(0xffff << off);
-			*(uint32_t *)addr |= ((0xffff & R[rt]) << off);
+			*(uint32_t *)(mem + addr) &= ~(0xffff << off);
+			*(uint32_t *)(mem + addr) |= ((0xffff & R[rt]) << off);
 		}
 		goto next;
 
 	case 0xac000000:
-		trace_insn("sw %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
-		*(int32_t *)(R[rs] + SignExtImm) = R[rt];
+		trace_insn(mem, "sw %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		*(int32_t *)(mem + R[rs] + SignExtImm) = R[rt];
 		goto next;
 
 	case 0x90000000:
-		trace_insn("lbu %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		trace_insn(mem, "lbu %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
 		R[rt] = *(uint8_t *)(R[rs] + SignExtImm);
 		goto next;
 
 	case 0xa8000000:
-		trace_insn("swl %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		trace_insn(mem, "swl %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
 		{
 			uint32_t addr = (R[rs] + SignExtImm) & 0xfffffffc;
 			int off = 8 * (3 - (R[rs] + SignExtImm) % 4);
 
-			*(uint32_t *)addr &= ~(0xffffffff >> off);
-			*(uint32_t *)addr |= (R[rt] >> off);
+			*(uint32_t *)(mem + addr) &= ~(0xffffffff >> off);
+			*(uint32_t *)(mem + addr) |= (R[rt] >> off);
 		}
 		goto next;
 
 	case 0xb8000000:
-		trace_insn("swr %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		trace_insn(mem, "swr %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
 		{
 			uint32_t addr = (R[rs] + SignExtImm) & 0xfffffffc;
 			int off = 8 * ((R[rs] + SignExtImm) % 4);
 
-			*(uint32_t *)addr &= ~(0xffffffff << off);
-			*(uint32_t *)addr |= (R[rt] << off);
+			*(uint32_t *)(mem + addr) &= ~(0xffffffff << off);
+			*(uint32_t *)(mem + addr) |= (R[rt] << off);
 		}
 		goto next;
 
 	case 0x88000000:
-		trace_insn("lwl %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		trace_insn(mem, "lwl %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
 		{
 			uint32_t addr = (R[rs] + SignExtImm) & 0xfffffffc;
 			int off = 8 * (3 - (R[rs] + SignExtImm) % 4);
 
 			R[rt] &= ~(0xffffffff << off);
-			R[rt] |= (*(uint32_t *)addr << off);
+			R[rt] |= (*(uint32_t *)(mem + addr) << off);
 		}
 		goto next;
 
 	case 0x98000000:
-		trace_insn("lwr %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
+		trace_insn(mem, "lwr %s, %d(%s)", rn[rt], SignExtImm, rn[rs]);
 		{
 			uint32_t addr = (R[rs] + SignExtImm) & 0xfffffffc;
 			int off = 8 * ((R[rs] + SignExtImm) % 4);
 
 			R[rt] &= ~(0xffffffff >> off);
-			R[rt] |= (*(uint32_t *)addr >> off);
+			R[rt] |= (*(uint32_t *)(mem + addr) >> off);
 		}
 		goto next;
 	}
 
 	trace = 3;
-	trace_insn("(invalid instruction)\n");
+	trace_insn(mem, "(invalid instruction)\n");
 	restoremode();
 	exit(1);
 }
