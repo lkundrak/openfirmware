@@ -183,6 +183,7 @@ writing floppyofw.img
 [ifdef] use-vesa
    " ${BP}/ofw/termemu/cp881-16.obf"            " font"        $add-deflated-dropin
 [then]
+   " ${BP}/ofw/termemu/cp881-16.obf"            " font"        $add-deflated-dropin
 
 [ifdef] grub-loaded
    ofd @ fsize h# 60 -  pad !      \ file size; store in memory for convenience below
