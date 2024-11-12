@@ -40,6 +40,7 @@ writing olpc.img
 \  " help.img"                              " help"      $add-deflated-dropin
    
    " ${BP}/dev/pci/build/pcibridg.fc"    " class060400"  $add-deflated-dropin
+   " ${BP}/dev/pci/build/pcibridg.fc"    " class060401"  $add-deflated-dropin
 \  " ${BP}/dev/ide/build/idehier.fc"     " pci-ide"      $add-deflated-dropin 
 
    " ${BP}/dev/usb2/hcd/ohci/build/ohci.fc"	" class0c0310"      $add-dropin

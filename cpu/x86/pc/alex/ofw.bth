@@ -43,6 +43,7 @@ elf-header /elf-header ofd @ fputs
    " fw.img"                                    " firmware"        $add-deflated-dropin
 
    " ${BP}/dev/pci/build/pcibridg.fc"           " class060400"     $add-deflated-dropin
+   " ${BP}/dev/pci/build/pcibridg.fc"           " class060401"     $add-deflated-dropin
    " ${BP}/dev/ide/build/leghier.fc"            " class01018a"     $add-deflated-dropin
    " ${BP}/dev/ath9k/build/ar9382.fc"           " pci168c,30"      $add-deflated-dropin
 

@@ -97,6 +97,7 @@ $new-file
 
 [ifdef] notdef
    " ${BP}/dev/pci/build/pcibridg.fc"            " class060400"   $add-deflated-dropin
+   " ${BP}/dev/pci/build/pcibridg.fc"            " class060401"   $add-deflated-dropin
 \  " ${BP}/dev/ide/build/leghier.fc"             " class01018a"   $add-deflated-dropin
    " ${BP}/dev/ide/build/idehier.fc"             " class01018f"   $add-deflated-dropin
 [then]

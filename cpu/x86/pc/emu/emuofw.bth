@@ -51,6 +51,7 @@ writing emuofw.rom
    " ${BP}/cpu/x86/build/inflate.bin"           " inflate"         $add-dropin
    " fw.img"                                    " firmware"        $add-deflated-dropin
    " ${BP}/dev/pci/build/pcibridg.fc"           " class060400"     $add-deflated-dropin
+   " ${BP}/dev/pci/build/pcibridg.fc"           " class060401"     $add-deflated-dropin
    " ${BP}/dev/ide/build/leghier.fc"            " class010180"     $add-deflated-dropin
 
 \ The super-driver is overkill, we don't need support for lots of obsolete video cards
