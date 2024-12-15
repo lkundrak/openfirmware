@@ -62,6 +62,16 @@ label startup
    h# 10 port80
    cli cld
 
+[ifdef] grub-loaded
+   eax  eax  xor
+   eax  mem-info-pa 0 + #)  mov
+   eax  mem-info-pa 8 + #)  mov	\ Top of page table
+
+   8 [ebx]  eax  mov 		\ Get upper memory limit from
+   d# 10 #  eax  shl		\ the multiboot information 
+   eax mem-info-pa 4 + #)  mov	\ structure.
+[then]
+
 [ifdef] syslinux-loaded
    fload ${BP}/cpu/x86/pc/biosload/c32vesa.fth
 [then]
