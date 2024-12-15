@@ -29,6 +29,14 @@ in: ${BP}/dev/mmc/sdhci/build/sdmmc.fc
 \ in: ${BP}/dev/mmc/sdhci/mv8686/build/mv8686.fc
 \ in: sd8686.bin
 
+in: ${BP}/dev/i8255x/build/82559.fc
+in: ${BP}/dev/3c90xb/build/3c905b.fc
+\ in: ${BP}/dev/amd79970/build/amd79970.fc
+in: ${BP}/dev/amd79970/build/vmlance.fc
+in: ${BP}/dev/i8255x/build/82559.fc
+in: ${BP}/dev/ne2000/build/ne2kpci.fc
+in: ${BP}/dev/rtl8139/build/rtl8139.fc
+
 build-now
 
 fload ${BP}/cpu/x86/pc/biosload/config.fth
@@ -99,6 +107,13 @@ writing floppyofw.img
    " ${BP}/dev/pci/build/pcibridg.fc"           " class060400"     $add-deflated-dropin
    " ${BP}/dev/pci/build/pcibridg.fc"           " class060401"     $add-deflated-dropin
    " ${BP}/dev/ide/build/leghier.fc"            " class01018a"     $add-deflated-dropin
+
+   " ${BP}/dev/i8255x/build/82559.fc"           " pci8086,1229" $add-deflated-dropin
+   " ${BP}/dev/3c90xb/build/3c905b.fc"          " pci10b7,9055" $add-deflated-dropin
+\  " ${BP}/dev/amd79970/build/amd79970.fc"      " pci1022,2000" $add-deflated-dropin
+   " ${BP}/dev/amd79970/build/vmlance.fc"       " pci1022,2000" $add-deflated-dropin
+   " ${BP}/dev/ne2000/build/ne2kpci.fc"         " pci10ec,8029"    $add-deflated-dropin
+   " ${BP}/dev/rtl8139/build/rtl8139.fc"        " pci10ec,8139"    $add-deflated-dropin
 
 [ifdef] via-demo
    " ${BP}/dev/mmc/sdhci/build/sdhci2.fc"       " class080501"     $add-deflated-dropin
