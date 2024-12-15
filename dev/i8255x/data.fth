@@ -47,8 +47,8 @@ headers
 : fc-ctl!    ( b -- )  1a csr-b!  ;  \ Write flow control command register
 : fc-th!     ( b -- )  19 csr-b!  ;  \ Write flow control threshold register
 : pmdr@      ( -- b )  1b csr-b@  ;  \ Read  power management driver register
-: gctl!      ( b -- )  1c csr-b!  ;  \ Write general control register
-: gstat@     ( -- b )  1d csr-b@  ;  \ Read  general status register
+\ : gctl!      ( b -- )  1c csr-b!  ;  \ Write general control register
+\ : gstat@     ( -- b )  1d csr-b@  ;  \ Read  general status register
 
 \ ***************************************************************************
 \ 			SCB (System Control Block)

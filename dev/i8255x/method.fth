@@ -16,9 +16,9 @@ create pms-adr ff c, ff c, ff c, ff c, ff c, ff c,
 ;
 : promiscuous-mode  ( -- )  pms-adr 6 set-address cb-cfg-promiscuous  ;
 
-: 100base?      ( -- 100? )   gstat@ 2 and  ;
-: full-duplex?  ( -- full? )  gstat@ 4 and  ;
-: link-up?      ( -- up? )    gstat@ 1 and  ;
+\ : 100base?      ( -- 100? )   gstat@ 2 and  ;
+\ : full-duplex?  ( -- full? )  gstat@ 4 and  ;
+\ : link-up?      ( -- up? )    gstat@ 1 and  ;
 
 : start-device  ( -- )  mac-address set-address  cb-cfg-init  ;
 : stop-device   ( -- )  port-sel-reset  ;
@@ -103,7 +103,7 @@ external
 : open  ( -- ok? )
    ?make-mac-address-property
    map-regs
-   link-up? 0=  if  ." Network not connected."  unmap-regs false exit  then
+\   link-up? 0=  if  ." Network not connected."  unmap-regs false exit  then
    set-frame-size
    init-buffers
    start-device

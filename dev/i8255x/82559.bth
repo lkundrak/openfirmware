@@ -8,8 +8,8 @@ silent on
 begin-tokenizing 82559.fc
 
 FCode-version2
-" 82559" model
-" 82559" encode-string  " compatible" property
+" 82558" model
+" 82558" encode-string  " compatible" property
 fload ${BP}/dev/i8255x/loadpkg.fth
 end0
 
