@@ -1,0 +1,15 @@
+purpose: Load file for Realtek 8139 interface (rtl8139)
+
+command: &tokenize &this
+build-now
+
+silent on
+
+begin-tokenizing rtl8139.fc
+
+FCode-version2
+fload ${BP}/dev/rtl8139/rtl8139.fth
+probe
+end0
+
+end-tokenizing
