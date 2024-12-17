@@ -236,15 +236,21 @@ fload ${BP}/cpu/x86/pc/boot.fth
 fload ${BP}/cpu/x86/pc/linux.fth
 
 hex 
-\ If there is a PCI ethernet adapter, use it as the default net device,
-\ otherwise use any ethernet that can be found in the device tree.
-: report-net  ( -- )
-   " /pci/ethernet" 2dup  find-package  if  ( name$ phandle )
-      drop                                  ( name$ )
-   else                                     ( name$ )
-      2drop  " /ethernet"                   ( name$' )
-   then                                     ( name$ )
-   " net" 2swap $devalias                   ( )
+
+: good-net?  ( dev -- ok? )
+   locate-device 0=  if
+      " open" rot find-method  if
+         drop  true  exit
+      then
+   then
+   false
+;
+
+: report-net
+                        " /pci/ethernet" 2dup good-net?
+   dup 0= if drop 2drop " /ethernet@0"   2dup good-net? then
+   dup 0= if drop 2drop " /ethernet"     2dup good-net? then
+   if " net" 2swap $devalias  else  2drop  then
 ;
 
 fload ${BP}/cpu/x86/pc/biosload/usb.fth
