@@ -7,15 +7,10 @@ silent on
 
 begin-tokenizing 82559.fc
 
-tokenizer[ h# 8086 h# 1229 h# 020000 ]tokenizer pci-header
-
 FCode-version2
 " 82558" model
 " 82558" encode-string  " compatible" property
 fload ${BP}/dev/i8255x/loadpkg.fth
-." Intel 82558 PCI Ethernet" cr
 end0
-
-pci-header-end
 
 end-tokenizing
