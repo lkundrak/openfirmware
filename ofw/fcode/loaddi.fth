@@ -4,8 +4,7 @@ purpose: Load builtin drivers
 hex
 headers
 
-true value probemsg?	\ Optional probing messages
-\ false value probemsg?	\ Optional probing messages
+false value probemsg?	\ Optional probing messages
 
 \ >tmp$ copies the string to allocated memory.  This is necessary because
 \ the loading of a driver may cause another driver to be loaded,

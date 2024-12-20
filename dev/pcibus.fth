@@ -14,10 +14,8 @@ defer prsnt@
 defer setup-fcodes   ( -- )  ' noop to setup-fcodes
 defer restore-fcodes ( -- )  ' noop to restore-fcodes
 
-\ false value pcimsg?	\ Optional Debug Msgs
-\ false value probemsg?	\ Optional Probing Msgs
-true value pcimsg?	\ Optional Debug Msgs
-true value probemsg?	\ Optional Probing Msgs
+false value pcimsg?	\ Optional Debug Msgs
+false value probemsg?	\ Optional Probing Msgs
 
 \ The default value for first-io skips the area where built-in ISA
 \ devices normally live, but stays below 64K, in order to work with
