@@ -1,0 +1,27 @@
+purpose: Main load file for driver
+
+command: &tokenize &this
+build-now
+
+begin-tokenizing 264vt.fc
+
+FCode-version3
+hex
+
+\ : n->l ff ff ff ff bljoin and ;
+\ : lxjoin n->l 0x20 lshift swap n->l or ;
+\ : xlsplit ( x -- l.low l.high )   dup n->l  swap  d# 32 rshift n->l  ;
+\ : rx!   ( x addr -- )   >r xlsplit r@ la1+ l! r> l!  ;
+\ : rx@   ( addr -- x )   dup l@ swap la1+ l@ lxjoin   ;
+\ : /x 8 ;
+\ : xa1+ 8 + ;
+
+alias headerless internal
+\ create rxl-debug
+\ create rxl-custom
+
+fload ${BP}/dev/video/load264vt.fth
+
+end0
+
+end-tokenizing
