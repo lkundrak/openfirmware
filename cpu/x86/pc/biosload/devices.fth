@@ -162,6 +162,10 @@ fload ${BP}/cpu/x86/pc/tsccal1.fth
 [ifdef] use-ega
 dev /8042      patch false ctlr-selftest open   device-end
 [then]
+dev /8042/keyboard
+   patch true false init-data
+   true to keyboard-present?
+device-end
 
 [ifdef] use-16552
 0 0  " i3a0"  " /isa" begin-package
