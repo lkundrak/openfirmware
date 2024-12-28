@@ -1107,7 +1107,8 @@ tokenizer definitions
    14 0 do 0 emit-byte loop	( class-code device-id vendor-id )
 
    \ Start of PCI Data Structure:
-   1a emit-byte 00 emit-byte	( class-code device-id vendor-id )
+   1c emit-byte 00 emit-byte	( class-code device-id vendor-id )
+   00 emit-byte 00 emit-byte	( )			\ 2 padding
 
    \ PCIR string
    ascii P emit-byte		( class-code device-id vendor-id )
@@ -1147,14 +1148,6 @@ tokenizer definitions
    indicator @ h# ff and	( indicator )
    emit-byte	                ( )			\ 1 indicator
    00 emit-byte 00 emit-byte	( )			\ 2 reserved
-
-   \ We just "know" that we have so far put out 0x32 bytes
-
-   fcode-offset @ h# 32 -	( padding )
-
-   0 ?do
-      h# ff emit-byte
-   loop				( )
 ;
 
 also tokens definitions
