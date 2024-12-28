@@ -18,7 +18,7 @@ fload ${BP}/dev/i8042.fth
    finish-device
 
 end-package
-devalias keyboard /isa/8042/keyboard
+\ devalias keyboard /isa/8042/keyboard
 \ LICENSE_BEGIN
 \ Copyright (c) 2006 FirmWorks
 \ 
