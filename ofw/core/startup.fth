@@ -27,6 +27,7 @@ defer kbd-extras  \ for  fan, key-chord
    auto-banner?  if
       " Probing" ?type  probe-all
       " Install console" ?type  install-console
+      " Install mux" ?type  install-mux-io
       banner
    then
 
