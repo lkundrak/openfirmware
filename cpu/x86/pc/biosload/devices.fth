@@ -158,7 +158,11 @@ fload ${BP}/cpu/x86/pc/tsccal1.fth
 [then]
 
 [ifdef] use-ega
-dev /8042      patch false ctlr-selftest open   device-end
+dev /8042  patch false ctlr-selftest open  device-end
+dev /8042/keyboard
+   patch true false init-data
+   true to keyboard-present?
+device-end
 [then]
 
 [ifdef] use-16552
