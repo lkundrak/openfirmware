@@ -353,6 +353,7 @@ fload ${BP}/cpu/x86/pc/biosload/memtest.fth
 : c1-idle  ( -- )  interrupts-enabled?  if  halt  then  ;
 ' c1-idle to stdin-idle
 
+[ifdef] demo-startup
 : startup  ( -- )
    standalone?  0=  if  exit  then
    ." calibrate-ms"  cr
@@ -389,6 +390,10 @@ fload ${BP}/cpu/x86/pc/biosload/memtest.fth
 [then]
    quit
 ;
+[else]
+['] true to interrupt-auto-boot?
+fload ${BP}/ofw/core/startup.fth
+[then]
 
 [ifdef] use-watch-all
 fload ${BP}/cpu/x86/pc/watchall.fth
