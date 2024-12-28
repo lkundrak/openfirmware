@@ -6,6 +6,7 @@ in: reset.di
 in: start.di
 in: ${BP}/cpu/x86/pc/biosload/build/paging.di
 in: fw.img
+in: ${BP}/dev/video/build/s3-trio64.rom
 in: ${BP}/dev/usb2/hcd/ohci/build/ohci.fc
 in: ${BP}/dev/usb2/hcd/uhci/build/uhci.fc
 in: ${BP}/dev/usb2/hcd/ehci/build/ehci.fc
