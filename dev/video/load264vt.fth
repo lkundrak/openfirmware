@@ -1,248 +1,382 @@
-tokenizer[
-h# 1002 h# 5654 h# 030000 pci-header
-]tokenizer
-
-\ f1 08 7c48 0000af7b
-fcode-version3 ( start1 )
 hex
-
-h# 0
 
 headerless
 
-constant token-0800 ( 0800 )
-h# 2 constant token-0801 ( 0801 )
-4 constant token-0802 ( 0802 )
-8 constant token-0803 ( 0803 )
-a constant token-0804 ( 0804 )
-c constant token-0805 ( 0805 )
-e constant token-0806 ( 0806 )
-14 constant token-0807 ( 0807 )
-18 constant token-0808 ( 0808 )
-1c constant token-0809 ( 0809 )
-1e constant token-080a ( 080a )
-1f constant token-080b ( 080b )
-20 constant token-080c ( 080c )
-24 constant token-080d ( 080d )
-28 constant token-080e ( 080e )
-40 constant token-080f ( 080f )
-44 constant token-0810 ( 0810 )
-48 constant token-0811 ( 0811 )
-49 constant token-0812 ( 0812 )
-4a constant token-0813 ( 0813 )
-4c constant token-0814 ( 0814 )
-50 constant token-0815 ( 0815 )
-5c constant token-0816 ( 0816 )
-5c constant token-0817 ( 0817 )
-5d constant token-0818 ( 0818 )
-5e constant token-0819 ( 0819 )
-5f constant token-081a ( 081a )
-60 constant token-081b ( 081b )
-63 constant token-081c ( 081c )
-64 constant token-081d ( 081d )
-68 constant token-081e ( 081e )
-70 constant token-081f ( 081f )
-78 constant token-0820 ( 0820 )
-7c constant token-0821 ( 0821 )
-create token-0822 ( 0822 )
-h# 0 c, 4 c, 8 c, c c, 10 c, 14 c, 18 c, 1c c, 40 c, 44 c, 48 c, 60 c, 64
-c, 68 c, 6c c, 70 c, 80 c, 84 c, 90 c, a0 c, b0 c, b4 c, b8 c, c0 c, c4 c,
-d0 c, dc c, e0 c, e4 c, e8 c, 78 c, 7c c, 600000f9
-constant token-0823 ( 0823 )
-h# 0 constant token-0824 ( 0824 )
-10a0240 constant token-0825 ( 0825 )
-8 constant token-0826 ( 0826 )
-a02c91a constant token-0827 ( 0827 )
-a02cb22 constant token-0828 ( 0828 )
-220cd3a constant token-0829 ( 0829 )
-80010100 constant token-082a ( 082a )
-9 constant token-082b ( 082b )
-a constant token-082c ( 082c )
-4 constant token-082d ( 082d )
-h# 3 constant token-082e ( 082e )
-h# 3 constant token-082f ( 082f )
-a0 constant token-0830 ( 0830 )
-0 value token-0831 ( 0831 )
-0 value token-0832 ( 0832 )
-7ffc00 constant token-0833 ( 0833 )
-7ff800 constant token-0834 ( 0834 )
-2ec constant token-0835 ( 0835 )
-0 value token-0836 ( 0836 )
-0 value token-0837 ( 0837 )
-0 value token-0838 ( 0838 )
-0 value token-0839 ( 0839 )
-0 value token-083a ( 083a )
-1 value token-083b ( 083b )
-0 value token-083c ( 083c )
-4 value token-083d ( 083d )
-0 value token-083e ( 083e )
--1 value token-083f ( 083f )
-800 constant token-0840 ( 0840 )
-400 constant token-0841 ( 0841 )
-200 constant token-0842 ( 0842 )
-100 constant token-0843 ( 0843 )
-80 constant token-0844 ( 0844 )
-40 constant token-0845 ( 0845 )
-20 constant token-0846 ( 0846 )
-10 constant token-0847 ( 0847 )
-8 constant token-0848 ( 0848 )
-4 constant token-0849 ( 0849 )
-h# 2 constant token-084a ( 084a )
-h# 1 constant token-084b ( 084b )
-0 value token-084c ( 084c )
-0 value token-084d ( 084d )
-0 value token-084e ( 084e )
-0 value token-084f ( 084f )
-5 value token-0850 ( 0850 )
-token-0850 value token-0851 ( 0851 )
-0 value token-0852 ( 0852 )
-14 value token-0853 ( 0853 )
+( pio )
+h# 00 constant aty-reg-crtc-h-total
+h# 02 constant aty-reg-crtc-h-disp
+h# 04 constant aty-reg-crtc-h-sync-strt-wid
+h# 08 constant aty-reg-crtc-v-total
+h# 0a constant aty-reg-crtc-v-disp
+h# 0c constant aty-reg-crtc-v-sync-strt
+h# 0e constant aty-reg-crtc-v-sync-wid-pol
+h# 14 constant aty-reg-crtc-off-pitch
+h# 18 constant aty-reg-crtc-int-cntl
+h# 1c constant aty-reg-crtc-gen-cntl0
+h# 1e constant aty-reg-crtc-gen-cntl2
+h# 1f constant aty-reg-crtc-gen-cntl3
+h# 20 constant aty-reg-ovr-clr
+h# 24 constant aty-reg-ovr-wid-left-right
+h# 28 constant aty-reg-ovr-wid-top-bottom
+h# 40 constant aty-reg-scratch-reg0
+h# 44 constant aty-reg-scratch-reg1
+h# 48 constant aty-reg-clock-sel
+h# 49 constant aty-reg-pll-wr-en-addr
+h# 4a constant aty-reg-pll-data
+h# 4c constant aty-reg-bus-cntl
+h# 50 constant aty-reg-mem-cntl
+h# 5c constant aty-reg-dac-regs
+h# 5c constant aty-reg-dac-w-index
+h# 5d constant aty-reg-dac-data
+h# 5e constant aty-reg-dac-mask
+h# 5f constant aty-reg-dac-r-index
+h# 60 constant aty-reg-dac-cntl
+h# 63 constant aty-reg-dac-gio
+h# 64 constant aty-reg-gen-test-cntl
+h# 68 constant aty-reg-config-cntl
+h# 70 constant aty-reg-config-stat0
+h# 78 constant aty-reg-gp-io
+h# 7c constant aty-reg-crtc-h-total-disp
+
+create aty-sparse>block-tbl ( 0822 )
+( pio -> mmio )
+( 00 -> 00 ) h# 00 c,
+( 01 -> 01 ) h# 04 c,
+( 02 -> 02 ) h# 08 c,
+( 03 -> 03 ) h# 0c c,
+( 04 -> 04 ) h# 10 c,
+( 05 -> 05 ) h# 14 c,
+( 06 -> 06 ) h# 18 c,
+( 07 -> 07 ) h# 1c c,
+( 08 -> 10 ) h# 40 c,
+( 09 -> 11 ) h# 44 c,
+( 0a -> 12 ) h# 48 c,
+( 0b -> 18 ) h# 60 c,
+( 0c -> 19 ) h# 64 c,
+( 0d -> 1a ) h# 68 c,
+( 0e -> 1b ) h# 6c c,
+( 0f -> 1c ) h# 70 c,
+( 10 -> 20 ) h# 80 c,
+( 11 -> 21 ) h# 84 c,
+( 12 -> 24 ) h# 90 c,
+( 13 -> 28 ) h# a0 c,
+( 14 -> 2c ) h# b0 c,
+( 15 -> 2d ) h# b4 c,
+( 16 -> 2e ) h# b8 c,
+( 17 -> 30 ) h# c0 c,
+( 18 -> 31 ) h# c4 c,
+( 19 -> 34 ) h# d0 c,
+( 1a -> 37 ) h# dc c,
+( 1b -> 38 ) h# e0 c,
+( 1c -> 39 ) h# e4 c,
+( 1d -> 3a ) h# e8 c,
+( 1e -> 1e ) h# 78 c,
+( 1f -> 1f ) h# 7c c,
+
+
+h# 6000.00f9 constant aty-def-bus-cntl ( 0823 )
+h#         0 constant aty-def-crtc-int-cntl ( 0824 )
+h# 010a.0240 constant aty-def-crtc-gen-cntl ( 0825 )
+h#         8 constant aty-def-gen-test-cntl ( 0826 )
+
+h# 0a02.c91a constant aty-dram-mem-cntl
+h# 0a02.cb22 constant aty-edo-mem-cntl
+
+h# 0220.cd3a constant aty-sdram-mem-cntl
+
+h# 8001.0100 constant aty-def-dac-cntl ( 082a )
+
+h# 9 constant aty-dram-config-statw
+h# a constant aty-edo-config-statw
+h# 4 constant aty-sdram-config-statw
+
+d# 3 constant aty-first-clock ( 082e )
+d# 3 constant aty-second-clock ( 082f )
+
+h# a0 constant aty-def-pll-macro-cntl
+0 value aty-open-count ( 0831 )
+0 value aty-delay-ms# ( 0832 )
+
+h# 007f.fc00 constant aty-linear-blk0 ( 0833 )
+h# 007f.f800 constant aty-linear-blk1 ( 0834 )
+h#      02ec constant aty-pio-offset ( 0835 )
+
+0 value aty-saved-my-self ( 0836 )
+0 value aty-block-addr ( 0837 )
+0 value aty-sparse-addr ( 0838 )
+0 value aty-assigned-addr ( 0839 )
+0 value aty-reg-offset ( 083a )
+1 value aty-mem-mbytes ( 083b )
+0 value aty-io-regs-offset ( 083c )
+
+4 value aty-mem-type
+
+0 value aty-prop-status ( 083e )
+-1 value aty-fb-check-addr ( 083f )
+
+h# 800 constant aty-stat-unused1
+h# 400 constant aty-stat-config-stat-failed
+h# 200 constant aty-stat-bus-cntl-failed
+h# 100 constant aty-stat-crtc-failed
+h#  80 constant aty-stat-gen-test-failed
+h#  40 constant aty-stat-mem-cntl-failed
+h#  20 constant aty-stat-unused2
+h#  10 constant aty-stat-unused3
+h#   8 constant aty-stat-ovr-failed
+h#   4 constant aty-stat-off-pitch-failed
+h#   2 constant aty-fb-test-failed
+h#   1 constant aty-test-regs-failed
+
+false value aty-use-assigned-addr? ( 084c )
+0 value aty-grayscale? ( 084d )
+0 value aty-prop-width ( 084e )
+0 value aty-prop-height ( 084f )
+5 value aty-default-mode# ( 0850 )
+aty-default-mode# value aty-current-mode# ( 0851 )
+0 value aty-modes-bitmask ( 0852 )
+d# 20 value /aty-std-modes ( 0853 )
 0 value token-0854 ( 0854 )
-0 value token-0855 ( 0855 )
-0 value token-0856 ( 0856 )
+0 value xaty-disp-id ( 0855 )
+0 value xaty-disp-id-alt ( 0856 )
 0 value token-0857 ( 0857 )
-0 value token-0858 ( 0858 )
-0 value token-0859 ( 0859 )
-0 value token-085a ( 085a )
-0 value token-085b ( 085b )
-0 value token-085c ( 085c )
-0 value token-085d ( 085d )
+
+0 value aty-prop-flags ( 0858 )
+\ 03 0000 0011 -
+\ 05 0000 0101 -
+\ 0b 0000 1011 - edid cksum okay
+\ 0d 0000 1101 - edid okay
+\ 10 0001 0000 -
+
+0 value aty-edid-buf ( 0859 )
+0 value aty-edid-bit-buf ( 085a )
+0 value aty-edid-temp-buf ( 085b )
+false value xaty-token-085c? ( 085c )
+0 value aty-tmp-byte ( 085d )
 0 value token-085e ( 085e )
 0 value token-085f ( 085f )
-4 to token-083d create token-0860 ( 0860 )
-630083 l, 100068 l, 2570273 l, 40258 l, 63007f l, 90066 l, 2570270 l, 20258
-l, 4f0067 l, 250052 l, 1df0207 l, 2301e8 l, 4f0068 l, 280051 l, 1df01f3 l,
-2301e0 l, 4f006b l, 28005b l, 1df020c l, 2301e2 l, 4f0063 l, 2c0052 l,
-1df020c l, 2201ea l, h# 0 l, h# 0 l, h# 0 l, h# 0 l, h# 0 l, h# 0 l, h# 0
-l, h# 0 l, 9f00d2 l, 1200a1 l, 3ff0429 l, 30400 l, 7f00a3 l, c0081 l,
-2ff031f l, 30300 l, 7f00a5 l, 310082 l, 2ff0325 l, 260302 l, 7f00a7 l,
-310082 l, 2ff0325 l, 260302 l, 27f009d l, 160081 l, 2ff0330 l, 80300 l,
-67008f l, 28006f l, 26f029a l, 230270 l, 630083 l, a0065 l, 2570270 l,
-30258 l, 630081 l, f006a l, 257029b l, 6027c l, 8f00b5 l, 300097 l, 3650392
-l, 230368 l, 3f004f l, 40042 l, 17f0197 l, 30181 l, 4f0067 l, 2a0057 l,
-3650395 l, 230368 l, 7f00a5 l, 2c0087 l, 2ff0323 l, 230302 l, 0 l, 0 l, 0
-l, 0 l, 0 l, 0 l, 0 l, 0 l, 0 l, 0 l, 0 l, 0 l, 0 l, 0 l, 0 l, 0 l,
-create token-0861 ( 0861 )
-fa0 w, e10 w, c4e w, c30 w, bd0 w, 9d6 w, h# 0 w, h# 0 w, 34bc w, 1ec3 w,
-1d4c w, 1964 w, 118a w, 1660 w, 1356 w, 1388 w, 2710 w, 61f w, 1660 w, 1ec3
-w, 0 w, 0 w, 0 w, 0 w, create token-0862 ( 0862 )
-320 w, 258 w, 320 w, 258 w, 280 w, 1e0 w, 280 w, 1e0 w, 280 w, 1e0 w, 280
-w, 1e0 w, 2d0 w, 190 w, 2d0 w, 190 w, 500 w, 400 w, 400 w, 300 w, 400 w,
-300 w, 400 w, 300 w, 400 w, 300 w, 340 w, 270 w, 320 w, 258 w, 320 w, 258
-w, 480 w, 366 w, 200 w, 180 w, 280 w, 366 w, 400 w, 300 w, 0 w, 0 w, 0 w, 0
-w, 0 w, 0 w, 0 w, 0 w,
 
-: token-0863 ( 0863 )
-    dup h# 3 and swap fc and token-0837
-    if
-        2/ 2/ token-0822 + c@ + token-0837 +
+\ 0 = invalid (Disable)
+\ 1 = DRAM
+\ 2 = EDO DRAM
+\ 3 = Pseudo EDO
+\ 4 = SDRAM (default on apple)
+\ 5-7 invalid (Reserved)
+4 to aty-mem-type
+
+create aty-mode#>regs-tbl ( 0860 )
+\ Standard EDID modes
+(  0 ) h# 00630083 l, h# 00100068 l, h# 02570273 l, h# 00040258 l,
+(  1 ) h# 0063007f l, h# 00090066 l, h# 02570270 l, h# 00020258 l,
+(  2 ) h# 004f0067 l, h# 00250052 l, h# 01df0207 l, h# 002301e8 l,
+(  3 ) h# 004f0068 l, h# 00280051 l, h# 01df01f3 l, h# 002301e0 l,
+(  4 ) h# 004f006b l, h# 0028005b l, h# 01df020c l, h# 002301e2 l,
+(  5 ) h# 004f0063 l, h# 002c0052 l, h# 01df020c l, h# 002201ea l,
+(  6 ) h# 00000000 l, h# 00000000 l, h# 00000000 l, h# 00000000 l,
+(  7 ) h# 00000000 l, h# 00000000 l, h# 00000000 l, h# 00000000 l,
+(  8 ) h# 009f00d2 l, h# 001200a1 l, h# 03ff0429 l, h# 00030400 l,
+(  9 ) h# 007f00a3 l, h# 000c0081 l, h# 02ff031f l, h# 00030300 l,
+( 10 ) h# 007f00a5 l, h# 00310082 l, h# 02ff0325 l, h# 00260302 l,
+( 11 ) h# 007f00a7 l, h# 00310082 l, h# 02ff0325 l, h# 00260302 l,
+( 12 ) h# 027f009d l, h# 00160081 l, h# 02ff0330 l, h# 00080300 l,
+( 13 ) h# 0067008f l, h# 0028006f l, h# 026f029a l, h# 00230270 l,
+( 14 ) h# 00630083 l, h# 000a0065 l, h# 02570270 l, h# 00030258 l,
+( 15 ) h# 00630081 l, h# 000f006a l, h# 0257029b l, h# 0006027c l,
+\ Non-standard (Apple?) modes
+( 16 ) h# 008f00b5 l, h# 00300097 l, h# 03650392 l, h# 00230368 l,
+( 17 ) h# 003f004f l, h# 00040042 l, h# 017f0197 l, h# 00030181 l,
+( 18 ) h# 004f0067 l, h# 002a0057 l, h# 03650395 l, h# 00230368 l,
+( 19 ) h# 007f00a5 l, h# 002c0087 l, h# 02ff0323 l, h# 00230302 l,
+\ Parsed from DTD
+( 20 ) 0 l, 0 l, 0 l, 0 l,
+( 21 ) 0 l, 0 l, 0 l, 0 l,
+( 22 ) 0 l, 0 l, 0 l, 0 l,
+( 23 ) 0 l, 0 l, 0 l, 0 l,
+
+create aty-mode#>pixclk-tbl ( 0861 )
+\ Standard EDID modes
+(  0 ) d#  4000 w,
+(  1 ) d#  3600 w,
+(  2 ) d#  3150 w,
+(  3 ) d#  3120 w,
+(  4 ) d#  3024 w,
+(  5 ) d#  2518 w,
+(  6 ) d#     0 w,
+(  7 ) d#     0 w,
+(  8 ) d# 13500 w,
+(  9 ) d#  7875 w,
+( 10 ) d#  7500 w,
+( 11 ) d#  6500 w,
+( 12 ) d#  4490 w,
+( 13 ) d#  5728 w,
+( 14 ) d#  4950 w,
+( 15 ) d#  5000 w,
+\ Non-standard (Apple?) modes
+( 16 ) d# 10000 w,
+( 17 ) d#  1567 w,
+( 18 ) d#  5728 w,
+( 19 ) d#  7875 w,
+\ Parsed from DTD
+( 20 )        0 w,
+( 21 )        0 w,
+( 22 )        0 w,
+( 23 )        0 w,
+
+create aty-mode#>res-tbl ( 0862 )
+\ Standard EDID modes
+(  0 ) d#  800 w, d#  600 w,
+(  1 ) d#  800 w, d#  600 w,
+(  2 ) d#  640 w, d#  480 w,
+(  3 ) d#  640 w, d#  480 w,
+(  4 ) d#  640 w, d#  480 w,
+(  5 ) d#  640 w, d#  480 w,
+(  6 ) d#  720 w, d#  400 w,
+(  7 ) d#  720 w, d#  400 w,
+(  8 ) d# 1280 w, d# 1024 w,
+(  9 ) d# 1024 w, d#  768 w,
+( 10 ) d# 1024 w, d#  768 w,
+( 11 ) d# 1024 w, d#  768 w,
+( 12 ) d# 1024 w, d#  768 w,
+( 13 ) d#  832 w, d#  624 w,
+( 14 ) d#  800 w, d#  600 w,
+( 15 ) d#  800 w, d#  600 w,
+\ Non-standard (Apple?) modes
+( 16 ) d# 1152 w, d#  870 w,
+( 17 ) d#  512 w, d#  384 w,
+( 18 ) d#  640 w, d#  870 w,
+( 19 ) d# 1024 w, d#  768 w,
+\ Parsed from DTD
+( 20 )       0 w,       0 w,
+( 21 )       0 w,       0 w,
+( 22 )       0 w,       0 w,
+( 23 )       0 w,       0 w,
+
+\ C0: 79
+\ C1: ffffc079
+
+: aty-reg>addr ( 0863 )
+    dup h# 3 and swap fc and
+
+    aty-block-addr if
+        \ Block IO
+        2/ 2/
+        aty-sparse>block-tbl +
+        c@ +
+        aty-block-addr +
     else
-        8 lshift + token-0838 +
+        \ Sparse IO
+        8 lshift +
+        aty-sparse-addr +
     then
-    token-083a +
+
+    aty-reg-offset +
 ;
 
-: token-0864 ( 0864 )
-    token-0863 rw@
-;
+: aty-reg-w@  aty-reg>addr rw@  ;
+: aty-reg-b@  aty-reg>addr rb@  ;
+: aty-reg-l@  aty-reg>addr rl@  ;
+: aty-reg-w!  aty-reg>addr rw!  ;
+: aty-reg-b!  aty-reg>addr rb!  ;
+: aty-reg-l!  aty-reg>addr rl!  ;
 
-: token-0865 ( 0865 )
-    token-0863 rb@
-;
-
-: token-0866 ( 0866 )
-    token-0863 rl@
-;
-
-: token-0867 ( 0867 )
-    token-0863 rw!
-;
-
-: token-0868 ( 0868 )
-    token-0863 rb!
-;
-
-: token-0869 ( 0869 )
-    token-0863 rl!
-;
-
-: token-086a ( 086a )
-    <>
-    if
-        token-083e or to token-083e
+: aty-set-status ( 086a )
+    <> if
+        aty-prop-status or to aty-prop-status
     else
         drop
     then
 ;
 
-: token-086b ( 086b )
-    -rot 2dup token-0869 token-0866 token-086a
+: aty-stat-l! ( 086b )
+    -rot 2dup
+    aty-reg-l!
+    aty-reg-l@
+    aty-set-status
 ;
 
-: token-086c ( 086c )
-    -rot 2dup token-0867 token-0864 token-086a
+: aty-stat-w! ( 086c )
+    -rot 2dup aty-reg-w!
+    aty-reg-w@
+    aty-set-status
 ;
 
-: token-086d ( 086d )
-    -rot 2dup token-0868 token-0865 token-086a
+: unused-aty-stat-b! ( 086d )
+    -rot 2dup aty-reg-b!
+    aty-reg-b@
+    aty-set-status
 ;
 
-: token-086e ( 086e )
-    token-0836 0=
-    if
-        my-self to token-0836
+: aty-call-parent ( 086e )
+    aty-saved-my-self 0= if
+        my-self to aty-saved-my-self
     then
-    my-self 0=
-    if
-        token-0836 to my-self
+    my-self 0= if
+        aty-saved-my-self to my-self
     then
     $call-parent
 ;
 
-: token-086f ( 086f )
-    dup token-081c token-0865 c0 and or token-081c token-0868 80000004
-    token-0821 token-0869 dup 8 and
-    if
+: aty-gpio! ( 086f )
+    dup
+    aty-reg-dac-gio aty-reg-b@
+    c0 and
+    or
+    aty-reg-dac-gio aty-reg-b!
+
+    80000004 aty-reg-crtc-h-total-disp aty-reg-l!
+    dup 8 and if
         2000000
     else
         0
     then
-    swap h# 1 and
-    if
+    swap h# 1 and if
         200 or
     then
-    token-0820 token-0866 fdfffdff and or token-0820 token-0869
+
+    aty-reg-gp-io aty-reg-l@
+    fdfffdff and
+    or
+    aty-reg-gp-io aty-reg-l!
 ;
 
-: token-0870 ( 0870 )
-    token-081c token-0865 fe and 80000004 token-0821 token-0869 token-0820
-    1 + token-0865 2/ h# 1 and or
+: aty-gpio@ ( 0870 )
+    aty-reg-dac-gio aty-reg-b@
+      fe and
+      80000004 aty-reg-crtc-h-total-disp aty-reg-l!
+      aty-reg-gp-io 1 + aty-reg-b@
+      2/ h# 1 and or
 ;
 
-: token-0871 ( 0871 )
-    token-0870 7 and
+\ Returns three bit (pre-EDID) ID
+: xaty-disp-id-gpio@ ( 0871 )
+    aty-gpio@ 7 and
 ;
 
-: token-0872 ( 0872 )
-    2 lshift token-0812 token-0868 token-0813 token-0865
+: aty-pll@ ( 0872 )
+    2 lshift aty-reg-pll-wr-en-addr aty-reg-b!
+    aty-reg-pll-data aty-reg-b@
 ;
 
-: token-0873 ( 0873 )
-    2 lshift 2 or token-0812 token-0868 token-0813 token-0868
+: aty-pll! ( 0873 )
+    2 lshift 2 or aty-reg-pll-wr-en-addr aty-reg-b!
+    aty-reg-pll-data aty-reg-b!
 ;
 
-: token-0874 ( 0874 )
-    dup 6fdc * 2 pick 4 pick * / a / 8 pick - abs dup 5 pick <
+: xaty-pll-calc-token-0874 ( 0874 )
+    dup
+    d# 28636 \ 2 * 14318
+    * 2 pick 4 pick * / a / 8 pick - abs dup 5 pick <
     if
         4 roll 5 roll 6 roll 7 roll
     then
     2drop 2drop
 ;
 
-: token-0875 ( 0875 )
+: xaty-calc-pll-token-0875 ( 0875 )
     0 1 0 3 pick 2 36
     do
-        4 pick 64 * i * 6fdc / dup a0 <
+        4 pick 64 * i *
+        d# 28636 \ 2 * 14318
+        / dup a0 <
         if
             2drop leave
         then
@@ -264,7 +398,7 @@ w, 0 w, 0 w, 0 w, 0 w,
                     then
                 then
             then
-            tuck * 5 + a / token-0874
+            tuck * 5 + a / xaty-pll-calc-token-0874
         else
             2drop
         then
@@ -273,72 +407,99 @@ w, 0 w, 0 w, 0 w, 0 w,
     3 roll drop swap 2/ swap
 ;
 
-: token-0876 ( 0876 )
-    token-083d 4 =
-    if
-        token-0815 1 + token-0865 20 or dup token-0815 1 + token-0868 df
-        and token-0815 1 + token-0868 1 ms token-0815 2 + token-0865 fb and
-        2dup token-0815 2 + token-0868 4 or token-0815 2 + token-0868 1 ms
-        token-0815 2 + token-0868
+: aty-config-sdram ( 0876 )
+    \ Is it really SDRAM
+    aty-mem-type 4 = if
+        aty-reg-mem-cntl 1 + aty-reg-b@
+           20 or \ DLL reset+
+           dup aty-reg-mem-cntl 1 + aty-reg-b!
+           df and \ DLL reset-
+           aty-reg-mem-cntl 1 + aty-reg-b!
+
+        1 ms
+
+        aty-reg-mem-cntl 2 + aty-reg-b@
+        fb and \ SDRAM reset-
+        2dup aty-reg-mem-cntl 2 + aty-reg-b!
+        4 or \ SDRAM reset+
+        aty-reg-mem-cntl 2 + aty-reg-b!
+        1 ms \ SDRAM init (PALL, 8 refres, MRS)
+        \ SDRAM reset-
+        aty-reg-mem-cntl 2 + aty-reg-b!
     then
 ;
 
-: token-0877 ( 0877 )
-    44 3 token-0873 8 5 token-0873 a token-0873 dup 4 =
-    if
+: aty-setup-pll ( 0877 )
+
+    h# 44  h# 03 aty-pll!
+    h# 08  h# 05 aty-pll!
+           h# 0a aty-pll!
+
+    dup 4 = if
         drop 3
     then
-    6 lshift 6 token-0872 3f and or 6 token-0873 dup 2 token-0873
-    token-083d 1 > token-083d 5 < and
-    if
+    6 lshift   h# 06 aty-pll@
+    3f and or  h# 06 aty-pll!
+    dup        h# 02 aty-pll!
+
+    aty-mem-type 1 > aty-mem-type 5 < and if
         1b8
     else
         18b
     then
-    * a / 5 + a / 4 token-0873 14 3 token-0873 b 5 token-0873 6 ms
-    token-0876
+    * a / 5 + a /  h# 04 aty-pll!
+    h# 14          h# 03 aty-pll!
+    h# 0b          h# 05 aty-pll!
+
+    6 ms
+    aty-config-sdram
 ;
 
-: token-0878 ( 0878 )
-    token-0830 1 token-0873
+: aty-init-pll-macro-cntl ( 0878 )
+    aty-def-pll-macro-cntl h# 01 aty-pll!
 ;
 
-: token-0879 ( 0879 )
-    60606000 token-080c token-0869 50 ms token-081b token-0865 80 and
-    if
-        token-0858 10 or to token-0858
+: xaty-dac-resvd-token-0879 ( 0879 )
+    60606000 aty-reg-ovr-clr aty-reg-l!
+
+    d# 80 ms
+
+    aty-reg-dac-cntl aty-reg-b@ h# 80 and if
+        \ XXX reserved bit?
+        aty-prop-flags h# 10 or to aty-prop-flags
     then
-    h# 0 token-080c token-0869
+
+    h# 00 aty-reg-ovr-clr aty-reg-l!
 ;
 
-: token-087a ( 087a )
-    0
-    do
-    loop
-;
-
-: token-087b ( 087b )
+: aty-idle-loop  0 do loop  ;
+: aty-time-idle-loop ( 087b )
+    \ Wait until millisecond boundary
     get-msecs
     begin
         dup get-msecs <>
     until
-    drop get-msecs swap token-087a get-msecs swap -
+    drop
+
+    get-msecs swap
+    aty-idle-loop
+    get-msecs swap -
 ;
 
-: token-087c ( 087c )
+: aty-bogo-ms ( 087c )
     begin
-        dup token-087b 0=
+        dup aty-time-idle-loop 0=
     while
         2*
     repeat
 ;
 
-: token-087d ( 087d )
+: xaty-bogo-timer ( 087d )
     dup 2/ swap 0 >r
     begin
         2dup 1 - <
     while
-        2dup + 2/ dup token-087b dup
+        2dup + 2/ dup aty-time-idle-loop dup
         if
             r> drop >r
         else
@@ -349,578 +510,713 @@ w, 0 w, 0 w, 0 w, 0 w,
     drop r>
 ;
 
-: token-087e ( 087e )
-    token-0832
-    if
+: xaty-init-bogo-timer ( 087e )
+    aty-delay-ms# if
         exit
     then
-    40 token-087c token-087d / to token-0832
+    40 aty-bogo-ms xaty-bogo-timer / to aty-delay-ms#
 ;
 
-: token-087f ( 087f )
-    token-0832 * token-087a
+: aty-ms ( 087f )
+    aty-delay-ms# * aty-idle-loop
 ;
 
-: token-0880 ( 0880 )
-    8 token-087f
+: aty-8ms ( 0880 )
+    d# 8 aty-ms
 ;
 
-: token-0881 ( 0881 )
-    h# 1 token-087f
+: aty-1ms ( 0881 )
+    d# 1 aty-ms
 ;
 
-defer token-0882 ( 0882 )
-' token-0881 to token-0882
+defer aty-delay ( 0882 )
+' aty-1ms to aty-delay
 
-: token-0883 ( 0883 )
-    token-0870 2 and 0<>
+: aty-i2c-dat? ( 0883 )
+    aty-gpio@ 2 and 0<>
 ;
 
-: token-0884 ( 0884 )
-    token-0870 4 and 0<>
+: aty-i2c-clk? ( 0884 )
+    aty-gpio@ 4 and 0<>
 ;
 
-: token-0885 ( 0885 )
-    100 0
-    do
-        token-0870 18 and token-086f token-0884
-        if
+: aty-i2c-wait-clk ( 0885 )
+    100 0 do
+        aty-gpio@ 18 and aty-gpio!
+        aty-i2c-clk? if
             leave
         else
-            token-0882
+            aty-delay
         then
     loop
 ;
 
-: token-0886 ( 0886 )
-    token-0870 20 or f8 and token-086f
+: aty-i2c-clk- ( 0886 )
+    aty-gpio@
+    20 or
+    f8 and
+    aty-gpio!
 ;
 
-: token-0887 ( 0887 )
-    token-0870 28 and token-086f
+: aty-i2c-dat- ( 0887 )
+    aty-gpio@
+    28 and
+    aty-gpio!
 ;
 
-: token-0888 ( 0888 )
-    token-0870 10 or f8 and token-086f
+: aty-i2c-dat+ ( 0888 )
+    aty-gpio@
+    10 or       \
+    f8 and
+    aty-gpio!
 ;
 
-: token-0889 ( 0889 )
-    0 token-0806 token-0868 token-0882 20 token-0806 token-0868 token-0882
+: aty-turn-vsync-on ( 0889 )
+        0 aty-reg-crtc-v-sync-wid-pol aty-reg-b!  aty-delay
+    h# 20 aty-reg-crtc-v-sync-wid-pol aty-reg-b!  aty-delay
 ;
 
-: token-088a ( 088a )
-    token-0886 token-0887 token-0882 token-0885 token-0882
+: xaty-i2c-idle ( 088a )
+    aty-i2c-clk-
+    aty-i2c-dat-   aty-delay
+    aty-i2c-wait-clk  aty-delay
 ;
 
-: token-088b ( 088b )
-    100 0
-    do
-        token-0885 token-0883
-        if
-            leave token-0882 token-0886 token-0882 token-0887
+: aty-i2c-wait-idle ( 088b )
+    100 0 do
+        aty-i2c-wait-clk
+        aty-i2c-dat? if
+            leave
+            \ Deadcode
+                        aty-delay
+            aty-i2c-clk-  aty-delay
+            aty-i2c-dat-
         then
     loop
-    token-0882 token-0885 token-0882 token-0888 token-0882 token-0886
-    token-0882 token-0887 token-0882
+                aty-delay
+    aty-i2c-wait-clk  aty-delay
+    aty-i2c-dat+  aty-delay
+    aty-i2c-clk-  aty-delay
+    aty-i2c-dat-  aty-delay
 ;
 
-: token-088c ( 088c )
-    token-0888 token-0882 token-0885 token-0882 token-0887 token-0882
-    token-0886 token-0882 token-0887 token-0882
+: aty-i2c-go-idle ( 088c )
+    aty-i2c-dat+  aty-delay
+    aty-i2c-wait-clk  aty-delay
+    aty-i2c-dat-  aty-delay
+    aty-i2c-clk-  aty-delay
+    aty-i2c-dat-  aty-delay
 ;
 
-: token-088d ( 088d )
-    80 and
-    if
-        token-0887
+: >aty-i2c-bit ( 088d )
+    80 and if \ Direction???
+        aty-i2c-dat-
     else
-        token-0888
+        aty-i2c-dat+
     then
-    token-0882 token-0885 token-0882 token-0886 token-0887 token-0882
+
+                aty-delay
+    aty-i2c-wait-clk  aty-delay
+    aty-i2c-clk-
+    aty-i2c-dat-  aty-delay
 ;
 
-: token-088e ( 088e )
-    8 0
-    do
-        dup token-088d 1 lshift
+: aty-i2c-select ( 088e )
+   \ Send address
+    8 0 do
+        dup >aty-i2c-bit 1 lshift
     loop
-    drop token-0885 0 100 0
-    do
-        token-0883 0=
-        if
-            drop -1 leave
+    drop
+
+    aty-i2c-wait-clk
+    false
+    100 0 do
+        aty-i2c-dat? 0= if
+            \ Device responded by pulling DAT low
+            drop true leave
         then
     loop
-    token-0886 token-0887 token-0882
+    aty-i2c-clk-
+    aty-i2c-dat-  aty-delay
 ;
 
-: token-088f ( 088f )
-    0 8 0
-    do
-        2* token-0887 token-0882 token-0885 token-0882 token-0883
-        token-0886
+: aty-i2c-byte> ( 088f )
+    0
+    8 0 do
+        2* aty-i2c-dat-  aty-delay
+        aty-i2c-wait-clk     aty-delay
+        aty-i2c-dat?
+        aty-i2c-clk-
         if
             1 or
         then
     loop
-    token-0888 token-0882 token-0885 token-0882 token-0886 token-0887
-    token-0882
+    aty-i2c-dat+  aty-delay
+    aty-i2c-wait-clk  aty-delay
+    aty-i2c-clk-
+    aty-i2c-dat-  aty-delay
 ;
 
-: token-0890 ( 0890 )
-    0 token-088b a0 token-088e
-    if
-        h# 0 token-088e
-        if
-            drop -1
+: aty-try-i2c-read-a0-00 ( 0890 )
+    false
+    aty-i2c-wait-idle
+    h# a0 aty-i2c-select if
+        h# 00 aty-i2c-select if
+            drop true
         then
     then
-    token-088c
+    aty-i2c-go-idle
 ;
 
-: token-0891 ( 0891 )
-    token-0859 0 + c@ token-0859 7 + c@ + 0=
-    if
-        -1 token-0859 1 + 6 bounds
-        do
-            i c@ ff <>
-            if
-                drop 0 leave
+\ Is there 00 ff ff ff ff ff ff 00 at the beginning?
+: aty-edid-header-ok? ( 0891 )
+    aty-edid-buf 0 + c@
+    aty-edid-buf 7 + c@
+    + 0= if
+        true
+        aty-edid-buf 1 + 6 bounds do
+            i c@ ff <> if
+                drop false leave
             then
         loop
     else
-        0
+        false
     then
 ;
 
-: token-0892 ( 0892 )
-    0 token-0859 7f bounds
-    do
+: aty-edid-cksum-ok? ( 0892 )
+    0
+    aty-edid-buf d# 127 bounds do
         i c@ +
     loop
-    negate ff and token-0859 7f + c@ =
+    negate ff and
+    aty-edid-buf d# 127 + c@ =
 ;
 
-: token-0893 ( 0893 )
-    token-088b a1 token-088e
-    if
-        token-0859 80 bounds
-        do
-            token-088f i c!
+: aty-i2c-try-read-a1 ( 0893 )
+    aty-i2c-wait-idle
+    h# a1 aty-i2c-select if
+        aty-edid-buf d# 128 bounds do
+            aty-i2c-byte> i c!
         loop
     then
-    token-088c token-0891 token-0892 and dup
-    if
-        b token-0858 or to token-0858
+    aty-i2c-go-idle
+
+    aty-edid-header-ok?
+    aty-edid-cksum-ok? and
+    dup if
+        h# 0b aty-prop-flags or to aty-prop-flags
     then
 ;
 
-: token-0894 ( 0894 )
-    token-0886 20 ms 0 token-0885 token-0884
-    if
-        4 0
-        do
-            token-0890
-            if
-                drop -1 h# 3 token-0858 or to token-0858 leave
+: aty-i2c-read-a0-00 ( 0894 )
+    aty-i2c-clk-
+
+    20 ms
+
+    false
+    aty-i2c-wait-clk
+    aty-i2c-clk? if
+        4 0 do
+            aty-try-i2c-read-a0-00 if
+                drop true
+                h# 03 aty-prop-flags or to aty-prop-flags
+                leave
             then
         loop
     then
 ;
 
-: token-0895 ( 0895 )
-    0 4 0
-    do
-        token-0893
-        if
-            drop -1 leave
+: aty-i2c-read-a1 ( 0895 )
+    false
+    4 0 do
+        aty-i2c-try-read-a1 if
+            drop true leave
         then
     loop
 ;
 
-: token-0896 ( 0896 )
-    12 * 36 + token-0859 +
+: aty-edid-dtd+ ( 0896 )
+    d# 18 *
+    d# 54 +
+    aty-edid-buf +
 ;
 
-: token-0897 ( 0897 )
-    token-0896 dup
+: aty-edid-dtd+-dup ( 0897 )
+    aty-edid-dtd+ dup
 ;
 
-: token-0898 ( 0898 )
-    swap token-0896 + dup c@ swap
+: aty-edid-dtd-c@ ( 0898 )
+    swap aty-edid-dtd+ +
+    dup c@
+    swap
 ;
 
-: token-0899 ( 0899 )
-    token-0897 c@ swap 1 + c@ bwjoin
+: aty-edid-dtd-pixclk/10khz ( 0899 )
+    aty-edid-dtd+-dup c@ swap 1 + c@ bwjoin
 ;
 
-: token-089a ( 089a )
-    token-0898 2 + c@ f0 and 4 rshift bwjoin
+: aty-edid-dtd-disp@ ( 089a )
+    aty-edid-dtd-c@ 2 + c@ f0 and 4 rshift bwjoin
 ;
 
-: token-089b ( 089b )
-    2 token-089a
+: aty-edid-dtd-hdisp ( 089b )
+    2 aty-edid-dtd-disp@
 ;
 
-: token-089c ( 089c )
-    token-0898 1 + c@ f and bwjoin
+: aty-edid-dtd-blank@ ( 089c )
+    aty-edid-dtd-c@ 1 + c@ f and bwjoin
 ;
 
-: token-089d ( 089d )
-    3 token-089c
+: aty-edid-dtd-hblank ( 089d )
+    3 aty-edid-dtd-blank@
 ;
 
-: token-089e ( 089e )
-    5 token-089a
+: aty-edid-dtd-vdisp ( 089e )
+    5 aty-edid-dtd-disp@
 ;
 
-: token-089f ( 089f )
-    6 token-089c
+: aty-edid-dtd-blank ( 089f )
+    6 aty-edid-dtd-blank@
 ;
 
-: token-08a0 ( 08a0 )
-    token-0897 b + c@ 0 + c0 and 2 lshift swap 8 + c@ 0 + or
+: aty-edid-dtd-hfporch ( 08a0 )
+    aty-edid-dtd+-dup d# 11 + c@ 0 + c0 and 2 lshift swap 8 + c@ 0 + or
 ;
 
-: token-08a1 ( 08a1 )
-    token-0897 b + c@ 0 + 30 and 4 lshift swap 9 + c@ 0 + or
+: aty-edid-dtd-hsync ( 08a1 )
+    aty-edid-dtd+-dup d# 11 + c@ 0 + 30 and 4 lshift swap 9 + c@ 0 + or
 ;
 
-: token-08a2 ( 08a2 )
-    token-0896 a + dup c@ 0 +
+: aty-edid-dtd-vert ( 08a2 )
+    aty-edid-dtd+ d# 10 + dup c@ 0 +
 ;
 
-: token-08a3 ( 08a3 )
-    token-08a2 4 rshift swap 1 + c@ c and 2 lshift or
+: aty-edid-dtd-vporch ( 08a3 )
+    aty-edid-dtd-vert 4 rshift swap 1 + c@ c and 2 lshift or
 ;
 
-: token-08a4 ( 08a4 )
-    token-08a2 f and swap 1 + c@ h# 3 and 4 lshift or
+: aty-edid-vsync ( 08a4 )
+    aty-edid-dtd-vert f and swap 1 + c@ h# 3 and 4 lshift or
 ;
 
-: token-08a5 ( 08a5 )
-    token-0896 11 + c@
+: aty-edid-dtd-features ( 08a5 )
+    aty-edid-dtd+ d# 17 + c@
 ;
 
-: token-08a6 ( 08a6 )
-    token-08a5 10 and 10 =
+: aty-edid-dtd-dig-sync? ( 08a6 )
+    aty-edid-dtd-features 10 and 10 =
 ;
 
-: token-08a7 ( 08a7 )
-    token-08a5 18 and 10 =
+: aty-edid-dtd-comp-sync? ( 08a7 )
+    aty-edid-dtd-features 18 and 10 =
 ;
 
-: token-08a8 ( 08a8 )
-    token-08a5 18 and 18 =
+: unused-aty-edid-dtd-sep-sync? ( 08a8 )
+    aty-edid-dtd-features 18 and 18 =
 ;
 
-: token-08a9 ( 08a9 )
-    token-0859 14 + c@ 88 and 88 =
+\ Some non-standard display-type. Apple?
+: unused-aty-edid-dtd-unk? ( 08a9 )
+    aty-edid-buf d# 20 + c@ 88 and 88 =
 ;
 
-: token-08aa ( 08aa )
-    token-0859 14 + c@ 84 and 84 =
+: unused-aty-edid-dtd-mddi? ( 08aa )
+    aty-edid-buf d# 20 + c@ 84 and 84 =
 ;
 
-: token-08ab ( 08ab )
-    token-08a5 4 and 0<>
+: aty-edid-dtd-positive-vsync? ( 08ab )
+    aty-edid-dtd-features 4 and 0<>
 ;
 
-: token-08ac ( 08ac )
-    token-08a5 h# 2 and 0<>
+: aty-edid-dtd-positive-hsync? ( 08ac )
+    aty-edid-dtd-features h# 2 and 0<>
 ;
 
-: token-08ad ( 08ad )
-    token-08a5 80 and 0<>
+: aty-edid-dtd-interlaced? ( 08ad )
+    aty-edid-dtd-features 80 and 0<>
 ;
 
-: token-08ae ( 08ae )
-    1 swap lshift token-0852
+: aty-mode#mask ( 08ae )
+    1 swap lshift aty-modes-bitmask
 ;
 
-: token-08af ( 08af )
-    token-08ae or to token-0852
+: aty-add-mode# ( 08af )
+    aty-mode#mask or to aty-modes-bitmask
 ;
 
-: token-08b0 ( 08b0 )
-    token-08ae and 0<>
+: aty-mode#-supported? ( 08b0 )
+    aty-mode#mask and 0<>
 ;
 
-: token-08b1 ( 08b1 )
+: aty-8/1- ( 08b1 )
     2/ 2/ 2/ 1 -
 ;
 
-: token-08b2 ( 08b2 )
-    token-0859 18 + c@ 18 and 0= to token-084d token-0859 23 + w@ wbflip
-    ff3f and to token-0852 token-0859 25 + c@ 80 and
-    if
-        10 token-08af
+: aty-edid-parse-modes ( 08b2 )
+
+    \ RGB 4:4:4 (digital) or grayscale (analog)
+    aty-edid-buf d# 24 + c@ h# 18 and 0= to aty-grayscale?
+
+    \ Standard mode bitmap (720x400 masked out)
+    aty-edid-buf d# 35 + w@ wbflip ff3f and to aty-modes-bitmask
+
+    \ 1152x870@75 (Apple Macintosh II)
+    aty-edid-buf d# 37 + c@ 80 and if
+        d# 16 aty-add-mode#
     then
-    4 0
-    do
-        i token-08a6
-        if
-            i token-089e i token-089b token-0862 token-0853 i + 2* wa+ tuck
-            w! wa1+ w! i token-08a3 i token-089e + i token-08a4 i
-            token-08ab 0=
-            if
+
+    \ DTDs
+    4 0 do
+        i aty-edid-dtd-dig-sync? if
+            i aty-edid-dtd-vdisp
+            i aty-edid-dtd-hdisp
+            aty-mode#>res-tbl
+            /aty-std-modes
+            i + 2* wa+ tuck w! wa1+ w!
+            i aty-edid-dtd-vporch
+            i aty-edid-dtd-vdisp + i aty-edid-vsync
+
+            i aty-edid-dtd-positive-vsync? 0= if
                 20 or
             then
-            wljoin i token-089e i token-089f + i token-089e 1 - wljoin i
-            token-08a0 i token-089b + token-08b1 i token-08a1 2/ 2/ 2/ i
-            token-08ac 0=
-            if
-                20 or
-            then
-            wljoin i token-089b i token-089d + token-08b1 i token-089b
-            token-08b1 wljoin i token-08ad
-            if
-                2000000
+
+            wljoin
+            i aty-edid-dtd-vdisp
+            i aty-edid-dtd-blank +
+            i aty-edid-dtd-vdisp 1 -
+
+            wljoin
+            i aty-edid-dtd-hfporch
+            i aty-edid-dtd-hdisp + aty-8/1-
+            i aty-edid-dtd-hsync 2/ 2/ 2/
+            i aty-edid-dtd-positive-hsync? 0= if  20 or  then
+
+            wljoin
+            i aty-edid-dtd-hdisp
+            i aty-edid-dtd-hblank + aty-8/1-
+            i aty-edid-dtd-hdisp aty-8/1-
+
+            wljoin
+            i aty-edid-dtd-interlaced? if
+                h# 2000000
             else
                 h# 0
             then
-            i token-08a7
-            if
+
+            i aty-edid-dtd-comp-sync? if
                 10000000 or
             then
-            or token-0860 token-0853 i + 2* 2* la+ tuck l! la1+ tuck l!
-            la1+ tuck l! la1+ l! i token-0899 token-0861 token-0853 i + wa+
-            w! token-0853 i + token-08af
+
+            or aty-mode#>regs-tbl /aty-std-modes
+            i + 2* 2* la+ tuck l!
+            la1+ tuck l!
+            la1+ tuck l!
+            la1+ l!
+
+            i aty-edid-dtd-pixclk/10khz
+            aty-mode#>pixclk-tbl
+            /aty-std-modes
+            i + wa+ w!
+            /aty-std-modes i + aty-add-mode#
         then
     loop
 ;
 
 : token-08b3 ( 08b3 )
-    >r token-0860 r@ 2* 2* la+ dup l@ 18 rshift 240 or fff3 and swap 4 /l*
-    bounds
+    >r
+    aty-mode#>regs-tbl r@
+    2* 2* la+ dup l@
+    d# 24 rshift
+    h# 0240 or
+    h# fff3 and
+    swap 4 /l* bounds
     do
         i l@ /l
     +loop
     r>
 ;
 
-: token-08b4 ( 08b4 )
-    token-0861 swap wa+ w@
+: aty-mode#>pixclk ( 08b4 )
+    aty-mode#>pixclk-tbl swap wa+ w@
 ;
 
-: token-08b5 ( 08b5 )
-    2* token-0862 swap wa+ dup w@ swap wa1+ w@
+: aty-mode#>res ( 08b5 )
+    2* aty-mode#>res-tbl swap wa+ dup w@
+    swap wa1+ w@
 ;
 
-create token-08b6 ( 08b6 )
-h# 0 c, h# 1 c, h# 2 c, h# 3 c, 4 c, 5 c, 6 c, 7 c, h# 0 c, 10 c, 20 c, 30
-c, h# 0 c, 10 c, 20 c, 30 c, h# 0 c, 4 c, h# 0 c, 4 c, 8 c, c c, 8 c, c c,
-h# 0 c, h# 0 c, h# 1 c, h# 1 c, h# 2 c, h# 2 c, h# 3 c, h# 3 c,
-create token-08b7 ( 08b7 )
-7 c, 23 c, 15 c, e c,
 
-: token-08b8 ( 08b8 )
-    7 token-086f dup token-08b7 + c@ token-086f 1 ms 3 lshift token-08b6 +
-    token-0871 + c@
+
+create xaty-disp-id-token-08b6 ( 08b6 )
+h# 00 c, h# 01 c, h# 02 c, h# 03 c,
+h# 04 c, h# 05 c, h# 06 c, h# 07 c,
+h# 00 c, h# 10 c, h# 20 c, h# 30 c,
+h# 00 c, h# 10 c, h# 20 c, h# 30 c,
+h# 00 c, h# 04 c, h# 00 c, h# 04 c,
+h# 08 c, h# 0c c, h# 08 c, h# 0c c,
+h# 00 c, h# 00 c, h# 01 c, h# 01 c,
+h# 02 c, h# 02 c, h# 03 c, h# 03 c,
+
+create xaty-disp-id-token-08b7 ( 08b7 )
+h# 07 c,
+h# 23 c,
+h# 15 c,
+h# 0e c,
+
+: xaty-disp-id@ ( 08b8 )
+
+    \ Pull three display id GPIOs up
+    h# 07 aty-gpio!
+
+    dup xaty-disp-id-token-08b7 + c@
+    aty-gpio!
+
+    1 ms
+
+    3 lshift
+    xaty-disp-id-token-08b6 +
+    xaty-disp-id-gpio@ + c@
 ;
 
 create token-08b9 ( 08b9 )
-0 c, 10 c, 1 c, 12 c, 0 c, 11 c, 1 c, 10 c, 0 c, 4 c, 0 c, 12 c,
+h# 00 c,
+h# 10 c,
+h# 01 c,
+h# 12 c,
+h# 00 c,
+h# 11 c,
+h# 01 c,
+h# 10 c,
+h# 00 c,
+h# 04 c,
+h# 00 c,
+h# 12 c,
 
-: token-08ba ( 08ba )
-    0 token-08b8 dup to token-0855 token-0858 lbflip or lbflip 1 token-08b8
-    2 token-08b8 + 3 token-08b8 + dup to token-0856 swap lwflip or lwflip
-    to token-0858
+: xaty-disp-id-read ( 08ba )
+    0 xaty-disp-id@
+    dup to xaty-disp-id
+    aty-prop-flags lbflip or lbflip
+    1 xaty-disp-id@
+    2 xaty-disp-id@ +
+    3 xaty-disp-id@ +
+    dup to xaty-disp-id-alt
+    swap lwflip or lwflip
+    to aty-prop-flags
 ;
 
-: token-08bb ( 08bb )
-    token-0855 6 =
-    if
-        token-0856 dup h# 3 =
-        if
-            drop 2010 to token-0852
+: xaty-disp-id-parse ( 08bb )
+    xaty-disp-id 6 = if
+        xaty-disp-id-alt dup h# 3 = if
+            drop 2010 to aty-modes-bitmask
         else
-            dup 2b =
-            if
-                drop 4 token-08af
+            dup 2b = if
+                drop 4 aty-add-mode#
             else
-                dup b =
-                if
-                    drop 2210 to token-0852
+                dup b = if
+                    drop 2210 to aty-modes-bitmask
                 else
-                    23 =
-                    if
-                        92110 to token-0852
+                    23 = if
+                        92110 to aty-modes-bitmask
                     then
                 then
             then
         then
     else
-        token-0855 7 =
-        if
-            token-0856 dup 2d =
-            if
-                drop d token-08af
+        xaty-disp-id 7 = if
+            xaty-disp-id-alt
+            dup 2d = if
+                \ 832x624 (Macintosh II?)
+                drop d# 13 aty-add-mode#
             else
-                dup 3a =
-                if
-                    drop 13 token-08af
+                dup 3a = if
+                    \ 1024x768
+                    drop d# 19 aty-add-mode#
                 else
-                    17 =
-                    if
-                        821 to token-0852
+                    17 = if
+                        821 to aty-modes-bitmask
                     then
                 then
             then
         else
-            token-0855 6 <
-            if
-                token-08b9 token-0855 wa+ dup c@ 0<> to token-084d char+ c@
-                token-08af
+            xaty-disp-id 6 < if
+                token-08b9
+                xaty-disp-id wa+ dup c@
+                0<> to aty-grayscale?
+                char+ c@
+                aty-add-mode#
             then
         then
     then
 ;
 
-: token-08bc ( 08bc )
-    80 9 * 2*
+: /aty-edid-bit-buf  d# 128 9 * 2*  ;
+
+: xaty-alloc-edid-bufs ( 08bd )
+    /aty-edid-bit-buf alloc-mem to aty-edid-bit-buf
+    d# 128 2* alloc-mem to aty-edid-temp-buf
 ;
 
-: token-08bd ( 08bd )
-    token-08bc alloc-mem to token-085a 80 2* alloc-mem to token-085b
+: xaty-free-edid-bufs ( 08be )
+    aty-edid-bit-buf /aty-edid-bit-buf free-mem
+    aty-edid-temp-buf d# 128 free-mem
 ;
 
-: token-08be ( 08be )
-    token-085a token-08bc free-mem token-085b 80 free-mem
-;
+: xaty-edid-token-08bf ( 08bf )
+    ['] aty-8ms to aty-delay
+    aty-turn-vsync-on
+    aty-i2c-dat? ff and aty-edid-bit-buf c!
 
-: token-08bf ( 08bf )
-    ['] token-0880 to token-0882 token-0889 token-0883 ff and token-085a c!
-    26 9 * 0
-    do
-        token-0889 token-0883 ff and token-085a c@ <>
-        if
-            -1 to token-085c
+    26 9 * 0 do
+        aty-turn-vsync-on
+        aty-i2c-dat? ff and aty-edid-bit-buf c@ <> if
+            true to xaty-token-085c?
         then
     loop
-    token-085c
-    if
-        ['] token-0881 to token-0882 5 token-0858 or to token-0858
-        token-08bc 0
-        do
-            token-0889 token-0883
-            if
-                ff
-            else
-                0
-            then
-            token-085a i + c!
+    xaty-token-085c? if
+        ['] aty-1ms to aty-delay
+        h# 05 aty-prop-flags or to aty-prop-flags
+        /aty-edid-bit-buf 0 do
+            aty-turn-vsync-on
+            aty-i2c-dat?  if  ff  else  0  then
+            aty-edid-bit-buf i + c!
         loop
     then
 ;
 
-: token-08c0 ( 08c0 )
-    0 to token-085d 8 0
-    do
-        dup i + token-085a + c@
-        if
-            1
-        else
-            0
-        then
-        token-085d 1 lshift or to token-085d
+: aty-edid-bits>byte ( 08c0 )
+    0 to aty-tmp-byte
+    8 0 do
+        dup i + aty-edid-bit-buf + c@
+        if  1  else  0  then
+        aty-tmp-byte 1 lshift or to aty-tmp-byte
     loop
-    drop token-085d
+    drop aty-tmp-byte
 ;
 
-: token-08c1 ( 08c1 )
-    0 to token-085f token-08bc 0
-    do
-        i token-085e + token-08c0 token-085b token-085f + c! token-085f 1 +
-        to token-085f 9
-    +loop
-    80 0
-    do
-        token-085b i + c@ token-085b i + 7 + c@ + 0=
-        if
-            token-085b i + 1 + c@ token-085b i + 2 + c@ + token-085b i + 3
-            + c@ + token-085b i + 4 + c@ + token-085b i + 5 + c@ +
-            token-085b i + 6 + c@ + 5fa =
-            if
-                80 0
-                do
-                    token-085b i + j + c@ token-0859 i + c!
+: aty-edid-bits>bytes ( 08c1 )
+    0 to token-085f
+
+    /aty-edid-bit-buf 0 do
+        i token-085e + aty-edid-bits>byte
+        aty-edid-temp-buf token-085f + c!
+        token-085f 1 + to token-085f
+    9 +loop
+
+    d# 128 0 do
+        aty-edid-temp-buf i + c@
+        aty-edid-temp-buf i + 7 + c@ +
+        0= if
+            aty-edid-temp-buf i + 1 + c@
+            aty-edid-temp-buf i + 2 + c@ +
+            aty-edid-temp-buf i + 3 + c@ +
+            aty-edid-temp-buf i + 4 + c@ +
+            aty-edid-temp-buf i + 5 + c@ +
+            aty-edid-temp-buf i + 6 + c@ +
+            d# 1530 = if
+                d# 128 0 do
+                    aty-edid-temp-buf i + j + c@
+                    aty-edid-buf i + c!
                 loop
             then
         then
     loop
 ;
 
-: token-08c2 ( 08c2 )
-    token-088a token-08bd token-08bf 0 9 0
-    do
-        i to token-085e token-08c1 token-0891
-        if
-            token-0892
-            if
-                d token-0858 or to token-0858 drop -1 leave
+: xaty-edid-token-08c2 ( 08c2 )
+    xaty-i2c-idle
+    xaty-alloc-edid-bufs
+    xaty-edid-token-08bf
+    false
+    9 0 do
+        i to token-085e
+        aty-edid-bits>bytes
+        aty-edid-header-ok? if
+            aty-edid-cksum-ok? if
+                h# 0d aty-prop-flags or to aty-prop-flags
+                drop true leave
             then
         then
     loop
-    token-08be
+    xaty-free-edid-bufs
 ;
 
-: token-08c3 ( 08c3 )
-    1 token-080b token-0868
+\ Turn on non-VGA display
+: aty-ext-display ( 08c3 )
+    h# 01 aty-reg-crtc-gen-cntl3 aty-reg-b!
 ;
 
-: token-08c4 ( 08c4 )
-    token-082e token-0811 token-0868 token-082f token-0811 token-0868 3
-    token-080b token-0868
+: aty-enable-crt-clk ( 08c4 )
+    aty-first-clock  aty-reg-clock-sel aty-reg-b!
+    aty-second-clock aty-reg-clock-sel aty-reg-b!
+
+    \ Enable CRTC + Extended (non-VGA) display
+    h# 03 aty-reg-crtc-gen-cntl3 aty-reg-b!
 ;
 
-: token-08c5 ( 08c5 )
-    token-0809 token-0865 bf and token-0809 token-0868
+: aty-crtc-enable-blanking ( 08c5 )
+    aty-reg-crtc-gen-cntl0 aty-reg-b@
+    bf and
+    aty-reg-crtc-gen-cntl0 aty-reg-b!
 ;
 
-: token-08c6 ( 08c6 )
-    token-08c3 token-0851 token-08b3 token-08b4 token-0875 token-0877
-    token-0805 token-0843 token-086b token-0803 token-0843 token-086b
-    token-0802 token-0843 token-086b ffffff and token-0800 token-0843
-    token-086b token-0809 token-0843 token-086c 0 token-080c token-0848
-    token-086b 0 token-080d token-0848 token-086b 0 token-080e token-0848
-    token-086b token-084e 2/ 2/ 2/ 16 lshift token-083c 2/ 2/ 2/ +
-    token-0807 token-0849 token-086b
+: aty-setup-mode ( 08c6 )
+    aty-ext-display
+    aty-current-mode# token-08b3 aty-mode#>pixclk
+
+    xaty-calc-pll-token-0875
+    aty-setup-pll
+
+    aty-reg-crtc-v-sync-strt        aty-stat-crtc-failed aty-stat-l!
+    aty-reg-crtc-v-total            aty-stat-crtc-failed aty-stat-l!
+    aty-reg-crtc-h-sync-strt-wid    aty-stat-crtc-failed aty-stat-l!
+    ffffff and aty-reg-crtc-h-total aty-stat-crtc-failed aty-stat-l!
+    aty-reg-crtc-gen-cntl0          aty-stat-crtc-failed aty-stat-w!
+
+    0 aty-reg-ovr-clr            aty-stat-ovr-failed aty-stat-l!
+    0 aty-reg-ovr-wid-left-right aty-stat-ovr-failed aty-stat-l!
+    0 aty-reg-ovr-wid-top-bottom aty-stat-ovr-failed aty-stat-l!
+
+    aty-prop-width 2/ 2/ 2/ 16 lshift
+    aty-io-regs-offset 2/ 2/ 2/ +
+    aty-reg-crtc-off-pitch aty-stat-off-pitch-failed aty-stat-l!
 ;
 
-: token-08c7 ( 08c7 )
-    token-08c6 token-08c5 token-08c4
+: aty-apply-mode ( 08c7 )
+    aty-setup-mode
+    aty-crtc-enable-blanking
+    aty-enable-crt-clk
 ;
 
-: token-08c8 ( 08c8 )
-    token-08c6 token-08c4
+: aty-apply-mode-no-blanking ( 08c8 )
+    aty-setup-mode
+    aty-enable-crt-clk
 ;
 
-: token-08c9 ( 08c9 )
-    token-0852 0=
-    if
-        token-0850 token-08af
+: aty-pick-best-mode ( 08c9 )
+    aty-modes-bitmask 0= if
+        aty-default-mode# aty-add-mode#
     then
-    token-0853 2 + 2 + 0
-    do
-        i token-08b0
-        if
-            i token-08b5 2dup * token-083b 100000 * token-083c - <=
-            if
-                2dup * token-084e token-084f * <
-                if
+    /aty-std-modes 2 + 2 + 0 do
+        i aty-mode#-supported? if
+            i aty-mode#>res 2dup *
+            aty-mem-mbytes 100000 *
+            aty-io-regs-offset - <= if
+                2dup * aty-prop-width aty-prop-height * < if
                     2drop
                 else
-                    2dup * token-084e token-084f * =
-                    if
-                        i token-08b4 token-0851 token-08b4 >=
-                        if
-                            to token-084f to token-084e i to token-0851
+                    2dup * aty-prop-width aty-prop-height * = if
+                        i aty-mode#>pixclk  aty-current-mode# aty-mode#>pixclk >= if
+                            to aty-prop-height
+                            to aty-prop-width
+                            i to aty-current-mode#
                         else
                             2drop
                         then
                     else
-                        to token-084f to token-084e i to token-0851
+                        to aty-prop-height
+                        to aty-prop-width
+                        i to aty-current-mode#
                     then
                 then
             else
@@ -930,50 +1226,64 @@ create token-08b9 ( 08b9 )
     loop
 ;
 
-: token-08ca ( 08ca )
-    0 dup to token-0852 token-0858 10 and to token-0858 token-0859 80 ff
-    fill token-0850 dup to token-0851 token-08b5 to token-084f to
-    token-084e token-08c8 3e8 ms token-0894
-    if
-        token-0895
-    else
-        token-08c2
-    then
-    if
-        token-08b2
-    else
-        token-08ba token-08bb
-    then
-    token-0852 0=
-    if
-        token-0850 token-08af
-    then
-    token-08c3 token-08c5 token-0879
-;
+: aty-init-edid ( 08ca )
+    0
+        dup to aty-modes-bitmask
+        aty-prop-flags h# 10 and to aty-prop-flags
+        aty-edid-buf d# 128 ff fill
 
-: token-08cb ( 08cb )
-    4 my-space + dup " config-l@" token-086e 2 or swap " config-l!"
-    token-086e
-;
+        aty-default-mode#
+            dup to aty-current-mode#
+            aty-mode#>res
+               to aty-prop-height
+               to aty-prop-width
 
-: token-08cc ( 08cc )
-    4 my-space + dup " config-l@" token-086e fffffffd and swap " config-l!"
-    token-086e
-;
+        aty-apply-mode-no-blanking
+        d# 1000 ms
 
-: token-08cd ( 08cd )
-    token-0837 0=
-    if
-        token-084c
+        aty-i2c-read-a0-00 if
+            aty-i2c-read-a1
+        else
+            xaty-edid-token-08c2
+        then
+
         if
-            " assigned-addresses" get-my-property 0=
-            if
+            aty-edid-parse-modes
+        else
+            xaty-disp-id-read
+            xaty-disp-id-parse
+        then
+
+        aty-modes-bitmask 0= if
+            aty-default-mode# aty-add-mode#
+        then
+
+        aty-ext-display
+        aty-crtc-enable-blanking
+        xaty-dac-resvd-token-0879
+;
+
+: aty-enable-mem ( 08cb )
+    4 my-space + dup " config-l@" aty-call-parent
+    2 or swap " config-l!" aty-call-parent
+;
+
+: aty-disable-mem ( 08cc )
+    4 my-space + dup " config-l@" aty-call-parent
+    fffffffd and swap " config-l!" aty-call-parent
+;
+
+: aty-linear-map ( 08cd )
+    aty-block-addr 0= if
+        aty-use-assigned-addr? if
+            " assigned-addresses" get-my-property 0= if
                 begin
                     dup
                 while
-                    decode-phys ff and 10 =
-                    if
-                        drop to token-0839
+                    \ Is this BAR0 (Linear)?
+                    decode-phys ff and 10 = if
+                        drop
+                        to aty-assigned-addr
                     else
                         2drop
                     then
@@ -982,158 +1292,199 @@ create token-08b9 ( 08b9 )
                 2drop
             then
         then
-        token-0839 0 my-space 2000010 + 1000000 " map-in" token-086e to
-        token-0837 token-0833 to token-083a
+        aty-assigned-addr 0
+            my-space 2000010 + \ BAR1 (Linear)
+            1000000 \ 16M
+            " map-in" aty-call-parent to aty-block-addr
+        aty-linear-blk0 to aty-reg-offset
     then
-    token-08cb
+    aty-enable-mem
 ;
 
-: token-08ce ( 08ce )
-    token-0837
-    if
-        0 to token-083a token-0837 1000000 " map-out" token-086e 0 to
-        token-0837
+: aty-mmio-unmap ( 08ce )
+    aty-block-addr if
+        0 to aty-reg-offset
+        aty-block-addr 1000000 " map-out"
+        aty-call-parent
+        0 to aty-block-addr
     then
-    token-08cc
+    aty-disable-mem
 ;
 
-: token-08cf ( 08cf )
-    4 my-space + dup " config-l@" token-086e 1 or swap " config-l!"
-    token-086e
+: aty-pci-enable-pio ( 08cf )
+    4 my-space + dup " config-l@" aty-call-parent
+    1 or swap " config-l!" aty-call-parent
 ;
 
-: token-08d0 ( 08d0 )
-    4 my-space + dup " config-l@" token-086e fffffffe and swap " config-l!"
-    token-086e
+: aty-pci-disable-pio ( 08d0 )
+    4 my-space + dup " config-l@" aty-call-parent
+    fffffffe and swap " config-l!" aty-call-parent
 ;
 
-: token-08d1 ( 08d1 )
-    0 0 1000014 my-space or 100 " map-in" token-086e to token-0837 0 to
-    token-083a 40 my-space + dup " config-l@" token-086e fffffffc and c or
-    swap " config-l!" token-086e token-08cf
+: aty-block-map ( 08d1 )
+    0 0 1000014 my-space or 100 " map-in" aty-call-parent to aty-block-addr
+    0 to aty-reg-offset
+
+    \ block io, disable 0x46e8
+    40 my-space + dup " config-l@" aty-call-parent
+       fffffffc and
+       c or
+       swap " config-l!" aty-call-parent
+
+    aty-pci-enable-pio
 ;
 
-: token-08d2 ( 08d2 )
-    0 0 81000000 my-space or 10000 " map-in" token-086e to token-0838 40
-    my-space + dup " config-l@" token-086e fffffff8 and 8 or swap
-    " config-l!" token-086e token-0835 to token-083a token-08cf
+: aty-sparse-map ( 08d2 )
+    0 0 81000000 my-space or 10000 " map-in" aty-call-parent to aty-sparse-addr
+
+    \ Set IO base to 0x2ec, sparse i/o, disable 0x46e8
+    40 my-space +
+      dup " config-l@" aty-call-parent
+      h# ffff.fff8 and
+      h# 08 or
+      swap " config-l!" aty-call-parent
+
+    aty-pio-offset to aty-reg-offset
+    aty-pci-enable-pio
 ;
 
-: token-08d3 ( 08d3 )
-    token-0837 100 " map-out" token-086e 0 to token-0837 token-08d0
+: aty-block-unmap ( 08d3 )
+    aty-block-addr 100 " map-out" aty-call-parent
+    0 to aty-block-addr
+    aty-pci-disable-pio
 ;
 
-: token-08d4 ( 08d4 )
-    0 to token-083a token-0838 10000 " map-out" token-086e 0 to token-0838
-    token-08d0
+: aty-sparse-unmap ( 08d4 )
+    0 to aty-reg-offset
+    aty-sparse-addr 10000 " map-out" aty-call-parent
+    0 to aty-sparse-addr
+    aty-pci-disable-pio
 ;
 
 : token-08d5 ( 08d5 )
-    >r >r token-084e * + token-0837 token-083c + + r> -rot r>
+    >r >r
+    aty-prop-width * +
+    aty-block-addr aty-io-regs-offset + +
+    r> -rot r>
 ;
 
-: token-08d6 ( 08d6 )
-    " "(00 00 00 00 00 aa 00 aa 00 00 aa aa aa 00 00 aa 00 aa aa 55 00 aa aa aa 55 55 55 55 55 ff 55 ff 55 55 ff ff ff 55 55 ff 55 ff ff ff 55 ff ff ff)"
+: aty-palette ( 08d6 )
+     " "(00 00 00   00 00 aa   00 aa 00   00 aa aa   aa 00 00   aa 00 aa   aa 55 00   aa aa aa   55 55 55   55 55 ff   55 ff 55   55 ff ff   ff 55 55   ff 55 ff   ff ff 55   ff ff ff)"
     0 swap 3 /
 ;
 
-: token-08d7 ( 08d7 )
-    token-0818 token-0868
-;
+: aty-dac!  aty-reg-dac-data aty-reg-b!  ;
+: aty-dac@  aty-reg-dac-data aty-reg-b@  ;
 
-: token-08d8 ( 08d8 )
-    token-0818 token-0865
-;
+: aty-dac-r-index!  aty-reg-dac-r-index aty-reg-b!  ;
+: aty-dac-w-index!  aty-reg-dac-w-index aty-reg-b!  ;
 
-: token-08d9 ( 08d9 )
-    token-081a token-0868
-;
-
-: token-08da ( 08da )
-    token-0817 token-0868
-;
-
-: token-08db ( 08db )
-    swap 3 pick + token-084e min swap 2 pick + token-084f min
+: aty-clip-rect ( 08db )
+    swap 3 pick + aty-prop-width min
+    swap 2 pick + aty-prop-height min
 ;
 
 external
 
 : dimensions ( 08dc )
-    token-084e token-084f
+    aty-prop-width aty-prop-height
 ;
 
 : color@ ( 08dd )
-    token-08d9 token-08d8 token-08d8 token-08d8
+    aty-dac-r-index!
+    aty-dac@ aty-dac@ aty-dac@
 ;
 
 : color! ( 08de )
-    token-08da swap rot token-08d7 token-08d7 token-08d7
+    aty-dac-w-index!
+    swap rot
+    aty-dac! aty-dac! aty-dac!
 ;
 
 : set-colors ( 08df )
-    swap token-08da ff token-0819 token-0868 token-084d
-    if
-        0
-        ?do
-            dup c@ 4d * swap char+ dup c@ 97 * swap char+ dup c@ 1c * swap
-            char+ >r + + 8 rshift dup token-0818 token-0868 dup token-0818
-            token-0868 token-0818 token-0868 r>
+    swap aty-dac-w-index!
+    ff aty-reg-dac-mask aty-reg-b!
+
+    aty-grayscale? if
+        0 ?do
+            dup c@ h# 4d * swap char+
+            dup c@ h# 97 * swap char+
+            dup c@ h# 1c * swap char+
+            >r
+            + + 8 rshift
+            dup aty-reg-dac-data aty-reg-b!
+            dup aty-reg-dac-data aty-reg-b!
+                aty-reg-dac-data aty-reg-b!
+            r>
         loop
         drop
     else
-        3 * bounds
-        ?do
-            i c@ token-08d7
+        3 * bounds ?do
+            i c@ aty-dac!
         loop
     then
 ;
 
 : get-colors ( 08e0 )
-    swap token-08d9 3 * bounds
-    ?do
-        token-08d8 i c!
+    swap
+    aty-dac-r-index!
+    3 * bounds ?do
+        aty-dac@ i c!
     loop
 ;
 
 : fill-rectangle ( 08e1 )
-    token-08db 2swap token-084e * + frame-buffer-adr + swap 0
-    ?do
-        2 pick 2 pick 2 pick swap rot fill token-084e +
+    aty-clip-rect
+    2swap aty-prop-width * + frame-buffer-adr + swap
+    0 ?do
+        2 pick 2 pick 2 pick
+        swap rot fill
+        aty-prop-width +
     loop
     drop 2drop
 ;
 
 : draw-rectangle ( 08e2 )
-    token-08db 2swap token-084e * + frame-buffer-adr + swap 0
-    ?do
-        2 pick 2 pick 2 pick swap move >r tuck + swap r> token-084e +
+    aty-clip-rect
+    2swap aty-prop-width * + frame-buffer-adr + swap
+    0 ?do
+        2 pick 2 pick 2
+        pick swap move >r tuck + swap r>
+        aty-prop-width +
     loop
     drop 2drop
 ;
 
 : read-rectangle ( 08e3 )
-    token-08db 2swap token-084e * + frame-buffer-adr + swap 0
-    ?do
-        2 pick 2 pick 2 pick -rot move >r tuck + swap r> token-084e +
+    aty-clip-rect
+    2swap aty-prop-width * + frame-buffer-adr + swap
+    0 ?do
+        2 pick 2 pick 2 pick
+        -rot move >r tuck + swap r>
+        aty-prop-width +
     loop
     drop 2drop
 ;
 
-: mode# ( 08e4 )
-    token-0851
-;
+: mode#  aty-current-mode#  ;
 
 : show-modes ( 08e5 )
-    cr token-0853 2 + 2 + 0
-    do
-        i token-08b0
-        if
-            i token-08b5 2dup * token-083b 100000 * token-083c - <=
-            if
-                i . " = " type swap base @ swap a base ! . base ! " X "
-                type base @ swap a base ! . base ! " @ " type i token-08b4
-                base @ swap a base ! . base ! " MHz" type cr
+    cr
+    /aty-std-modes 2 + 2 + 0 do
+        i aty-mode#-supported? if
+            i aty-mode#>res
+            2dup *
+            aty-mem-mbytes 100000 *
+            aty-io-regs-offset - <= if
+                i . " = " type
+                swap base @ swap d# 10 base ! .
+                base ! " X " type
+                base @ swap d# 10 base ! .
+                base ! " @ " type
+                i aty-mode#>pixclk
+                base @ swap d# 10 base ! .
+                base ! " MHz" type
+                cr
             else
                 2drop
             then
@@ -1142,16 +1493,31 @@ external
 ;
 
 : set-mode ( 08e6 )
-    dup token-08b0
-    if
-        dup token-08b5 * token-083b 100000 * token-083c - <=
-        if
-            dup to token-0851 token-08b5 to token-084f to token-084e
-            " width" delete-property " height" delete-property " linebytes"
-            delete-property token-084e encode-int " width" property
-            token-084f encode-int " height" property token-084e encode-int
-            " linebytes" property token-084e token-084f over char-width /
-            over char-height / fb8-install erase-screen token-08c7
+    dup aty-mode#-supported? if
+        dup aty-mode#>res *
+        aty-mem-mbytes 100000 *
+        aty-io-regs-offset - <= if
+            dup to aty-current-mode#
+            aty-mode#>res
+              to aty-prop-height
+              to aty-prop-width
+
+            " width"     delete-property
+            " height"    delete-property
+            " linebytes" delete-property
+
+            aty-prop-width  encode-int " width" property
+            aty-prop-height encode-int " height" property
+            aty-prop-width  encode-int " linebytes" property
+
+            aty-prop-width aty-prop-height
+            over char-width /
+            over char-height /
+
+            fb8-install
+            erase-screen
+
+            aty-apply-mode
         else
             drop " Not enough memory to support" type cr
         then
@@ -1162,170 +1528,226 @@ external
 
 headerless
 
-: token-08e7 ( 08e7 )
-    0 swap 10 0
-    do
-        dup i swap rb! dup rb@ i <>
-        if
-            drop -1 swap leave
+\ Checks whether a write to an address can be read back
+: aty-address-bad? ( addr -- bad? )
+    false              ( addr false )
+    swap               ( false addr )
+    10 0 do
+        dup            ( false addr addr )
+        i              ( false addr addr i )
+        swap           ( false addr i addr )
+        rb!            ( false addr )
+        dup            ( false addr addr )
+        rb@            ( false addr val )
+        i <>           ( false addr val=i? )
+        if             ( false addr )
+            drop true  ( false true )
+            swap       ( true false )
+            leave
         then
-    loop
-    drop
+    loop               ( false|true false|addr )
+    drop               ( false|true )
 ;
 
-: token-08e8 ( 08e8 )
-    dup dup 4 =
-    if
-        1 -
-    then
-    token-0815 token-0865 f8 and or token-0815 token-0868 100000 *
-    token-0837 + 100 - 0 swap 10 0
-    do
-        dup i + token-08e7
-        if
-            drop -1 swap leave
+: aty-mem-bad? ( mbytes -- bad? )
+    dup                         ( mbytes mbytes )
+
+    \ Turn 4 into 3
+    dup 4 = if  1 -  then       ( mbytes mbytes1 )
+
+    aty-reg-mem-cntl aty-reg-b@
+    f8 and or
+    aty-reg-mem-cntl aty-reg-b!       ( mbytes )
+
+    100000 *                    ( bytes )
+    aty-block-addr +               ( fbend )
+    100 -                       ( fbend-100 )
+    false swap                  ( false fbend-100 )
+    10 0 do
+        dup i +                 ( false fbend-100 fbend-100+i )
+        aty-address-bad? if
+            drop true swap      ( true fbend-100 )
+            leave
         then
-    loop
-    drop
+    loop                        ( false|true fbend-100 )
+    drop                        ( false|true )
 ;
 
-: token-08e9 ( 08e9 )
-    token-0831 0=
-    if
-        token-08cd token-0837 token-083c + dup to frame-buffer-adr
-        encode-int " address" property 4 dup token-08e8
-        if
-            2/ dup token-08e8
-            if
-                2/ dup token-08e8
-                if
-                    drop token-08ce cr " No video memory" type cr exit
+: aty-is-install ( 08e9 )
+    aty-open-count 0= if
+        aty-linear-map
+
+        aty-block-addr aty-io-regs-offset +
+        dup to frame-buffer-adr
+        encode-int " address" property
+
+        4 dup aty-mem-bad? if
+            2/ dup aty-mem-bad? if
+                2/ dup aty-mem-bad? if
+                    drop aty-mmio-unmap
+                    cr " No video memory" type cr
+                    exit
                 then
             then
         then
-        to token-083b token-08d6 set-colors ff dup 2dup color! default-font
-        set-font token-08c9
+
+        to aty-mem-mbytes
+        aty-palette set-colors
+        ff dup 2dup color!
+        default-font set-font
+        aty-pick-best-mode
     then
-    token-0851 set-mode token-0831 1 + to token-0831
+    aty-current-mode# set-mode
+    aty-open-count 1 + to aty-open-count
 ;
 
-: token-08ea ( 08ea )
-    token-0831 1 =
-    if
-        0 to token-0831 token-08c3 token-08ce " address" delete-property -1
-        to frame-buffer-adr
+: aty-is-remove ( 08ea )
+    aty-open-count 1 = if
+        0 to aty-open-count
+        aty-ext-display
+        aty-mmio-unmap
+        " address" delete-property
+        -1 to frame-buffer-adr
     else
-        token-0831 1 - 0 max to token-0831
+        aty-open-count 1 - 0 max to aty-open-count
     then
 ;
 
-create token-08eb ( 08eb )
-h# 0 l, 55555555 l, aaaaaaaa l, ffffffff l,
+create aty-reg-test-patterns ( 08eb )
+h#          0 l,
+h# 55555555 l,
+h# aaaaaaaa l,
+h# ffffffff l,
 
-: token-08ec ( 08ec )
-    2* 2* token-08eb + c@ swap 2dup dup token-0865 -rot token-0868 -rot dup
-    token-0865 swap 2swap swap rot token-0868 =
+: aty-reg-test-b ( 08ec )
+    2* 2* aty-reg-test-patterns + c@
+    swap 2dup dup        aty-reg-b@
+    -rot                 aty-reg-b!
+    -rot dup             aty-reg-b@
+    swap 2swap swap rot  aty-reg-b! =
 ;
 
-: token-08ed ( 08ed )
-    2* 2* token-08eb + w@ swap 2dup dup token-0864 -rot token-0867 -rot dup
-    token-0864 swap 2swap swap rot token-0867 =
+: aty-reg-test-w ( 08ed )
+    2* 2* aty-reg-test-patterns + w@
+    swap 2dup dup        aty-reg-w@
+    -rot                 aty-reg-w!
+    -rot dup             aty-reg-w@
+    swap 2swap swap rot  aty-reg-w! =
 ;
 
-: token-08ee ( 08ee )
-    2* 2* token-08eb + l@ swap 2dup dup token-0866 -rot token-0869 -rot dup
-    token-0866 swap 2swap swap rot token-0869 =
+: aty-reg-test-l ( 08ee )
+    2* 2* aty-reg-test-patterns + l@
+    swap 2dup dup        aty-reg-l@
+    -rot                 aty-reg-l!
+    -rot dup             aty-reg-l@
+    swap 2swap swap rot  aty-reg-l! =
 ;
 
-: token-08ef ( 08ef )
-    2* 2* token-08eb + l@ swap 2dup dup rl@ -rot rl! -rot dup rl@ swap
-    2swap swap rot rl! =
+: aty-direct-reg-test ( 08ef )
+    2* 2* aty-reg-test-patterns + l@
+    swap 2dup dup        rl@
+    -rot                 rl!
+    -rot dup             rl@
+    swap 2swap swap rot  rl! =
 ;
 
-: token-08f0 ( 08f0 )
-    2* 2* token-08eb + c@ swap 2dup dup token-0872 -rot token-0873 -rot dup
-    token-0872 swap 2swap swap rot token-0873 =
+: aty-pll-reg-test ( 08f0 )
+    2* 2* aty-reg-test-patterns + c@
+    swap 2dup dup        aty-pll@
+    -rot                 aty-pll!
+    -rot dup             aty-pll@
+    swap 2swap swap rot  aty-pll! =
 ;
 
-defer token-08f1 ( 08f1 )
-' token-08ee to token-08f1
+defer aty-reg-test-hook ( 08f1 )
+' aty-reg-test-l to aty-reg-test-hook
 
-: token-08f2 ( 08f2 )
-    -1 swap 4 0
-    do
-        dup i token-08f1 0=
-        if
-            to token-083f 0 swap leave
+: aty-run-reg-test ( 08f2 )
+    true swap
+    4 0 do
+        dup i
+        aty-reg-test-hook 0= if
+            to aty-fb-check-addr
+            false swap
+            leave
         then
     loop
     drop
 ;
 
-: token-08f3 ( 08f3 )
-    ['] token-08ec to token-08f1 token-08f2
+: aty-test-regs-b ( 08f3 )
+    ['] aty-reg-test-b to aty-reg-test-hook
+    aty-run-reg-test
 ;
 
-: token-08f4 ( 08f4 )
-    ['] token-08ed to token-08f1 token-08f2
+: aty-test-regs-w ( 08f4 )
+    ['] aty-reg-test-w to aty-reg-test-hook
+    aty-run-reg-test
 ;
 
-: token-08f5 ( 08f5 )
-    ['] token-08ee to token-08f1 token-08f2
+: aty-test-regs-l ( 08f5 )
+    ['] aty-reg-test-l to aty-reg-test-hook
+    aty-run-reg-test
 ;
 
-: token-08f6 ( 08f6 )
-    ['] token-08ef to token-08f1 token-08f2
+: aty-test-direct-regs ( 08f6 )
+    ['] aty-direct-reg-test to aty-reg-test-hook
+    aty-run-reg-test
 ;
 
-: token-08f7 ( 08f7 )
-    ['] token-08f0 to token-08f1 token-08f2
+: aty-test-pll-regs ( 08f7 )
+    ['] aty-pll-reg-test to aty-reg-test-hook
+    aty-run-reg-test
 ;
 
-: token-08f8 ( 08f8 )
-    token-083f -1 <>
-    if
-        "  failed at address:  " type token-083f .
+: .aty-test-result ( 08f8 )
+    aty-fb-check-addr -1 <> if
+        "  failed at address:  " type aty-fb-check-addr .
     else
         "  passed Ok" type
     then
     cr
 ;
 
-defer token-08f9 ( 08f9 )
+defer aty-test-hook ( 08f9 )
 
-: token-08fa ( 08fa )
-    -1 to token-083f token-08f9 token-08f8
+: aty-run-test ( 08fa )
+    -1 to aty-fb-check-addr
+    aty-test-hook
+    .aty-test-result
 ;
 
-: token-08fb ( 08fb )
-;
+: aty-noop ;
 
-: token-08fc ( 08fc )
-    token-080f token-08f5 0=
-    if
-        token-083e token-084b or to token-083e
+: aty-test-regs ( 08fc )
+    aty-reg-scratch-reg0 aty-test-regs-l 0= if
+        aty-prop-status aty-test-regs-failed or to aty-prop-status
     then
-    token-0810 token-08f5 0=
-    if
-        token-083e token-084b or to token-083e
+    aty-reg-scratch-reg1 aty-test-regs-l 0= if
+        aty-prop-status aty-test-regs-failed or to aty-prop-status
     then
 ;
 
-: token-08fd ( 08fd )
-    token-0837 token-083c + token-084e token-084f * bounds
-    do
-        0 i 8 0
-        do
-            dup token-08f6
-            if
-                drop -1 swap leave
+: aty-test-fb ( 08fd )
+    aty-block-addr aty-io-regs-offset +
+    aty-prop-width aty-prop-height *
+    bounds do
+        false i
+        8 0 do
+            dup
+            aty-test-direct-regs if
+                drop true swap leave
             then
         loop
-        drop 0=
-        if
-            token-083e token-084a or to token-083e token-083f token-0837 -
-            token-083c - to token-083f token-08f8 key?
-            if
+        drop
+        0= if
+            aty-prop-status aty-fb-test-failed or to aty-prop-status
+            aty-fb-check-addr
+               aty-block-addr -
+               aty-io-regs-offset -
+               to aty-fb-check-addr
+            .aty-test-result
+            key? if
                 key drop leave
             else
                 " Test Frame buffer - " type
@@ -1335,13 +1757,17 @@ defer token-08f9 ( 08f9 )
     +loop
 ;
 
-: token-08fe ( 08fe )
-    c token-08eb + l@ token-0837 token-083c + token-084e token-084f *
-    bounds
-    do
-        dup i rl! dup i rl@ <>
-        if
-            token-083e token-084a or to token-083e leave
+: aty-unused-check-fb ( 08fe )
+    d# 12 aty-reg-test-patterns + l@
+
+    aty-block-addr aty-io-regs-offset +
+    aty-prop-width aty-prop-height *
+    bounds do
+        dup i rl!
+        dup i rl@
+        <> if
+            aty-prop-status aty-fb-test-failed or to aty-prop-status
+            leave
         then
         4
     +loop
@@ -1351,84 +1777,142 @@ defer token-08f9 ( 08f9 )
 external
 
 : self-test ( 08ff )
-    0 to token-083e cr " Test hardware registers - " type
-    ['] token-08fc to token-08f9 token-08fa " Test RamDAC - " type
-    ['] token-08fb to token-08f9 token-08fa token-0837
-    if
+    0 to aty-prop-status
+
+    cr
+
+    " Test hardware registers - " type
+    ['] aty-test-regs to aty-test-hook
+    aty-run-test
+
+    " Test RamDAC - " type
+    ['] aty-noop to aty-test-hook
+    aty-run-test
+
+    aty-block-addr if
         " Test Frame buffer - " type
-        ['] token-08fd to token-08f9 token-08fa
+        ['] aty-test-fb to aty-test-hook
+        aty-run-test
     else
         " Frame buffer not mapped" type cr
     then
-    token-083e
+    aty-prop-status
 ;
 
 headerless
 
-: token-0900 ( 0900 )
-    token-0823 token-0814 token-0842 token-086b token-0824 token-0808
-    token-0867 token-0825 token-0809 token-0843 token-086b token-0826
-    token-081d token-0844 token-086b token-081f token-0865 7 and dup 0 >
-    swap tuck 5 < and
-    if
-        to token-083d
+: aty-init-regs ( 0900 )
+    aty-def-bus-cntl       aty-reg-bus-cntl        aty-stat-bus-cntl-failed  aty-stat-l!
+    aty-def-crtc-int-cntl  aty-reg-crtc-int-cntl                             aty-reg-w!
+    aty-def-crtc-gen-cntl  aty-reg-crtc-gen-cntl0  aty-stat-crtc-failed      aty-stat-l!
+    aty-def-gen-test-cntl  aty-reg-gen-test-cntl   aty-stat-gen-test-failed  aty-stat-l!
+
+    aty-reg-config-stat0 aty-reg-b@
+    h# 07 and  \ RAM type from straps
+    dup 0 >    \ Is it valid?
+    swap tuck 5 <
+    and if
+        \ Then it overrides the hardwired default
+        to aty-mem-type
     else
         drop
     then
-    token-083d dup 4 =
-    if
-        drop token-082d token-0829
+
+    aty-mem-type dup 4 = if
+        drop
+        aty-sdram-config-statw
+        aty-sdram-mem-cntl
+    else 2 = if
+        aty-edo-config-statw
+        aty-edo-mem-cntl
     else
-        2 =
-        if
-            token-082c token-0828
-        else
-            token-082b token-0827
-        then
-    then
-    token-0815 token-0845 token-086b token-081f token-0841 token-086c
-    token-082a token-081b token-0869
+        aty-dram-config-statw
+        aty-dram-mem-cntl
+    then then
+
+    aty-reg-mem-cntl      aty-stat-mem-cntl-failed     aty-stat-l!
+    aty-reg-config-stat0  aty-stat-config-stat-failed  aty-stat-w!
+    aty-def-dac-cntl      aty-reg-dac-cntl             aty-reg-l!
 ;
 
-token-087e 16 my-space + dup dup " config-w@" token-086e dup invert rot
-" config-w!" token-086e swap dup " config-w@" token-086e rot dup rot <>
-if
-    swap " config-w!" token-086e token-08d1
+
+xaty-init-bogo-timer
+
+\ Top bits of I/O BAR
+h# 16 my-space + dup dup " config-w@" aty-call-parent
+dup
+  invert rot " config-w!" aty-call-parent
+  swap dup " config-w@" aty-call-parent
+rot dup rot <> if
+    \ Unsuccessful. No sparse I/O BAR.
+    \ Write back original content, probably useless
+    swap " config-w!" aty-call-parent
+    aty-block-map
 else
-    2drop token-08d2
+    2drop
+    aty-sparse-map
 then
-token-0900 token-0878 f token-081e 2 + token-0868 " AAPL,cpu-id"
-get-inherited-property 0=
-if
-    -1 to token-084c drop 4 to token-0850
+
+aty-init-regs
+aty-init-pll-macro-cntl
+
+h# 0f aty-reg-config-cntl 2 + aty-reg-b!
+
+" AAPL,cpu-id" get-inherited-property 0= if
+    true to aty-use-assigned-addr?
+    drop
+    4 to aty-default-mode#
 then
-80 alloc-mem to token-0859 token-08ca token-08c9 token-0837
-if
-    token-08d3
+
+d# 128 alloc-mem to aty-edid-buf
+aty-init-edid
+aty-pick-best-mode
+
+aty-block-addr if
+    aty-block-unmap
 else
-    token-08d4
+    aty-sparse-unmap
 then
-token-083e encode-int " ATY,Status" property token-0858 encode-int
-" ATY,Flags" property token-0858 8 and
-if
-    token-0859 80 encode-bytes " EDID" property
+
+aty-prop-status encode-int " ATY,Status" property
+aty-prop-flags encode-int " ATY,Flags" property
+
+aty-prop-flags h# 08 and if
+    aty-edid-buf d# 128 encode-bytes " EDID" property
 then
-token-0859 80 free-mem token-084e encode-int " width" property token-084f
-encode-int " height" property 8 encode-int " depth" property token-084e
-encode-int " linebytes" property " display" device-type " ISO8859-1"
-encode-string " character-set" property 168 get-token drop 169 get-token
-drop <>
-if
+aty-edid-buf d# 128 free-mem
+
+aty-prop-width encode-int " width" property
+aty-prop-height encode-int " height" property
+8 encode-int " depth" property
+aty-prop-width encode-int " linebytes" property
+" display" device-type
+" ISO8859-1" encode-string " character-set" property
+
+168 get-token drop
+169 get-token drop
+<> if
     0 0 " iso6429-1983-colors" property
 then
-my-address my-space encode-phys 0 encode-int encode+ 0 encode-int encode+
-my-address my-space 2000010 + encode-phys encode+ 0 encode-int encode+
-1000000 encode-int encode+ " reg" property
-' token-08e9 is-install
-' token-08ea is-remove " ATY,264VT" device-name " ATY,VT" model
-" 113-XXXXX-10b14" encode-string " ATY,Rom#" property " XXX-XXXXX-XX"
-encode-string " ATY,Mem#" property " 102-XXXXX-XX" encode-string
-" ATY,Card#" property " APL-1.0b11" encode-string " ATY,Fcode#" property
+
+my-address my-space encode-phys
+    0 encode-int encode+
+    0 encode-int encode+
+    my-address my-space 2000010 + encode-phys encode+
+    0 encode-int encode+
+    1000000 encode-int encode+
+    " reg" property
+
+' aty-is-install is-install
+' aty-is-remove is-remove
+
+" ATY,264VT" device-name
+" ATY,VT" model
+" 113-XXXXX-10b14" encode-string " ATY,Rom#" property
+" XXX-XXXXX-XX" encode-string " ATY,Mem#" property
+" 102-XXXXX-XX" encode-string " ATY,Card#" property
+" APL-1.0b11" encode-string " ATY,Fcode#" property
+
 " "(4a 6f 79 21 70 65 66 66 70 77 70 63 00 00 00 01 ad a2 99 11 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 02 00 00 00 00 ff ff ff ff 00 00 00 00 00 00 6c f8 00 00 6c f8 00 00 6c f8 00 00 04 80 00 04 04 00 ff ff ff ff 00 00 00 00 00 00 21 bc 00 00 1d b0 00 00 17 73 00 00 71 80 02 01 04 00 ff ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 f8 00 00 00 80 04 04 04 00 6e 74 69 6e ff ff ff ff 00 00 00 00 ff ff ff ff 00 00 00 00 ff ff ff ff 00 00 00 00 00 00 00 04 00 00 00 1d 00 00 00 01 00 00 01 18 00 00 01 30 00 00 03 d4 00 00 00 01 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0a 00 00 00 00 00 00 00 00 00 00 00 10 00 00 00 00 00 00 00 00 00 00 00 0e 00 00 00 0a 00 00 00 00 00 00 00 22 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 18)"
 encode-bytes
 " "(00 00 00 00 00 00 00 29 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 1a 00 00 00 00 02 00 00 3a 02 00 00 51 02 00 00 68 02 00 00 86 02 00 00 a5 02 00 00 bd 02 00 00 d5 02 00 00 e9 02 00 00 fd 02 00 01 14 02 00 01 2b 02 00 01 45 02 00 01 5b 02 00 01 6f 02 00 01 7d 02 00 01 86 02 00 01 8e 02 00 01 97 02 00 01 ac 02 00 01 bb 02 00 01 c5 02 00 01 db 02 00 01 e2 02 00 01 fa 02 00 02 10 02 00 02 25 02 00 02 3b 02 00 02 52 02 00 02 6d 00 01 00 00 00 00 00 0b 00 00 00 00 4a 1c 42 24 80 33 46 01 80 eb 40 0a a0 00 16 68 40 20 86 73 42 03 00 00 4e 61 6d 65 52 65 67 69 73 74 72 79 4c 69 62 00 44 72 69 76 65 72 53 65 72 76 69 63 65 73 4c 69 62 00 50 43 49 4c 69 62 00 56 69 64 65 6f 53 65 72 76 69 63 65 73 4c 69 62 00 52 65 67 69 73 74 72 79 50 72 6f 70 65 72)"
@@ -1709,5 +2193,3 @@ encode-bytes encode+
 encode-bytes encode+
 " "(54 49 2c 63 72 65 61 74 65 01 2b 41 54 49 2c 61 64 61 70 74 65 72 0a 22 41 f0 86 02 01 41 e0)"
 encode-bytes encode+ " driver,AAPL,MacOS,PowerPC" property
-
-end0
