@@ -1,14 +1,11 @@
 OS := $(shell uname)
 
-all: ofw.c32 s3-trio64.rom
+all: ofw.c32
 
 floppyofw.img: FORCE build ../../../build/inflate.bin
 	./build $@
 
 ofw.c32: FORCE build ../../../build/inflate.bin
-	./build $@
-
-s3-trio64.rom: FORCE build
 	./build $@
 
 ../../../${OS}/forth:
