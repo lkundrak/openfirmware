@@ -877,7 +877,9 @@ defer aty-delay ( 0882 )
     aty-edid-buf d# 24 + c@ h# 18 and 0= to aty-grayscale?
 
     \ Standard mode bitmap (720x400 masked out)
-    aty-edid-buf d# 35 + w@ wbflip ff3f and to aty-modes-bitmask
+    aty-edid-buf d# 35 + c@  8 lshift
+       aty-edid-buf d# 36 + c@  3f and or
+       to aty-modes-bitmask
 
     \ 1152x870@75 (Apple Macintosh II)
     aty-edid-buf d# 37 + c@ 80 and if
