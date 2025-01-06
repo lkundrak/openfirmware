@@ -280,6 +280,7 @@ create aty-mode#>res-tbl ( 0862 )
 
 : aty-set-status ( 086a )
     <> if
+        [ifdef] debug  ." Setting error status bit: " dup . cr  [then]
         aty-prop-status or to aty-prop-status
     else
         drop
@@ -299,11 +300,13 @@ create aty-mode#>res-tbl ( 0862 )
     aty-set-status
 ;
 
+[ifndef] tiny
 : unused-aty-stat-b! ( 086d )
     -rot 2dup aty-reg-b!
     aty-reg-b@
     aty-set-status
 ;
+[then]
 
 : aty-call-parent ( 086e )
     aty-saved-my-self 0= if
@@ -312,6 +315,7 @@ create aty-mode#>res-tbl ( 0862 )
     my-self 0= if
         aty-saved-my-self to my-self
     then
+    [ifdef] debug  ." Calling parent: " 2dup type cr  [then]
     $call-parent
 ;
 
@@ -410,6 +414,7 @@ create aty-mode#>res-tbl ( 0862 )
 : aty-config-sdram ( 0876 )
     \ Is it really SDRAM
     aty-mem-type 4 = if
+        [ifdef] debug  ." Will run SDRAM init sequence" cr  [then]
         aty-reg-mem-cntl 1 + aty-reg-b@
            20 or \ DLL reset+
            dup aty-reg-mem-cntl 1 + aty-reg-b!
@@ -426,10 +431,12 @@ create aty-mode#>res-tbl ( 0862 )
         1 ms \ SDRAM init (PALL, 8 refres, MRS)
         \ SDRAM reset-
         aty-reg-mem-cntl 2 + aty-reg-b!
+    [ifdef] debug  else  ." Not SDRAM" cr  [then]
     then
 ;
 
 : aty-setup-pll ( 0877 )
+    [ifdef] debug  ." Setting up clocks" cr  [then]
 
     h# 44  h# 03 aty-pll!
     h# 08  h# 05 aty-pll!
@@ -511,6 +518,7 @@ create aty-mode#>res-tbl ( 0862 )
 ;
 
 : xaty-init-bogo-timer ( 087e )
+    [ifdef] debug  ." Calibrating delay loop" cr  [then]
     aty-delay-ms# if
         exit
     then
@@ -622,6 +630,7 @@ defer aty-delay ( 0882 )
 ;
 
 : aty-i2c-select ( 088e )
+   [ifdef] debug  ." P aty-i2c-select" cr  [then]
    \ Send address
     8 0 do
         dup >aty-i2c-bit 1 lshift
@@ -658,6 +667,7 @@ defer aty-delay ( 0882 )
 ;
 
 : aty-try-i2c-read-a0-00 ( 0890 )
+    [ifdef] debug  ." P aty-try-i2c-read-a0-00" cr  [then]
     false
     aty-i2c-wait-idle
     h# a0 aty-i2c-select if
@@ -670,6 +680,7 @@ defer aty-delay ( 0882 )
 
 \ Is there 00 ff ff ff ff ff ff 00 at the beginning?
 : aty-edid-header-ok? ( 0891 )
+    [ifdef] debug  ." P aty-edid-header-ok?" cr  [then]
     aty-edid-buf 0 + c@
     aty-edid-buf 7 + c@
     + 0= if
@@ -685,6 +696,7 @@ defer aty-delay ( 0882 )
 ;
 
 : aty-edid-cksum-ok? ( 0892 )
+    [ifdef] debug  ." P aty-edid-cksum-ok?" cr  [then]
     0
     aty-edid-buf d# 127 bounds do
         i c@ +
@@ -694,6 +706,7 @@ defer aty-delay ( 0882 )
 ;
 
 : aty-i2c-try-read-a1 ( 0893 )
+    [ifdef] debug  ." P aty-i2c-try-read-a1" cr  [then]
     aty-i2c-wait-idle
     h# a1 aty-i2c-select if
         aty-edid-buf d# 128 bounds do
@@ -710,6 +723,7 @@ defer aty-delay ( 0882 )
 ;
 
 : aty-i2c-read-a0-00 ( 0894 )
+    [ifdef] debug  ." Reading EDID from A0" cr  [then]
     aty-i2c-clk-
 
     20 ms
@@ -728,6 +742,7 @@ defer aty-delay ( 0882 )
 ;
 
 : aty-i2c-read-a1 ( 0895 )
+    [ifdef] debug  ." Reading EDID from A1" cr  [then]
     false
     4 0 do
         aty-i2c-try-read-a1 if
@@ -812,6 +827,7 @@ defer aty-delay ( 0882 )
     aty-edid-dtd-features 18 and 10 =
 ;
 
+[ifndef] tiny
 : unused-aty-edid-dtd-sep-sync? ( 08a8 )
     aty-edid-dtd-features 18 and 18 =
 ;
@@ -824,6 +840,7 @@ defer aty-delay ( 0882 )
 : unused-aty-edid-dtd-mddi? ( 08aa )
     aty-edid-buf d# 20 + c@ 84 and 84 =
 ;
+[then]
 
 : aty-edid-dtd-positive-vsync? ( 08ab )
     aty-edid-dtd-features 4 and 0<>
@@ -854,6 +871,7 @@ defer aty-delay ( 0882 )
 ;
 
 : aty-edid-parse-modes ( 08b2 )
+    [ifdef] debug  ." P aty-edid-parse-modes" cr  [then]
 
     \ RGB 4:4:4 (digital) or grayscale (analog)
     aty-edid-buf d# 24 + c@ h# 18 and 0= to aty-grayscale?
@@ -924,6 +942,7 @@ defer aty-delay ( 0882 )
 ;
 
 : token-08b3 ( 08b3 )
+    [ifdef] debug  ." P token-08b3" cr  [then]
     >r
     aty-mode#>regs-tbl r@
     2* 2* la+ dup l@
@@ -938,15 +957,18 @@ defer aty-delay ( 0882 )
 ;
 
 : aty-mode#>pixclk ( 08b4 )
+    [ifdef] debug  ." P aty-mode#>pixclk" cr  [then]
     aty-mode#>pixclk-tbl swap wa+ w@
 ;
 
 : aty-mode#>res ( 08b5 )
+    [ifdef] debug  ." P aty-mode#>res" cr  [then]
     2* aty-mode#>res-tbl swap wa+ dup w@
     swap wa1+ w@
 ;
 
 
+[ifndef] tiny
 
 create xaty-disp-id-token-08b6 ( 08b6 )
 h# 00 c, h# 01 c, h# 02 c, h# 03 c,
@@ -965,6 +987,7 @@ h# 15 c,
 h# 0e c,
 
 : xaty-disp-id@ ( 08b8 )
+    [ifdef] debug  ." P xaty-disp-id@" cr  [then]
 
     \ Pull three display id GPIOs up
     h# 07 aty-gpio!
@@ -994,6 +1017,7 @@ h# 00 c,
 h# 12 c,
 
 : xaty-disp-id-read ( 08ba )
+    [ifdef] debug  ." P xaty-disp-id-read" cr  [then]
     0 xaty-disp-id@
     dup to xaty-disp-id
     aty-prop-flags lbflip or lbflip
@@ -1006,6 +1030,7 @@ h# 12 c,
 ;
 
 : xaty-disp-id-parse ( 08bb )
+    [ifdef] debug  ." P xaty-disp-id-parse" cr  [then]
     xaty-disp-id 6 = if
         xaty-disp-id-alt dup h# 3 = if
             drop 2010 to aty-modes-bitmask
@@ -1049,6 +1074,7 @@ h# 12 c,
         then
     then
 ;
+[then]
 
 : /aty-edid-bit-buf  d# 128 9 * 2*  ;
 
@@ -1063,6 +1089,7 @@ h# 12 c,
 ;
 
 : xaty-edid-token-08bf ( 08bf )
+    [ifdef] debug  ." P xaty-edid-token-08bf" cr  [then]
     ['] aty-8ms to aty-delay
     aty-turn-vsync-on
     aty-i2c-dat? ff and aty-edid-bit-buf c!
@@ -1124,6 +1151,7 @@ h# 12 c,
 ;
 
 : xaty-edid-token-08c2 ( 08c2 )
+    [ifdef] debug  ." P xaty-edid-token-08c2" cr  [then]
     xaty-i2c-idle
     xaty-alloc-edid-bufs
     xaty-edid-token-08bf
@@ -1161,6 +1189,7 @@ h# 12 c,
 ;
 
 : aty-setup-mode ( 08c6 )
+    [ifdef] debug  ." Setting mode" cr  [then]
     aty-ext-display
     aty-current-mode# token-08b3 aty-mode#>pixclk
 
@@ -1183,17 +1212,20 @@ h# 12 c,
 ;
 
 : aty-apply-mode ( 08c7 )
+    [ifdef] debug  ." P aty-apply-mode" cr  [then]
     aty-setup-mode
     aty-crtc-enable-blanking
     aty-enable-crt-clk
 ;
 
 : aty-apply-mode-no-blanking ( 08c8 )
+    [ifdef] debug  ." P aty-apply-mode-no-blanking" cr  [then]
     aty-setup-mode
     aty-enable-crt-clk
 ;
 
 : aty-pick-best-mode ( 08c9 )
+    [ifdef] debug  ." P aty-pick-best-mode" cr  [then]
     aty-modes-bitmask 0= if
         aty-default-mode# aty-add-mode#
     then
@@ -1227,6 +1259,7 @@ h# 12 c,
 ;
 
 : aty-init-edid ( 08ca )
+    [ifdef] debug  ." About to read EDID" cr  [then]
     0
         dup to aty-modes-bitmask
         aty-prop-flags h# 10 and to aty-prop-flags
@@ -1250,8 +1283,10 @@ h# 12 c,
         if
             aty-edid-parse-modes
         else
+[ifndef] tiny
             xaty-disp-id-read
             xaty-disp-id-parse
+[then]
         then
 
         aty-modes-bitmask 0= if
@@ -1574,6 +1609,7 @@ headerless
 ;
 
 : aty-is-install ( 08e9 )
+    [ifdef] debug  ." P aty-is-install" cr  [then]
     aty-open-count 0= if
         aty-linear-map
 
@@ -1602,6 +1638,7 @@ headerless
 ;
 
 : aty-is-remove ( 08ea )
+    [ifdef] debug  ." P aty-is-remove" cr  [then]
     aty-open-count 1 = if
         0 to aty-open-count
         aty-ext-display
@@ -1757,6 +1794,7 @@ defer aty-test-hook ( 08f9 )
     +loop
 ;
 
+[ifndef] tiny
 : aty-unused-check-fb ( 08fe )
     d# 12 aty-reg-test-patterns + l@
 
@@ -1773,6 +1811,7 @@ defer aty-test-hook ( 08f9 )
     +loop
     drop
 ;
+[then]
 
 external
 
@@ -1802,6 +1841,7 @@ external
 headerless
 
 : aty-init-regs ( 0900 )
+    [ifdef] debug  ." P aty-init-regs" cr  [then]
     aty-def-bus-cntl       aty-reg-bus-cntl        aty-stat-bus-cntl-failed  aty-stat-l!
     aty-def-crtc-int-cntl  aty-reg-crtc-int-cntl                             aty-reg-w!
     aty-def-crtc-gen-cntl  aty-reg-crtc-gen-cntl0  aty-stat-crtc-failed      aty-stat-l!
@@ -1835,6 +1875,7 @@ headerless
     aty-def-dac-cntl      aty-reg-dac-cntl             aty-reg-l!
 ;
 
+[ifdef] debug  ." Probing ATY adapter" cr  [then]
 
 xaty-init-bogo-timer
 
@@ -1858,11 +1899,14 @@ aty-init-pll-macro-cntl
 
 h# 0f aty-reg-config-cntl 2 + aty-reg-b!
 
+[ifndef] tiny
 " AAPL,cpu-id" get-inherited-property 0= if
+    [ifdef] debug  ." Choosing non-Apple defaults" cr  [then]
     true to aty-use-assigned-addr?
     drop
     4 to aty-default-mode#
 then
+[then]
 
 d# 128 alloc-mem to aty-edid-buf
 aty-init-edid
@@ -1878,7 +1922,9 @@ aty-prop-status encode-int " ATY,Status" property
 aty-prop-flags encode-int " ATY,Flags" property
 
 aty-prop-flags h# 08 and if
+    [ifdef] debug  ." Creating EDID property" cr  [then]
     aty-edid-buf d# 128 encode-bytes " EDID" property
+[ifdef] debug  else  ." Not creating EDID property" cr  [then]
 then
 aty-edid-buf d# 128 free-mem
 
@@ -1889,11 +1935,13 @@ aty-prop-width encode-int " linebytes" property
 " display" device-type
 " ISO8859-1" encode-string " character-set" property
 
+[ifndef] tiny
 168 get-token drop
 169 get-token drop
 <> if
     0 0 " iso6429-1983-colors" property
 then
+[then]
 
 my-address my-space encode-phys
     0 encode-int encode+
@@ -1908,11 +1956,13 @@ my-address my-space encode-phys
 
 " ATY,264VT" device-name
 " ATY,VT" model
+[ifndef] tiny
 " 113-XXXXX-10b14" encode-string " ATY,Rom#" property
 " XXX-XXXXX-XX" encode-string " ATY,Mem#" property
 " 102-XXXXX-XX" encode-string " ATY,Card#" property
 " APL-1.0b11" encode-string " ATY,Fcode#" property
 
+[ifndef] no-driver
 " "(4a 6f 79 21 70 65 66 66 70 77 70 63 00 00 00 01 ad a2 99 11 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 02 00 00 00 00 ff ff ff ff 00 00 00 00 00 00 6c f8 00 00 6c f8 00 00 6c f8 00 00 04 80 00 04 04 00 ff ff ff ff 00 00 00 00 00 00 21 bc 00 00 1d b0 00 00 17 73 00 00 71 80 02 01 04 00 ff ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 f8 00 00 00 80 04 04 04 00 6e 74 69 6e ff ff ff ff 00 00 00 00 ff ff ff ff 00 00 00 00 ff ff ff ff 00 00 00 00 00 00 00 04 00 00 00 1d 00 00 00 01 00 00 01 18 00 00 01 30 00 00 03 d4 00 00 00 01 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0a 00 00 00 00 00 00 00 00 00 00 00 10 00 00 00 00 00 00 00 00 00 00 00 0e 00 00 00 0a 00 00 00 00 00 00 00 22 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 18)"
 encode-bytes
 " "(00 00 00 00 00 00 00 29 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 1a 00 00 00 00 02 00 00 3a 02 00 00 51 02 00 00 68 02 00 00 86 02 00 00 a5 02 00 00 bd 02 00 00 d5 02 00 00 e9 02 00 00 fd 02 00 01 14 02 00 01 2b 02 00 01 45 02 00 01 5b 02 00 01 6f 02 00 01 7d 02 00 01 86 02 00 01 8e 02 00 01 97 02 00 01 ac 02 00 01 bb 02 00 01 c5 02 00 01 db 02 00 01 e2 02 00 01 fa 02 00 02 10 02 00 02 25 02 00 02 3b 02 00 02 52 02 00 02 6d 00 01 00 00 00 00 00 0b 00 00 00 00 4a 1c 42 24 80 33 46 01 80 eb 40 0a a0 00 16 68 40 20 86 73 42 03 00 00 4e 61 6d 65 52 65 67 69 73 74 72 79 4c 69 62 00 44 72 69 76 65 72 53 65 72 76 69 63 65 73 4c 69 62 00 50 43 49 4c 69 62 00 56 69 64 65 6f 53 65 72 76 69 63 65 73 4c 69 62 00 52 65 67 69 73 74 72 79 50 72 6f 70 65 72)"
@@ -2193,3 +2243,5 @@ encode-bytes encode+
 encode-bytes encode+
 " "(54 49 2c 63 72 65 61 74 65 01 2b 41 54 49 2c 61 64 61 70 74 65 72 0a 22 41 f0 86 02 01 41 e0)"
 encode-bytes encode+ " driver,AAPL,MacOS,PowerPC" property
+[then]
+[then]
