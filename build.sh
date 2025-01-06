@@ -3,6 +3,7 @@ set -e
 git clean -fdx cpu dev
 make -C cpu/x86/build builder.dic
 make -C cpu/x86/pc/biosload/build
+exec \
 git checkout -f cpu/x86/build/builder.dic
 
 cat >syslinux.cfg <<EOF
