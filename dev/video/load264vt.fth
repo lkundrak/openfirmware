@@ -1298,6 +1298,7 @@ h# 12 c,
         aty-ext-display
         aty-crtc-enable-blanking
         xaty-dac-resvd-token-0879
+    drop
 ;
 
 : aty-enable-mem ( 08cb )
