@@ -79,14 +79,22 @@ h#         0 constant aty-def-crtc-int-cntl ( 0824 )
 h# 010a.0240 constant aty-def-crtc-gen-cntl ( 0825 )
 h#         8 constant aty-def-gen-test-cntl ( 0826 )
 
+[ifdef] xpression
+h# 0801.0022 constant aty-dram-mem-cntl
+[else]
 h# 0a02.c91a constant aty-dram-mem-cntl
+[then]
 h# 0a02.cb22 constant aty-edo-mem-cntl
 
 h# 0220.cd3a constant aty-sdram-mem-cntl
 
 h# 8001.0100 constant aty-def-dac-cntl ( 082a )
 
+[ifdef] xpression
+h# b constant aty-dram-config-statw
+[else]
 h# 9 constant aty-dram-config-statw
+[then]
 h# a constant aty-edo-config-statw
 h# 4 constant aty-sdram-config-statw
 
@@ -161,7 +169,11 @@ false value xaty-token-085c? ( 085c )
 \ 3 = Pseudo EDO
 \ 4 = SDRAM (default on apple)
 \ 5-7 invalid (Reserved)
+[ifdef] xpression
+3 to aty-mem-type
+[else]
 4 to aty-mem-type
+[then]
 
 create aty-mode#>regs-tbl ( 0860 )
 \ Standard EDID modes
@@ -1956,6 +1968,9 @@ my-address my-space encode-phys
 
 ' aty-is-install is-install
 ' aty-is-remove is-remove
+[ifdef] xpression
+' self-test is-selftest
+[then]
 
 " ATY,264VT" device-name
 " ATY,VT" model
