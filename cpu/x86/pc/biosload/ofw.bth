@@ -6,6 +6,7 @@ in: reset.di
 in: start.di
 in: ${BP}/cpu/x86/pc/biosload/build/paging.di
 in: fw.img
+in: ${BP}/dev/video/build/video.fc
 in: ${BP}/dev/usb2/hcd/ohci/build/ohci.fc
 in: ${BP}/dev/usb2/hcd/uhci/build/uhci.fc
 in: ${BP}/dev/usb2/hcd/ehci/build/ehci.fc
@@ -104,6 +105,7 @@ writing floppyofw.img
    " paging.di"             $add-file
    " ${BP}/cpu/x86/build/inflate.bin"           " inflate"         $add-dropin
    " fw.img"                                    " firmware"        $add-deflated-dropin
+   " ${BP}/dev/video/build/video.fc"            " class030000"     $add-deflated-dropin
    " ${BP}/dev/pci/build/pcibridg.fc"           " class060400"     $add-deflated-dropin
    " ${BP}/dev/pci/build/pcibridg.fc"           " class060401"     $add-deflated-dropin
    " ${BP}/dev/ide/build/leghier.fc"            " class01018a"     $add-deflated-dropin
