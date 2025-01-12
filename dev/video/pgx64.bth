@@ -18,8 +18,14 @@ hex
 
 alias headerless internal
 create rxl-debug
+\ create rxl-debug-trace
+\ create rxl-debug-reg
 create rxl-custom
 create rxl-bugfix
+
+[ifdef] rxl-debug
+fload ${BP}/dev/video/debugpgx64.fth
+[then]
 
 fload ${BP}/dev/video/loadpgx64.fth
 

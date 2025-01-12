@@ -6,6 +6,10 @@ tokenizer[
 \ f1 08 57fe 00007fa0
 FCode-version3 ( start1 )
 
+[ifdef] rxl-debug
+  fload debugpgx64.fth
+[then]
+
 fload loadpgx64.fth
 
 \ Another end0

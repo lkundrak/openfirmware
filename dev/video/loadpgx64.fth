@@ -220,6 +220,7 @@ defer rxl-delay-hook
 ;
 
 : rxl-sleep-ms
+    [ifdef] rxl-debug-trace  ." W: rxl-sleep-ms " dup . cr  [then]
     rxl-idle-ms if
         0 ?do
             rxl-idle-ms rxl-idle-loop
@@ -513,6 +514,33 @@ d#    9 value rxl-LCD-nine
 : >rxl-val32 ff ff ff ff bljoin and ;
 : rxl-reg-addr rxl-base rxl-reg-offset + + ;
 
+[ifdef] rxl-debug-raw
+: rw@ dup rw@ swap ." C: rw@ " . ." -> " dup . cr ;
+: rb@ dup rb@ swap ." C: rb@ " . ." -> " dup . cr ;
+: rl@ dup rl@ swap ." C: rl@ " . ." -> " dup . cr ;
+
+: rw! 2dup ." C: rw! " . ." <- " . cr rw! ;
+: rb! 2dup ." C: rb! " . ." <- " . cr rb! ;
+: rl! 2dup ." C: rl! " . ." <- " . cr rl! ;
+[then]
+
+[ifdef] rxl-debug-reg
+: .reg>w  rxl-reg-offset h# 7ff800 =  if  .reg1>w  else  .reg0>w  then ;
+: .reg>b  rxl-reg-offset h# 7ff800 =  if  .reg1>b  else  .reg0>b  then ;
+: .reg>l  rxl-reg-offset h# 7ff800 =  if  .reg1>l  else  .reg0>l  then ;
+
+: .reg<w  rxl-reg-offset h# 7ff800 =  if  .reg1<w  else  .reg0<w  then ;
+: .reg<b  rxl-reg-offset h# 7ff800 =  if  .reg1<b  else  .reg0<b  then ;
+: .reg<l  rxl-reg-offset h# 7ff800 =  if  .reg1<l  else  .reg0<l  then ;
+
+: rxl-rw@  dup  rxl-reg-addr >rxl-val32 rw@  dup rot .reg>w  noop-0804 ;
+: rxl-rb@  dup  rxl-reg-addr >rxl-val32 rb@  dup rot .reg>b ;
+: rxl-rl@  dup  rxl-reg-addr >rxl-val32 rl@  dup rot .reg>l  noop-0805 ;
+
+: rxl-rw!  2dup .reg<w  rxl-reg-addr >rxl-val32 >r noop-0804 r> rw! ;
+: rxl-rb!  2dup .reg<b  rxl-reg-addr >rxl-val32                 rb! ;
+: rxl-rl!  2dup .reg<l  rxl-reg-addr >rxl-val32 >r noop-0805 r> rl! ;
+[else]
 : rxl-rw@ rxl-reg-addr >rxl-val32 rw@ noop-0804 ;
 : rxl-rb@ rxl-reg-addr >rxl-val32 rb@ ;
 : rxl-rl@ rxl-reg-addr >rxl-val32 rl@ noop-0805 ;
@@ -520,6 +548,7 @@ d#    9 value rxl-LCD-nine
 : rxl-rw! rxl-reg-addr >rxl-val32 >r noop-0804 r> rw! ;
 : rxl-rb! rxl-reg-addr >rxl-val32 rb! ;
 : rxl-rl! rxl-reg-addr >rxl-val32 >r noop-0805 r> rl! ;
+[then]
 
 : rxl-set-status ( stat a a' )
     <> if
@@ -552,12 +581,15 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-clock@
+    [ifdef] rxl-debug-raw  dup  [then]
     2 lshift
     rxl-reg-clock-cntl1 rxl-rb!
     rxl-reg-clock-cntl2 rxl-rb@
+    [ifdef] rxl-debug-raw  swap ." C: rxl-clock@ " . ." -> " dup . cr  [then]
 ;
 
 : rxl-clock!
+    [ifdef] rxl-debug-raw  2dup ." C: rxl-clock! " . ." <- " . cr  [then]
     2 lshift 2 or
     rxl-reg-clock-cntl1 rxl-rb!
     rxl-reg-clock-cntl2 rxl-rb!
@@ -585,10 +617,12 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-delay-20ms
+    [ifdef] rxl-debug-trace  ." W: 20ms" cr  [then]
     20 ms
 ;
 
 : rxl-init-ext-mem
+    [ifdef] rxl-debug-trace  cr ." P: rxl-init-ext-mem" cr  [then]
     rxl-reg-ext-mem-cntl rxl-rb@
 
     2 or dup         rxl-reg-ext-mem-cntl  rxl-rb!  rxl-delay-20ms
@@ -599,6 +633,7 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-reset-dll
+    [ifdef] rxl-debug-trace  cr ." P: rxl-reset-dll" cr  [then]
     rxl-def-dll1-cntl 40 and 0= if
         c rxl-clock@ \ DLL_CNTL
         bf and dup
@@ -612,12 +647,14 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-reset-mem-controller
+    [ifdef] rxl-debug-trace  cr ." P: rxl-reset-mem-controller" cr  [then]
     rxl-def-gen-test-cntl         rxl-reg-gen-test-cntl  rxl-rl!  rxl-delay-20ms
     rxl-def-gen-test-cntl 200 or  rxl-reg-gen-test-cntl  rxl-rl!  rxl-delay-20ms
     rxl-def-gen-test-cntl         rxl-reg-gen-test-cntl  rxl-rl!  rxl-delay-20ms
 ;
 
 : rxl-init-mem-sth
+    [ifdef] rxl-debug-trace  cr ." P: rxl-init-mem-sth" cr  [then]
     rxl-reg-mem-cntl rxl-rl@
     dup 80000 or n->l rxl-reg-mem-cntl rxl-rl!
 
@@ -632,6 +669,7 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-init-mem
+    [ifdef] rxl-debug-trace  cr ." P: rxl-init-mem" cr  [then]
     rxl-mem-configs rxl-mem-type la+ l@
     dup 2000000 invert n->l and rxl-reg-mem-addr-config rxl-rl!
 
@@ -669,6 +707,7 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-toggle-vsync-pol
+    [ifdef] rxl-debug-trace  cr ." P: rxl-toggle-vsync-pol" cr  [then]
     0 rxl-reg-crtc-v-sync-strt-wid2 rxl-rb!
     rxl-delay-hook
     20 rxl-reg-crtc-v-sync-strt-wid2 rxl-rb!
@@ -676,16 +715,20 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-lcd-l@
+    [ifdef] rxl-debug-raw  dup  [then]
     4 / rxl-reg-lcd-index rxl-rb!
     rxl-reg-lcd-data rxl-rl@
+    [ifdef] rxl-debug-raw  swap ." C: rxl-lcd-l@ " . ." -> " dup . cr  [then]
 ;
 
 : rxl-lcd-l!
+    [ifdef] rxl-debug-raw  2dup ." C: rxl-lcd-l! " . ." <- " . cr  [then]
     4 / rxl-reg-lcd-index rxl-rb!
     rxl-reg-lcd-data rxl-rl!
 ;
 
 : rxl-lcd-b@
+    [ifdef] rxl-debug-raw  dup  [then]
     dup         ( lcdreg -- lcdreg lcdreg )
     rxl-lcd-l@  ( lcdreg -- lcdreg lcdval )
     swap        ( lcdreg lcdval -- lcdval lcdreg )
@@ -693,9 +736,11 @@ d#    9 value rxl-LCD-nine
     8 *         ( lcdval lcdreg%4 -- lcdval lcdreg%4*8 )
     rshift      ( lcdval lcdreg%4*8 -- lcdval>>lcdreg%4*8 )
     ff and
+    [ifdef] rxl-debug-raw  swap ." C: rxl-lcd-b@ " . ." -> " dup . cr  [then]
 ;
 
 : rxl-lcd-b!
+    [ifdef] rxl-debug-raw  2dup ." C: rxl-lcd-b! " . ." <- " . cr  [then]
     dup 4 mod 8 * rot swap lshift swap
     dup 4 mod 8 * ff swap lshift
     invert n->l over
@@ -783,6 +828,7 @@ d#    9 value rxl-LCD-nine
 
 ( PLL_REF_DIV DIV VCLK0_FB_DIV -- )
 : rxl-configure-vclk
+    [ifdef] rxl-debug-trace  cr ." P: rxl-configure-vclk" cr  [then]
     ( PLL_REF_DIV DIV VCLK0_FB_DIV )
     7 rxl-clock! \ VCLK0_FB_DIV
 
@@ -822,6 +868,7 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-init-clock
+    [ifdef] rxl-debug-trace  cr ." P: rxl-init-clock" cr  [then]
     0 rxl-reg-clock-cntl rxl-rb!
 
     54 h# 3 rxl-clock!	\ PLL_GEN_CNTL enable oscillator, MCLK=CPUCLK
@@ -863,6 +910,7 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-detect-monitor
+    [ifdef] rxl-debug-trace  cr ." P: rxl-detect-monitor" cr  [then]
     60606000 rxl-reg-ovr-clr rxl-rl!
     50 rxl-sleep-ms
 
@@ -1227,6 +1275,7 @@ d#    9 value rxl-LCD-nine
 ;
 
 : rxl-configure-8bpp
+    [ifdef] rxl-debug-trace  cr ." P: rxl-configure-8bpp" cr  [then]
     rxl-clock-freq 100 * swap / dup 20 / swap rxl-64/ rxl-bitcnt over
     rxl-64/ rxl-bitcnt
     dup 3 > if
@@ -1344,6 +1393,7 @@ headerless
 headers
 
 : set_composite_sync
+    [ifdef] rxl-debug-trace  cr ." P: set_composite_sync" cr  [then]
     rxl-reg-gp-io rxl-rl@
     1000100 or rxl-reg-gp-io rxl-rl! \ GPIO8=out(1)
 
@@ -1352,6 +1402,7 @@ headers
 ;
 
 : set_dual_sync
+    [ifdef] rxl-debug-trace  cr ." P: set_dual_sync" cr  [then]
     rxl-reg-gp-io rxl-rl@
     100 invert >rxl-val32 and 1000000 or rxl-reg-gp-io rxl-rl! \ GPIO9=out(!GPIO8)
 
@@ -1369,27 +1420,32 @@ headers
 ;
 
 : change_bpp
+    [ifdef] rxl-debug-trace  cr ." P: change_bpp" cr  [then]
     rxl-reg-crtc-gen-cntl rxl-rw@
     f8ff and swap or rxl-reg-crtc-gen-cntl rxl-rw!
 ;
 
 : 8bpp
+    [ifdef] rxl-debug-trace  cr ." P: 8bpp" cr  [then]
     rxl-8bpp
       dup change_bpp
       to pgx-current-depth
 ;
 
 : 24bpp
+    [ifdef] rxl-debug-trace  cr ." P: 24bpp" cr  [then]
     rxl-18bpp
       dup change_bpp
       to pgx-current-depth
 ;
 
 : reset-gt-crtc
+    [ifdef] rxl-debug-trace  cr ." P: reset-gt-crtc" cr  [then]
     1 rxl-reg-crtc-gen-cntl3 rxl-rb!
 ;
 
 : reset-crtc
+    [ifdef] rxl-debug-trace  cr ." P: reset-crtc" cr  [then]
     5 rxl-reg-crtc-gen-cntl3 rxl-rb!
     0 rxl-power-management rxl-lcd-b!
     1 rxl-reg-lcd-index 1 + rxl-rb!
@@ -1410,6 +1466,7 @@ headers
 ;
 
 : enable-crtc
+    [ifdef] rxl-debug-trace  cr ." P: enable-crtc" cr  [then]
     3 rxl-reg-crtc-gen-cntl3 rxl-rb!
 
     h# 3 \ PLL_GEN_CNTL
@@ -1466,18 +1523,21 @@ headers
 ;
 
 : enable-crtc-out
+    [ifdef] rxl-debug-trace  cr ." P: enable-crtc-out" cr  [then]
     rxl-lcd-gen-ctrl
       dup rxl-lcd-b@
       1 or swap rxl-lcd-b!
 ;
 
 : disable-crtc-out
+    [ifdef] rxl-debug-trace  cr ." P: disable-crtc-out" cr  [then]
     rxl-lcd-gen-ctrl
       dup rxl-lcd-b@
       fe and swap rxl-lcd-b!
 ;
 
 : enable-LCD
+    [ifdef] rxl-debug-trace  cr ." P: enable-LCD" cr  [then]
     rxl-lcd-gen-ctrl rxl-lcd-b@
         rxl-CRT-or-LCD rxl-LCD-nine = if
             2 or fe and  \ rxl-lcd-gen-ctrl CRT=off LCD=on
@@ -1494,11 +1554,13 @@ headers
 ;
 
 : enable-monitor
+    [ifdef] rxl-debug-trace  cr ." P: enable-monitor" cr  [then]
     rxl-reg-crtc-gen-cntl rxl-rb@
     bf and rxl-reg-crtc-gen-cntl rxl-rb!
 ;
 
 : disable-monitor
+    [ifdef] rxl-debug-trace  cr ." P: disable-monitor" cr  [then]
     rxl-reg-crtc-gen-cntl rxl-rb@
     40 or rxl-reg-crtc-gen-cntl rxl-rb!
 ;
@@ -1580,6 +1642,7 @@ headers
 \ HDISP VDISP  SYNC  HTOTAL HSYNC VTOTAL VSYNC PIXCLK BPP
 \  pix  pix   1/dual *1000        *1000        /10000
 : set_res_registers
+    [ifdef] rxl-debug-trace  cr ." P: set_res_registers" cr  [then]
     oem-branded? if
         rxl-detect-CPD-4410
     then
@@ -1920,6 +1983,7 @@ headerless
 ;
 
 : rxl-set-r640x480x60
+    [ifdef] rxl-debug-trace  cr ." P: rxl-set-r640x480x60" cr  [then]
     rxl-mode-r640x480x60 $find
 [ifdef] rxl-bugfix
     if
@@ -1960,6 +2024,7 @@ headerless
 ;
 
 : rxl-read-edid
+    [ifdef] rxl-debug-trace  cr ." P: rxl-read-edid" cr  [then]
     80 alloc-mem to rxl-edid-buffer
     0 to rxl-flags-prop
     0 to token-086f
@@ -1990,6 +2055,7 @@ headerless
 ;
 
 : rxl-pci-enable-mem
+    [ifdef] rxl-debug-trace  cr ." P: rxl-pci-enable-mem" cr  [then]
     4 my-space + \ PCI Command
       dup " config-b@" rxl-call-parent
       2 or \ Enable Memory Space
@@ -1997,6 +2063,7 @@ headerless
 ;
 
 : rxl-pci-disable-mem
+    [ifdef] rxl-debug-trace  cr ." P: rxl-pci-disable-mem" cr  [then]
     4 my-space + \ PCI Command
        dup " config-b@" rxl-call-parent
        fd and \ Disable Memory Space
@@ -2004,6 +2071,7 @@ headerless
 ;
 
 : rxl-ensure-linear-mapped
+    [ifdef] rxl-debug-trace  cr ." P: rxl-ensure-linear-mapped" cr  [then]
     rxl-base 0= if
         rxl-reuse-assigned-map? if
             " assigned-addresses" get-my-property 0= if
@@ -2033,6 +2101,7 @@ headerless
 ;
 
 : rxl-map-linear
+    [ifdef] rxl-debug-trace  cr ." P: rxl-map-linear" cr  [then]
     my-address ( -- 0 0 )
 	2000010 my-space + \ BAR1 (Linear)
 	1000000 \ 16M
@@ -2047,6 +2116,7 @@ headerless
 ;
 
 : rxl-unmap-linear
+    [ifdef] rxl-debug-trace  cr ." P: rxl-unmap-linear" cr  [then]
     rxl-base 1000000 " map-out" rxl-call-parent
     0 to rxl-reg-offset
     0 to rxl-base
@@ -2058,6 +2128,7 @@ headerless
 
 \ Same as above??
 : rxl-unmap-linear2
+    [ifdef] rxl-debug-trace  cr ." P: rxl-unmap-linear2" cr  [then]
     rxl-base 1000000 " map-out" rxl-call-parent
     0 to rxl-reg-offset
     0 to rxl-base
@@ -2065,6 +2136,7 @@ headerless
 ;
 
 : unused-rxl-pci-enable-io
+    [ifdef] rxl-debug-trace  cr ." P: unused-rxl-pci-enable-io" cr  [then]
     4 my-space + \ PCI Command
       dup " config-b@" rxl-call-parent
       1 or \ Enable IO Space
@@ -2072,6 +2144,7 @@ headerless
 ;
 
 : unused-rxl-pci-disable-io
+    [ifdef] rxl-debug-trace  cr ." P: unused-rxl-pci-disable-io" cr  [then]
     4 my-space + \ PCI Command
       dup " config-b@" rxl-call-parent
       fe and \ Disable IO Space
@@ -2079,6 +2152,7 @@ headerless
 ;
 
 : unused-rxl-map-pci-io
+    [ifdef] rxl-debug-trace  cr ." P: unused-rxl-map-pci-io" cr  [then]
     my-address ( -- 0 0 )
 	0100.0014 my-space +   \ BAR2 (IO)
 	100 \ 256
@@ -2093,6 +2167,7 @@ headerless
 ;
 
 : unused-rxl-map-alt-io
+    [ifdef] rxl-debug-trace  cr ." P: unused-rxl-map-alt-io" cr  [then]
     0 0
 	8100.0000 my-space or \ NO BAR ???
 	10000 \ 64K
@@ -2107,12 +2182,14 @@ headerless
 ;
 
 : unused-rxl-unmap-pci-io
+    [ifdef] rxl-debug-trace  cr ." P: unused-rxl-unmap-pci-io" cr  [then]
     rxl-base 100 " map-out" rxl-call-parent
     0 to rxl-base
     unused-rxl-pci-disable-io
 ;
 
 : unused-rxl-unmap-alt-io
+    [ifdef] rxl-debug-trace  cr ." P: unused-rxl-unmap-alt-io" cr  [then]
     0 to rxl-reg-offset
     unused-rxl-alt-io-base 10000 " map-out" rxl-call-parent
     0 to unused-rxl-alt-io-base
@@ -3045,6 +3122,7 @@ headerless
 headers
 
 : pgx-blink-screen
+    [ifdef] rxl-debug-trace  ." W: blink" cr  [then]
     rxl-monitor-on-after-vblank
     pgx-blink-speed ms
     rxl-monitor-off-after-vblank
@@ -3275,6 +3353,7 @@ headerless
 ;
 
 : rxl-fb8-install-prep
+    [ifdef] rxl-debug-trace  cr ." P: rxl-fb8-install-prep" cr  [then]
     ['] rxl-fb32-draw-character to draw-character
     ['] rxl-fb32-reset-screen to reset-screen
     ['] rxl-fb32-toggle-cursor to toggle-cursor
@@ -3296,6 +3375,7 @@ headerless
 defer rxl-install-prep-hook
 
 : rxl-set-mode
+    [ifdef] rxl-debug-trace  cr ." P: rxl-set-mode" cr  [then]
     rxl-width-prop to rxl-current-width
     rxl-height-prop to rxl-current-height
     rxl-depth-prop to pgx-current-depth
@@ -3330,6 +3410,7 @@ defer rxl-install-prep-hook
 ;
 
 : rxl-fb-install
+    [ifdef] rxl-debug-trace  cr ." P: rxl-fb-install" cr  [then]
     rxl-base rxl-offset-fb + to frame-buffer-adr
     default-font set-font
     rxl-fb-resolution fb8-install
@@ -3364,6 +3445,7 @@ defer rxl-install-prep-hook
 ;
 
 : rxl-is-install
+    [ifdef] rxl-debug-trace  cr ." P: rxl-is-install" cr  [then]
     rxl-enable-count 0= if
         oem-branded? if
             pgx-plano-flag off
@@ -3388,14 +3470,17 @@ defer rxl-install-prep-hook
         then
         0= if
             rxl-get-edid-mode if
+                [ifdef] rxl-debug-trace  ." Setting EDID mode" cr  [then]
                 set_mon_params
             else
                 0
             then
         else
+            [ifdef] rxl-debug-trace  ." Setting non-EDID mode" cr  [then]
             set_mon_params
         then
         0= if
+            [ifdef] rxl-debug-trace  ." Setting fallback mode" cr  [then]
             rxl-mode-r1152x900x66 set_mon_params drop
         then
         pgx-current-depth rxl-18bpp = if
@@ -3415,6 +3500,7 @@ defer rxl-install-prep-hook
 ;
 
 : rxl-is-remove
+    [ifdef] rxl-debug-trace  cr ." P: rxl-is-remove" cr  [then]
     rxl-enable-count 1 = if
         0 to rxl-enable-count
         reset-crtc
@@ -3857,6 +3943,7 @@ headers
 ;
 
 : fb32-erase-screen
+    [ifdef] rxl-debug-trace  cr ." P: fb32-erase-screen" cr  [then]
     rxl-base rxl-offset-fb + to rxl-ptr
     rxl-width-prop pixels->bytes rxl-height-prop 0 ?do
         dup rxl-ptr inverse-screen?  if
@@ -3872,6 +3959,7 @@ headers
 ;
 
 : fb32-black-screen
+    [ifdef] rxl-debug-trace  cr ." P: fb32-black-screen" cr  [then]
     rxl-base rxl-offset-fb + to rxl-ptr
     rxl-width-prop pixels->bytes rxl-height-prop 0 ?do
         dup
@@ -3884,6 +3972,7 @@ headers
 ;
 
 : fb32-white-screen
+    [ifdef] rxl-debug-trace  cr ." P: fb32-white-screen" cr  [then]
     rxl-base rxl-offset-fb + to rxl-ptr
     rxl-width-prop pixels->bytes rxl-height-prop 0 ?do
         dup
@@ -3896,6 +3985,7 @@ headers
 ;
 
 : fb32-invert-screen
+    [ifdef] rxl-debug-trace  cr ." P: fb32-invert-screen" cr  [then]
     rxl-base rxl-offset-fb + to rxl-ptr
     rxl-width-prop pixels->bytes rxl-height-prop 0 ?do
         rxl-ptr rxl-ptr 2 pick move-xor24
@@ -4008,6 +4098,7 @@ headers
 ' fb32-draw-logo to rxl-draw-logo-hook
 
 : fb32-install-prep
+    [ifdef] rxl-debug-trace  cr ." P: fb32-install-prep" cr  [then]
     ['] rxl-fb32-reset-screen to reset-screen
     ['] rxl-fb32-toggle-cursor to toggle-cursor
     ['] fb32-erase-screen to erase-screen
@@ -4184,6 +4275,7 @@ external
 headerless
 
 : rxl-init-dac
+    [ifdef] rxl-debug-trace  cr ." P: rxl-init-dac" cr  [then]
     rxl-def-bus-cntl       rxl-reg-bus-cntl       rxl-rl!
     rxl-def-crtc-int-cntl  rxl-reg-crtc-int-cntl  rxl-rw!
     rxl-def-crtc-gen-cntl  rxl-reg-crtc-gen-cntl  rxl-rl!
@@ -4194,6 +4286,7 @@ headerless
 ;
 
 : rxl-init-misc
+    [ifdef] rxl-debug-trace  cr ." P: rxl-init-misc" cr  [then]
     \ Diddle some undocumented registers?
     rxl-reg-offset 0<> if
         c0 1fc rxl-rl!
@@ -4212,6 +4305,7 @@ headerless
 ;
 
 : rxl-init-lcd
+    [ifdef] rxl-debug-trace  cr ." P: rxl-init-lcd" cr  [then]
     rxl-def-config-panel     rxl-config-panel     rxl-lcd-l!
     rxl-def-lcd-gen-ctrl     rxl-lcd-gen-ctrl     rxl-lcd-l!
     rxl-def-lcd-misc-cntl    rxl-lcd-misc-cntl    rxl-lcd-l!
@@ -4219,6 +4313,7 @@ headerless
 ;
 
 : rxl-probe
+    [ifdef] rxl-debug-trace  cr ." P: rxl-probe" cr  [then]
     oem-branded? if
         pgx-plano-flag off
     then
