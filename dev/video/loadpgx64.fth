@@ -323,8 +323,12 @@ ff value psuedocolor-white
 variable pgx-plano-flag
 pgx-plano-flag off
 
+[ifdef] rxl-custom
+6 to rxl-mem-type
+[else]
 d# 29499 to rxl-base-clock-khz
 3 to rxl-mem-type
+[then]
 
 8 to rxl-fb-memory-prop
 
@@ -345,6 +349,7 @@ create rxl-macro-cntls
 ( 3 ) 080179 l,
 ( 4 ) 7f0179 l,
 ( 5 ) 050179 l,
+( 6 ) [ifdef] rxl-custom  7f0179 l,  [then]
 
 create rxl-mem-configs
 ( 0 ) 02110000 l,
@@ -353,6 +358,7 @@ create rxl-mem-configs
 ( 3 ) 00110202 l,
 ( 4 ) 02200213 l,
 ( 5 ) 02200314 l,
+( 6 ) [ifdef] rxl-custom  02200213 l,  [then]
 
 create rxl-mem-cntls
 ( 0 ) 10c57a37 l, \ 4MB, 4KB page, tCAS=4, tRW=2, tRAS=6, Refresh=XCLK/1953
@@ -361,6 +367,8 @@ create rxl-mem-cntls
 ( 3 ) 10a57a3b l, \      --//--                           Refresh=XCLK/1797
 ( 4 ) 00265a27 l, \ 4MB, 2KB page, tCAS=3, tRW=1, tRAS=7, Refresh=XCLK/1031
 ( 5 ) 00265a2b l, \ 8MB, --//--
+\ XL: 08165a2b  0(2KB page) 8(upper big endian) 1(50-65 MHz)   6(7RAS) 5(1RWd) a
+( 6 ) [ifdef] rxl-custom  00165a2b l,  [then]
 
 create rxl-ext-mem-cntls
 ( 0 ) 64000c81 l,
@@ -369,6 +377,7 @@ create rxl-ext-mem-cntls
 ( 3 ) e0000c81 l,
 ( 4 ) 64004cf1 l,
 ( 5 ) 64000cf1 l,
+( 6 ) [ifdef] rxl-custom  e0000cf1 l,  [then]
 
 create rxl-hw-debugs
 ( 0 ) 0 l,
@@ -377,6 +386,7 @@ create rxl-hw-debugs
 ( 3 ) 00050000 l, \ Longer HCKL skew
 ( 4 ) 0 l,
 ( 5 ) 0 l,
+( 6 ) [ifdef] rxl-custom  0 l,  [then]
 
 \ unused
 create rxl-configs
@@ -386,6 +396,7 @@ create rxl-configs
 ( 3 ) 1c c, \ SDRAM (1:1)
 ( 4 ) 1e c, \ SDRAM (2:1, 32-bit)
 ( 5 ) 1e c, \ SDRAM
+( 6 ) [ifdef] rxl-custom  1e c, [then] \ SDRAM (2:1, 32-bit)
 
 create rxl-oem-configs
 ( 0 ) 1d c, \ SGRAM
@@ -394,6 +405,7 @@ create rxl-oem-configs
 ( 3 ) 1d c, \ SGRAM
 ( 4 ) 1e c, \ SDRAM
 ( 5 ) 1e c, \ SDRAM
+( 6 ) [ifdef] rxl-custom  1e c, [then] \ SDRAM (2:1, 32-bit)
 
 create rxl-memory-sizes
 ( 0 ) 4 c,
@@ -402,7 +414,26 @@ create rxl-memory-sizes
 ( 3 ) 8 c,
 ( 4 ) 4 c,
 ( 5 ) 8 c,
+( 6 ) [ifdef] rxl-custom  8 c, [then]
 
+[ifdef] rxl-custom
+\ RXL
+ad value rxl-def-mpll-cntl
+d5 value rxl-def-vpll-cntl
+1f value rxl-def-pll-ref-div
+44 value rxl-def-pll-gen-cntl
+88 value rxl-def-mclk-fb-div
+03 value rxl-def-pll-vclk-cntl
+ff value rxl-def-vclk-post-div
+da value rxl-def-vclk0-fb-div
+ca value rxl-def-pll-ext-cntl
+f6 value rxl-def-sclk-fb-div
+ac value rxl-def-spll-cntl1
+03 value rxl-def-spll-cntl2
+82 value rxl-def-dll1-cntl
+10 value rxl-def-dll2-cntl
+19 value rxl-def-pll-yclk-cntl
+[else]
 \ Guava customization?
 d# 1150000 to rxl-clock-freq
 ad value rxl-def-mpll-cntl
@@ -420,6 +451,7 @@ ac value rxl-def-spll-cntl1
 80 value rxl-def-dll1-cntl
 50 value rxl-def-dll2-cntl
 25 value rxl-def-pll-yclk-cntl
+[then]
 
 80 value rxl-def-lcd-misc-bias
 
