@@ -10,7 +10,7 @@ HLIBDIR=$(BP)/clients/lib
 LIBDIR=$(HLIBDIR)/x86
 
 INCS=-I. -I$(SRCDIR) -I$(HLIBDIR)
-MODES=-g -m32 -fno-builtin -fno-stack-limit -fno-stack-protector
+MODES=-g -m32 -fno-builtin -fno-stack-limit -fno-stack-protector  -Wno-implicit-int -Wno-return-mismatch -Wno-implicit-function-declaration
 CFLAGS= $(INCS) $(MODES)
 
 CC=		gcc
