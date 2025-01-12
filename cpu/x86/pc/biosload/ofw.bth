@@ -30,6 +30,9 @@ in: ${BP}/dev/mmc/sdhci/build/sdmmc.fc
 \ in: ${BP}/dev/mmc/sdhci/mv8686/build/mv8686.fc
 \ in: sd8686.bin
 
+in: ${BP}/dev/video/build/264vt.fc
+in: ${BP}/dev/video/build/pgx64.fc
+
 in: ${BP}/dev/i8255x/build/82559.fc
 in: ${BP}/dev/3c90xb/build/3c905b.fc
 \ in: ${BP}/dev/amd79970/build/amd79970.fc
@@ -146,6 +149,9 @@ writing floppyofw.img
    " ${BP}/dev/usb2/device/wlan/build/usb8388.fc"  " usb1286,2001"   $add-deflated-dropin
    " ../../olpc/build/usb8388.bin"                 " usb8388.bin"    $add-deflated-dropin
 [then]
+
+   " ${BP}/dev/video/build/264vt.fc"            " pci1002,5654"    $add-deflated-dropin
+   " ${BP}/dev/video/build/pgx64.fc"            " pci1002,4752"    $add-deflated-dropin
 
    " builton.fth"                       " probe-"          $add-dropin
 [ifndef] resident-packages
