@@ -4398,22 +4398,6 @@ headerless
     ['] rxl-set-mode to rxl-set-mode-hook
 ;
 
-\ https://www.intel.com/content/dam/doc/datasheet/i-o-controller-hub-7-datasheet.pdf
-\ BCTRL.SBR (D30:F0:Offset 3Eh:bit 6) set to 1
-[ifdef] rxl-bugfix
-: lr-my-parent-bus-reset
-   h# 3e
-   dup " my-b@" $call-parent
-   h# 40 or
-   2dup swap " my-b!" $call-parent
-   1 ms
-   h# 40 invert and
-   swap " my-b!" $call-parent
-   1 ms
-;
-lr-my-parent-bus-reset
-[then]
-
 rxl-probe
 
 " SUNW,m64B" device-name
