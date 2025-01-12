@@ -2,7 +2,7 @@
 
 CC=gcc
 #CFLAGS=-g -m32 -fno-builtin -fno-stack-limit -fno-stack-protector
-CFLAGS=-g -m32 -nostdlib -nostartfiles -fno-builtin -ffreestanding -fno-stack-protector -I..  -Wno-implicit-function-declaration
+CFLAGS=-g -m32 -nostdlib -nostartfiles -fno-builtin -ffreestanding -fno-stack-protector -I..
 LFLAGS=-L.
 
 #all: libobp.a hello hello.elf start.o

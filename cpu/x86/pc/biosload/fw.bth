@@ -186,11 +186,6 @@ dend
 [then]
 [then]
 
-: emacs  ( -- )
-   false to already-go?
-   boot-getline to boot-file   " rom:emacs" $boot
-;
-
 fload ${BP}/cpu/x86/pc/rmtools.fth
 
 fload ${BP}/cpu/x86/pc/biosload/callbios.fth

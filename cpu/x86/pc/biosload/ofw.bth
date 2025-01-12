@@ -29,8 +29,6 @@ in: ${BP}/dev/mmc/sdhci/build/sdmmc.fc
 \ in: ${BP}/dev/mmc/sdhci/mv8686/build/mv8686.fc
 \ in: sd8686.bin
 
-in: ${BP}/clients/emacs/x86/emacs
-
 build-now
 
 fload ${BP}/cpu/x86/pc/biosload/config.fth
@@ -169,10 +167,6 @@ writing floppyofw.img
 [ifdef] use-vesa
    " ${BP}/ofw/termemu/cp881-16.obf"            " font"        $add-deflated-dropin
 [then]
-
-   " ${BP}/clients/emacs/x86/emacs"             " emacs"         $add-deflated-dropin
-   " ${BP}/clients/emacs/x86/emacs.rc"          " emacs.rc"      $add-deflated-dropin
-   " ${BP}/clients/emacs/emacs.hlp"             " emacs.hlp"     $add-deflated-dropin
 
 [ifdef] grub-loaded
    ofd @ fsize h# 60 -  pad !      \ file size; store in memory for convenience below
