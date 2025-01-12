@@ -848,7 +848,12 @@ d#    9 value rxl-LCD-nine
     rxl-reset-dll
     rxl-20ms
 
-    rxl-base-clock-khz 2* rxl-def-mclk-fb-div *
+    rxl-base-clock-khz 2*
+[ifdef] rxl-bugfix
+    \ MFB_TIMES_4_2b@PLL_EXT_CNTL
+    rxl-def-pll-ext-cntl h# 08 and  if  2*  then
+[then]
+    rxl-def-mclk-fb-div *
         d# 10 * rxl-def-pll-ref-div /
     1 rxl-def-pll-ext-cntl 7 and lshift
     dup d# 16 = if
@@ -1698,7 +1703,19 @@ headers
 \ 2 constant rxl-sync-dual
 \ 200 constant rxl-8bpp
 \ : rxl-r640x480x60     d#  640 d#  480   2   4f0063 2c0153 1df020c 2201e9  9d6   2000          ;
+
 : set_mon_params
+    [ifdef] rxl-debug-trace  cr ." P: set_mon_params: " 2dup type cr  [then]
+[ifdef] rxl-bugfix
+    my-self ['] $call-method catch  if
+        3drop false
+    else
+        dup valid_bitdepth? 0= pgx_nvram_bitdepth or if
+            drop pgx-default-depth
+        then                         ( depth )
+        set_res_registers true
+    then
+[else]
     $find if
         execute
         dup valid_bitdepth? 0= pgx_nvram_bitdepth or if
@@ -1708,6 +1725,7 @@ headers
     else
         2drop false
     then
+[then]
 ;
 
 headerless
@@ -1902,7 +1920,18 @@ headerless
 ;
 
 : rxl-set-r640x480x60
-    rxl-mode-r640x480x60 $find drop execute
+    rxl-mode-r640x480x60 $find
+[ifdef] rxl-bugfix
+    if
+      execute
+    else
+      \ type ."  not found." cr exit
+      2drop r640x480x60
+    then
+[else]
+    drop execute
+[then]
+
     7 pick to rxl-current-height
     8 pick to rxl-current-width
     set_res_registers
@@ -4249,7 +4278,8 @@ headerless
       2000010 +
       10 my-space +
       " config-b@" $call-parent \ Read BAR1
-      8 and if 40000000 or then \ Prefetchable?
+      8 and if 4000.0000 or then \ Prefetchable?
+      \ XXX    ^^^^^^^^^ this is probably SPARC specific
     encode-phys encode+
     0 encode-int encode+
     1000000 encode-int encode+ \ 16M

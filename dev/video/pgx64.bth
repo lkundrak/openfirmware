@@ -19,6 +19,7 @@ hex
 alias headerless internal
 create rxl-debug
 create rxl-custom
+create rxl-bugfix
 
 fload ${BP}/dev/video/loadpgx64.fth
 
