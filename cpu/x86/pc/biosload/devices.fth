@@ -225,6 +225,18 @@ stand-init: Pseudo-NVRAM
 ;
 [then]
 
+[ifdef] use-null-nvram
+\ For not storing configuration variable changes across reboots ...
+\ This is useful for "turnkey" systems where configurability would
+\ increase support costs.
+
+fload ${BP}/cpu/x86/pc/nullnv.fth
+stand-init: Null-NVRAM
+   " /null-nvram" open-dev  to nvram-node
+   ['] init-config-vars catch drop
+;
+[then]
+
 [ifdef] use-vga
 0 0  " i3c0" " /isa" begin-package
   " vga" name
