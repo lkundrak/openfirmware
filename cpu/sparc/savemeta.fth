@@ -41,6 +41,17 @@ here header -  constant /header
 
 only forth also meta also forth-h also definitions
 
+: be-lput  ( adr -- )
+   l@ lbsplit  ofd @ fputc  ofd @ fputc  ofd @ fputc  ofd @ fputc
+;
+: be-fputs  ( adr len -- )
+   in-little-endian?  if  
+      bounds  ?do  i be-lput  4 +loop
+   else
+      ofd @  fputs
+   then
+;
+
 \ Save an image of the target system in the Unix file whose name
 \ is the argument on the stack.
 
@@ -58,12 +69,11 @@ only forth also meta also forth-h also definitions
 
    th    0               header th 14 + l!  \ Entry point
 
-   header               /header       ofd @  fputs
+   header               /header       be-fputs
    text-base            text-size     ofd @  fputs
-   user-base            user-size     ofd @  fputs
-
-   symbol-table         /syms         ofd @  fputs
-   string-table         /strings      ofd @  fputs
+   user-base            user-size     be-fputs
+   symbol-table         /syms         be-fputs
+   string-table         /strings      be-fputs
 
    ofd @ fclose
 ;
