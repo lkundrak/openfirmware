@@ -59,8 +59,8 @@ only forth also meta also forth-h also definitions
 : text-size  ( -- n )  here-t origin-t -  3 + 3 invert and  ;
 : user-base  ( -- adr )  userarea-t  ;
 : user-size  ( -- n )  user-size-t  ;
-: save-meta ( str -- )
-   new-file
+: $save-meta ( str -- )
+   $new-file
 
    \ Set the text and data sizes in the program header
    text-size             header th  4 + l!  \ Text size

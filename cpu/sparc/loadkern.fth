@@ -173,14 +173,5 @@ hex
 
 metaoff
 
-[ifndef] dic-file-name
-true abort" ERROR: dic-file-name undefined, can't save image"
-[then]
-[defined] dic-file-name dup 1+ alloc-mem pack save-meta
-
-\ In order to get the headers/headerless info save the dictionary
-[ifdef] nheads-dic-name
-[defined] nheads-dic-name "temp pack
-[else]
-"" nheads.dic
-[then] save-forth
+.( Saving as kernel.dic ...)  " kernel.dic" $save-meta
+cr
