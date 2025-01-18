@@ -77,10 +77,5 @@ only forth also meta also forth-h also definitions
 
    ofd @ fclose
 ;
-: save-meta-exe  ( str -- )
-   new-file
-   text-base >hostaddr  text-size   ofd @  fputs
-   ofd @ fclose
-;
 
 only forth also meta also definitions
