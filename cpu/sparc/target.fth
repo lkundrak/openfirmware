@@ -252,6 +252,18 @@ decimal
 \t32-t   l,-t
 ;
 
+\ Store actions for some data structures.  This has to be in this
+\ file because it depends on the location of the user area (in some
+\ versions, the user area has to be in the dictionary for
+\ relocation to work right, but in other versions, the user area
+\ is elsewhere.  Ultimately, separate relocation for the user area is
+\ needed.
+
+: isuser   ( n acf -- )     >user-t a-t!  ;
+: istuser  ( acf1 acf -- )  >user-t token-t!  ;
+: isvalue  ( n acf -- )     >user-t a-t!  ;
+: isdefer  ( acf acf -- )   >user-t token-t!  ;
+
 : thread-t!  ( thread adr -- )  link-t!  ;
 
 only forth also meta also definitions
