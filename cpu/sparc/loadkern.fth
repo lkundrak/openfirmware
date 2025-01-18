@@ -41,7 +41,8 @@ only forth also meta assembler also meta definitions
 
 only forth also meta also assembler definitions
 
-fload ${BP}/fm/lib/loclabel.fth
+fload ${BP}/forth/lib/loclabel.fth
+init-labels
 
 fload ${BP}/fm/meta/nswapmap.fth
 fload ${BP}/fm/meta/sparc/target.fth
