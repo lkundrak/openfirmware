@@ -1933,7 +1933,7 @@ headerless
 
 headers
 /a constant /a
-[ifexist] t8
+[ifdef] t8
 : a@  ( adr -- adr' )  @ origin+  ;
 : a!  ( adr1 adr2 -- )  swap origin- swap !  ;
 [else]
