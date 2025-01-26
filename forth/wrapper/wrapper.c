@@ -59,6 +59,7 @@ which is part of the Forth image file.
 #ifndef WIN32
 #include <sys/mman.h>
 #endif
+#include <endian.h>
 
 /* 
  * The following #includes and externs fix GCC warnings when compiled with
@@ -177,6 +178,7 @@ char *host_cpu = "x86";
 #endif
 
 #ifdef TARGET_POWERPC
+#define TARGET_BIG_ENDIAN
 char *target_cpu = "powerpc";
 #define CPU_MAGIC 0x48000020
 #define START_OFFSET 8
@@ -202,6 +204,7 @@ char *target_cpu = "arm64";
 
 #ifdef SPARC
 char *target_cpu = "sparc";
+#define TARGET_BIG_ENDIAN
 #define CPU_MAGIC 0x30800008
 #define START_OFFSET 0
 #endif
@@ -371,7 +374,7 @@ INTERNAL long	f_ioctl();
 INTERNAL long	f_lseek();
 INTERNAL long	f_crstr();
 
-#if defined(PPCSIM) || defined(ARMSIM) || defined(ARM64SIM) || defined(MIPSSIM)
+#if defined(PPCSIM) || defined(ARMSIM) || defined(ARM64SIM) || defined(MIPSSIM) || defined(SPARCSIM)
   /* These are not INTERNAL because the simulators use then */
   long c_key();
   long s_bye();
@@ -1017,9 +1020,9 @@ main(int argc, char **argv
 		memcpy(&loadaddr[dictsize], reloc_table, (code_size+15)/16);
 	}
 
-#else  // TARGET_X86	
+#else  // !TARGET_X86	
 
-# if defined(TARGET_POWERPC) && defined(HOST_LITTLE_ENDIAN)
+# if defined(TARGET_BIG_ENDIAN) && defined(HOST_LITTLE_ENDIAN)
 	lbflips((long *)&header, sizeof(header));
 # endif
 
@@ -1064,6 +1067,8 @@ main(int argc, char **argv
 	printf("ARM64 Instruction Set Simulator\n");
 	printf("Copyright 1994 FirmWorks        All rights reserved\n");
 	printf("Copyright 2010-2021 Apple, Inc. All rights reserved\n");
+#  elif SPARCSIM
+	printf("SPARC Instruction Set Simulator\n");
 #  endif
 # endif
 
@@ -1078,6 +1083,13 @@ main(int argc, char **argv
 #if defined(ARM64SIM)
 	// Don't preserve the header for ARM64SIM.
 	char *adjusted_loadaddr = loadaddr;
+#elif defined(SPARCSIM)
+	if (f_lseek(f, 0, SEEK_SET) == -1) {
+		perror("forth: Can't seek");
+		exit(1);
+	}
+	char *adjusted_loadaddr = loadaddr;
+	imagesize += sizeof(header);
 #else
 	// Leave the header intact and load the rest of the image above it.
 	(void)memcpy(loadaddr, (char *)&header, sizeof(header));
@@ -1150,7 +1162,7 @@ main(int argc, char **argv
 	s_bye(0L);
 #endif
 
-#if defined(MIPSSIM)
+#if defined(MIPSSIM) || defined(SPARCSIM)
 	simulate(0L, loadaddr+sizeof(header)+START_OFFSET,
 		 loadaddr, functions, (char *)loadaddr + memsize,
 		 argc, argv);
@@ -1254,6 +1266,23 @@ cont_handler(void)
 }
 #endif
 
+#ifdef SPARCSIM
+extern void RegisterDump (void);;
+static void
+dumpregs()
+{
+	extern FILE *ofp;
+	if (!ofp)
+		ofp = stderr;
+	RegisterDump();
+	fflush(stderr);
+}
+#else
+static void
+dumpregs()
+{
+}
+#endif
 #ifdef AIX
 void
 exit_handler(int sig, int code, struct sigcontext *SCP)
@@ -1292,13 +1321,16 @@ exit_handler(int sig)
 #ifdef HAVE_PSIGNAL
 	psignal(sig, "forth");
 #else
-	printf("forth received signal number %d\n", sig);
+	printf("forth received signal number %d", sig);
 #endif
 
 	if (sig == SIGINT) {
+		putchar('\n');
 		s_bye(0L);
 	} else {
 		restoremode();
+		putchar('\n');
+		dumpregs();
 #ifdef __unix__
 		kill(0,SIGQUIT);
 #endif

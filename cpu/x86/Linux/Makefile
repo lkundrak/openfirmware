@@ -80,6 +80,27 @@ armforth: ${ARMSIMOBJS}
 armforth.trace: ${ARMTRACEOBJS}
 	${CC} ${LFLAGS} ${ARMTRACEOBJS}  -o $@
 
+# SPARC simulator wrapper build rules
+
+SPARCDIR = ${BP}/cpu/sparc
+SPARCISSDIR = ${BP}/sparc-iss
+SPARCCFLAGS = -g ${MFLAGS} -DSPARCSIM -DTARGET_SPARC -DSPARC -DINTERNAL=extern
+SPARCLFLAGS = ${LFLAGS} -rdynamic -ldl
+SPARCSIMOBJS = sparcwrapsim.o sparcsim.o logger.o ${ZIPOBJS} ${ISSOBJS}
+ISSOBJS = elf.o inst.o dis.o read_write.o execute.o
+
+sparcfth: ${SPARCSIMOBJS}
+	${CC} ${SPARCLFLAGS} ${SPARCSIMOBJS} -o $@
+
+sparcwrapsim.o: ${WRDIR}/wrapper.c
+	${CC} -c ${SPARCCFLAGS} $^ -o $@
+
+%.o: ${SPARCDIR}/%.c
+	${CC} -c ${SPARCCFLAGS} -I${SPARCISSDIR}/src/ $^ -o $@
+
+%.o: ${SPARCISSDIR}/src/%.c
+	${CC} -c ${SPARCCFLAGS} -I${SPARCISSDIR}/src/ $^ -o $@
+
 # MIPS simulator wrapper build rules
 
 MIPSDIR = ${BP}/cpu/mips
@@ -96,4 +117,4 @@ mipsfth: ${MIPSSIMOBJS}
 	${CC} -Wall ${LFLAGS} ${MIPSSIMOBJS} -o $@
 
 clean:
-	@rm -f forth x86forth armforth mipsfth *.o *.lo *~ inflate.bin
+	@rm -f forth x86forth armforth mipsfth sparcfth *.o *.lo *~ inflate.bin
