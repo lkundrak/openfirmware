@@ -101,7 +101,7 @@ fload ${BP}/fm/lib/xref.fth
 fload ${BP}/fm/kernel/sparc/extra.fth
 
 fload ${BP}/fm/kernel/sparc/double.fth
-fload ${BP}/fm/kernel/double.fth
+fload ${BP}/forth/kernel/double.fth
 
 fload ${BP}/fm/kernel/dmuldiv.fth
 64\ fload ${BP}/fm/kernel/dmul.fth
