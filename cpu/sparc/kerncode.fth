@@ -1579,45 +1579,45 @@ code count  ( addr -- addr+1 len )
    scr     tos  move
 c;
 
-code between ( n min max -- f )
-   tos		scr	move		\ max
-   sp		sc2	pop		\ min
-   sp		sc3	pop		\ n
-   sc3	sc2	%g0	subcc
-   0>=			if
-      %g0	tos	move		\ (delay)
-      sc3  scr	%g0	subcc
-      0>		if
-         %g0 1	tos	sub		\ (delay)
-         %g0  	tos	move
-      then
-   then
-   inhibit-delay
-c;
-
-code within ( n1 min max+1 -- f )
-   tos		scr	move		\ max
-   sp		sc2	pop		\ min
-   sp		sc3	pop		\ n
-   sc3	sc2	%g0	subcc
-   0>=			if
-      %g0	tos	move		\ (delay)
-      sc3  scr	%g0	subcc
-      0<		if
-         %g0  	tos	move		\ (delay)
-         %g0 1	tos	sub
-      then
-   then
-   inhibit-delay
-c;
-
-code bounds ( adr len -- adr+len adr )
-   tos		scr	move		\ len
-   sp		sc1	pop		\ adr
-   sc1  tos	sc2	add		\ adr+len
-   sc2		sp	push
-   sc1		tos	move
-c;
+\ code between ( n min max -- f )
+\    tos		scr	move		\ max
+\    sp		sc2	pop		\ min
+\    sp		sc3	pop		\ n
+\    sc3	sc2	%g0	subcc
+\    0>=			if
+\       %g0	tos	move		\ (delay)
+\       sc3  scr	%g0	subcc
+\       0>		if
+\          %g0 1	tos	sub		\ (delay)
+\          %g0  	tos	move
+\       then
+\    then
+\    inhibit-delay
+\ c;
+\ 
+\ code within ( n1 min max+1 -- f )
+\    tos		scr	move		\ max
+\    sp		sc2	pop		\ min
+\    sp		sc3	pop		\ n
+\    sc3	sc2	%g0	subcc
+\    0>=			if
+\       %g0	tos	move		\ (delay)
+\       sc3  scr	%g0	subcc
+\       0<		if
+\          %g0  	tos	move		\ (delay)
+\          %g0 1	tos	sub
+\       then
+\    then
+\    inhibit-delay
+\ c;
+\ 
+\ code bounds ( adr len -- adr+len adr )
+\    tos		scr	move		\ len
+\    sp		sc1	pop		\ adr
+\    sc1  tos	sc2	add		\ adr+len
+\    sc2		sp	push
+\    sc1		tos	move
+\ c;
 
 code origin  ( -- addr )
    tos  sp   push
@@ -2011,11 +2011,11 @@ c;
 \ 16-bit alignment in the 16-bit token version, using halfword memory
 \ accesses to make this work.
 
-: round-down  ( adr granularity -- adr' )  1- invert and  ;
-: round-up  ( adr granularity -- adr' )  1-  tuck +  swap invert and  ;
-: (align)  ( size granularity -- )
-   1-  begin  dup here and  while  0 c,  repeat  drop
-;
+\ : round-down  ( adr granularity -- adr' )  1- invert and  ;
+\ : round-up  ( adr granularity -- adr' )  1-  tuck +  swap invert and  ;
+\ : (align)  ( size granularity -- )
+\    1-  begin  dup here and  while  0 c,  repeat  drop
+\ ;
 : aligned  ( adr -- adr' )  3 + -4 and  ;
 
 code acf-aligned  ( adr -- adr' )
