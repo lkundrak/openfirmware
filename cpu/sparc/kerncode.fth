@@ -1622,6 +1622,12 @@ code count  ( addr -- addr+1 len )
    tos     sp   push
    scr     tos  move
 c;
+code ncount  ( adr -- adrd+4 len )
+   tos 4   tos  add
+   tos -4  scr  ld
+   tos     sp   push
+   scr     tos  move
+c;
 
 \ code between ( n min max -- f )
 \    tos		scr	move		\ max
