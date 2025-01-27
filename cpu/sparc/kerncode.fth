@@ -1560,6 +1560,18 @@ code (")  ( -- addr len)
    ip  #talign      ip   add  \ Round up to a token boundary, plus null byte
    ip  #talign 1-   ip   andn
 c;
+code (n")  ( -- addr len)
+   sp 2 /n*  sp     sub
+   tos       sp /n  nput
+   ip  0     tos    ld    \ Get length word in tos
+   ip  4     ip     add   \ Address of data bytes
+   ip        sp 0   nput  \ Put addr on stack
+
+   \ Now we have to skip the string
+   ip  tos          ip   add   \ ip now points past the last data byte
+   ip  #talign      ip   add  \ Round up to a token boundary, plus null byte
+   ip  #talign 1-   ip   andn
+c;
 code count  ( addr -- addr+1 len )
    tos 1   tos  add
    tos -1  scr  ldub
