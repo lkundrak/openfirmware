@@ -143,7 +143,7 @@ fload ${BP}/fm/cwrapper/sysdisk.fth
 [then]
 
 fload ${BP}/fm/cwrapper/syskey.fth
-fload ${BP}/os/unix/sparc/sys.fth
+fload ${BP}/cpu/sparc/sys.fth
 
 fload ${BP}/fm/lib/alias.fth
 
@@ -161,9 +161,9 @@ fload ${BP}/fm/kernel/fileio.fth
 \ fload ${BP}/fm/lib/transien.fth
 \ fload ${BP}/fm/lib/headless.fth
 
-fload ${BP}/fm/cwrapper/sparc/boot.fth
-fload ${BP}/fm/kernel/init.fth
-fload ${BP}/fm/kernel/sparc/finish.fth
+fload ${BP}/cpu/sparc/boot.fth
+fload ${BP}/forth/kernel/init.fth
+fload ${BP}/cpu/sparc/finish.fth
 
 fload ${BP}/fm/meta/sparc/savemeta.fth
 
