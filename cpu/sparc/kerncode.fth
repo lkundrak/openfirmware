@@ -822,6 +822,8 @@ code 3dup   ( n1 n2 n3 -- n1 n2 n3 n1 n2 n3 )
    sc1    sp 1 /n*  nput
    scr    sp 0 /n*  nput
 c;
+: 4drop  2drop 2drop  ;
+: 5drop  3drop 2drop  ;
 
 code pick   ( nm ... n1 n0 k -- nm ... n2 n0 nk )
 32\  tos 2   tos  sll    \ Multiply by /n
