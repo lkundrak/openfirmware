@@ -107,6 +107,11 @@ fload ${BP}/fm/kernel/dmuldiv.fth
 64\ fload ${BP}/fm/kernel/dmul.fth
 \ defer title ' noop is title		\ Set later in loadutil.fth
 
+fload ${BP}/forth/kernel/scan.fth
+fload ${BP}/forth/kernel/kernel.fth
+fload ${BP}/forth/kernel/sysio.fth
+fload ${BP}/forth/lib/dumballo.fth
+
 fload ${BP}/fm/kernel/io.fth		\ I init #-buf
 
 fload ${BP}/fm/kernel/stresc.fth	\ I init stringbuf
