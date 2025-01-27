@@ -105,7 +105,7 @@ fload ${BP}/fm/kernel/double.fth
 
 fload ${BP}/fm/kernel/dmuldiv.fth
 64\ fload ${BP}/fm/kernel/dmul.fth
-defer title ' noop is title		\ Set later in loadutil.fth
+\ defer title ' noop is title		\ Set later in loadutil.fth
 
 fload ${BP}/fm/kernel/io.fth		\ I init #-buf
 
