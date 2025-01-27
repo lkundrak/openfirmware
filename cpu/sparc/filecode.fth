@@ -78,9 +78,8 @@ c;
 
 headers
 
-nuser delimiter  \ delimiter actually found at end of word
-
-nuser file
+\ nuser delimiter  \ delimiter actually found at end of word
+\ nuser file
 
 :-h struct ( -- 0 )  00  ;-h
 
