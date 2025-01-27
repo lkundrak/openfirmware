@@ -205,7 +205,7 @@ c;
 \  and we are deprecating support for them; but Just In Case you
 \  ever want to restore support for them, define the command-line
 \  symbol:   in-dictionary-variables
-[ifdef] in-dictionary-variables
+\ [ifdef] in-dictionary-variables
    \  Support for in-dictionary variables, i.e., where the variable's
    \  storage location is in the dictionary rather than in user-space.
    code-field: dovariable
@@ -216,7 +216,7 @@ c;
    c;
       \  Hey, waidaminit!  This is the same as  docreate  just above!
       \  An in-dictionary variable could be as simple as    create 0 ,   ...
-[then]
+\ [then]
 
 code-field: douser
 \itc  sp            adec
@@ -347,9 +347,9 @@ c;
 :-h label-cf    ( -- )  ( 'body-t ) dolabel    place-cf-t   align-t  ;-h
 :-h constant-cf ( -- )  ( 'body-t ) doconstant place-cf-t  ;-h
 :-h create-cf   ( -- )  ( 'body-t ) docreate   place-cf-t  ;-h
-[ifdef] in-dictionary-variables
+\ [ifdef] in-dictionary-variables
    :-h variable-cf ( -- )  ( 'body-t ) dovariable place-cf-t  ;-h
-[then]
+\ [then]
 :-h user-cf     ( -- )  ( 'body-t ) douser     place-cf-t  ;-h
 :-h value-cf    ( -- )  ( 'body-t ) dovalue    place-cf-t  ;-h
 :-h startdoes   ( -- )
@@ -1832,9 +1832,9 @@ headers
 headerless
 
 : create-cf    ( -- )  docreate   place-cf  ;
-[ifdef] in-dictionary-variables
+\ [ifdef] in-dictionary-variables
    : variable-cf  ( -- )  dovariable place-cf  ;
-[then]
+\ [then]
 : place-does   ( -- )  dodoes     place-call  ;
 : place-;code  ( -- )  ;
 
