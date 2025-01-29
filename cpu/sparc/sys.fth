@@ -138,6 +138,7 @@ headerless
 
 chain: unix-init-io
    install-wrapper-io
+   install-disk-io
 
    \ Don't poll the keyboard under Unix; block waiting for a key
    ['] (key              ['] key            (is
