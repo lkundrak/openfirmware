@@ -239,7 +239,9 @@ char *host_cpu = "x86";
 #define HOST_LITTLE_ENDIAN
 #endif
 
+#ifndef INTERNAL
 #define INTERNAL static
+#endif
 
 #include <errno.h>
 
