@@ -1,0 +1,115 @@
+\ id: @(#)loadkern.fth 2.33 06/02/16 19:19:48
+purpose: Load file for SPARC Forth kernel
+\ copyright: Copyright 2006 Sun Microsystems, Inc.  All Rights Reserved
+\ copyright: Use is subject to license terms.
+\ Copyright 1985-1994 Bradley Forthware
+
+command: &builder &this
+build-now
+
+' $report-name is include-hook
+\  ' noop is include-hook
+\ ' noop is include-exit-hook
+
+\ Don't accept ',' as numeric punctuation because doing so makes
+\ the forward referencing mechanism think that "c," is a number!
+ascii . ascii , npatch numdelim?
+
+warning off	\ Turn OFF the warning messages
+
+64\  8  constant  /n
+\needs lconstant alias lconstant constant
+
+fload ${BP}/forth/kernel/conft32.fth
+fload ${BP}/forth/kernel/meta1.fth
+
+only forth also meta also definitions
+fload ${BP}/cpu/sparc/assem.fth
+
+only forth also meta assembler also meta definitions
+: assembler  ( -- )  srassembler  ;
+
+only forth also meta also assembler definitions
+
+fload ${BP}/forth/lib/loclabel.fth
+init-labels
+
+fload ${BP}/forth/kernel/swapmap.fth
+fload ${BP}/cpu/sparc/target.fth
+fload ${BP}/forth/kernel/forward.fth
+fload ${BP}/cpu/sparc/fixvoc.fth
+fload ${BP}/forth/kernel/metacompile.fth
+
+only forth also definitions
+
+fload ${BP}/cpu/sparc/metainit.fth
+
+\ Uncomment the following line(s) for more debug output
+\ show? on  1 granularity !  1 threshold !
+warning-t on
+" kernel.tag" r/w create-file drop  meta-tag-file !
+
+\ always-headers    \ Keep all the headers
+\ sometimes-headers \ Keep some instead
+
+\ sometimes-headers
+always-headers
+
+\ Comment out the following line(s) when debugging
+-1  threshold  !        \ Turn OFF ALL debugging messages
+warning-t  off          \ Turn OFF target warning messages
+
+\ Uncomment the following line(s) for more debug output
+\ show? on  1 granularity !  1 threshold !
+\ warning-t on
+
+fload ${BP}/cpu/sparc/kerncode.fth
+32\ fload ${BP}/cpu/sparc/divrem.fth
+64\ fload ${BP}/cpu/sparc/divrem9.fth
+
+fload ${BP}/forth/kernel/uservars.fth	\ I init task link.
+32\ fload ${BP}/cpu/sparc/multiply.fth
+64\ fload ${BP}/cpu/sparc/mulv9.fth
+
+\t32-t fload ${BP}/cpu/sparc/move.fth
+\t16-t fload ${BP}/cpu/sparc/moveslow.fth \ Longword optimized
+					\ but not doubleword optimized
+fload ${BP}/cpu/sparc/extra.fth
+
+fload ${BP}/cpu/sparc/double.fth
+fload ${BP}/forth/kernel/double.fth
+
+fload ${BP}/forth/kernel/dmuldiv.fth
+64\ fload ${BP}/forth/kernel/dmul.fth	\ FIXME
+
+fload ${BP}/forth/kernel/scan.fth
+fload ${BP}/forth/kernel/kernel.fth
+fload ${BP}/forth/kernel/sysio.fth
+fload ${BP}/forth/lib/dumballo.fth
+
+fload ${BP}/cpu/sparc/field.fth
+
+\ Bootstrapping onto a minikernel does not work yet so we need these.
+\ [undef] miniforth?
+\ 
+\ [ifndef] miniforth?
+fload ${BP}/cpu/sparc/field.fth
+fload ${BP}/cpu/sparc/filecode.fth
+fload ${BP}/cpu/sparc/sys.fth
+
+fload ${BP}/forth/kernel/nswapmap.fth
+
+fload ${BP}/cpu/sparc/parseline.fth
+
+fload ${BP}/cpu/sparc/boot.fth
+fload ${BP}/forth/kernel/init.fth
+fload ${BP}/cpu/sparc/finish.fth
+
+fload ${BP}/cpu/sparc/savemeta.fth
+
+warning on	\ Turn ON the warning messages
+hex
+metaoff
+
+.( --- Saving kernel.dic ---)  " kernel.dic" $save-meta
+cr
