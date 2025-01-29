@@ -133,6 +133,11 @@ overload: cstr  ( pstr -- cstr )  1+  ;
 hex
 headerless
 
+\ Aligns to a 512-byte boundary for Unix
+
+: _falign  ( byte# fd -- aligned )  drop  h# 1ff invert and  ;
+: _dfalign  ( d.byte# fd -- d.aligned )  drop  swap h# 1ff invert and  swap  ;
+
 chain: unix-init-io
    install-wrapper-io
 
