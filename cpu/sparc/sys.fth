@@ -46,8 +46,8 @@ code syscall ( ?? call# -- ?? )	\ For backwards compatibility
 
    'user syscall-vec	%l0	nget
    bubble
-32\ tos 2		tos	slln		\ multiply by 4
-64\ tos 3		tos	slln		\ multiply by 8
+\ XXX 32\ tos 2		tos	slln		\ multiply by 4
+\ XXX 64\ tos 3		tos	slln		\ multiply by 8
    %l0 tos		%l0	nget		\ Address of routine
    sp			tos	pop
    tos			%o0	move		\ Get some arguments
@@ -86,8 +86,8 @@ code fsyscall ( ?? call# -- ?? )
 
    'user syscall-vec	%l0	nget
    bubble
-32\ tos 2		tos	slln		\ multiply by 4
-64\ tos 3		tos	slln		\ multiply by 8
+\ XXX 32\ tos 2		tos	slln		\ multiply by 4
+\ XXX 64\ tos 3		tos	slln		\ multiply by 8
    %l0 tos		%l0	nget		\ Address of routine
    sp			%o0	move
    %g2			%l2	move
@@ -119,7 +119,7 @@ nuser errno	\ The last system error code
 headerless
 
 : error?  ( return-value -- return-value error? )
-   dup 0< dup  if  15 syscall retval errno !  then   ( return-value flag )
+   dup 0< dup  if  60 syscall retval errno !  then   ( return-value flag )
 ;
 
 headers
