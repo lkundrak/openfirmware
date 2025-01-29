@@ -406,7 +406,6 @@ INTERNAL long	s_system();
 INTERNAL long	s_chdir();
 INTERNAL long	s_getwd();
 INTERNAL long	s_getwd0();
-INTERNAL void  *m_alloc_dictionary();
 INTERNAL long	m_alloc();
 INTERNAL long	m_realloc();
 INTERNAL long	m_free();
@@ -1068,20 +1067,18 @@ main(int argc, char **argv
 #  endif
 # endif
 
-#if defined(ARM64SIM)
-	loadaddr = m_alloc_dictionary(memsize);
-
-	// Don't preserve the header for ARM64SIM.
-	char *adjusted_loadaddr = loadaddr;
-#else
-	loadaddr = mmap(NULL, memsize,
+	loadaddr = mmap((void *)0x10000000, memsize,
 		PROT_READ | PROT_WRITE | PROT_EXEC,
-		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+		MAP_PRIVATE | MAP_ANON, -1, 0);
 	if (loadaddr == MAP_FAILED) {
 		perror("forth: Can't get memory");
 		exit(1);
 	}
 
+#if defined(ARM64SIM)
+	// Don't preserve the header for ARM64SIM.
+	char *adjusted_loadaddr = loadaddr;
+#else
 	// Leave the header intact and load the rest of the image above it.
 	(void)memcpy(loadaddr, (char *)&header, sizeof(header));
 	char *adjusted_loadaddr = loadaddr + sizeof(header);
@@ -2155,31 +2152,6 @@ s_getwd0(void)
 void *heap_base;
 long heap_size;
 void *heap_ptr;
-
-INTERNAL void *
-m_alloc_dictionary(long size)
-{
-    long asize = roundup(size + HEAP_SIZE, BASE_ALIGN);
-    void *abase = MAP_FAILED;
-    int mprot = PROT_READ|PROT_WRITE;
-    int mflags = MAP_ANON|MAP_PRIVATE;
-
-    abase = malloc(asize);
-    if (abase == NULL) {
-        perror("malloc");
-        exit(1);
-    }
-
-    long heap_offset = BASE_OFFSET(size);
-    heap_base = abase + size + heap_offset;
-    heap_size = ((asize - (size + heap_offset)) + BASE_MASK) & ~BASE_MASK;
-    heap_ptr = heap_base;
-
-    // printf("size = 0x%lx, asize = 0x%lx, heap_size = 0x%lx\n", size, asize, heap_size);
-    // printf("abase = %p, heap_base = %p, heap_offset = 0x%lx\n", abase, heap_base, heap_offset);
-
-    return abase;
-}
 
 INTERNAL long
 m_alloc(long size)
