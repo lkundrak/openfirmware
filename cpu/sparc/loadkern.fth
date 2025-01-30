@@ -76,8 +76,8 @@ warning-t  off  	\ Turn OFF target warning messages
 warning-t on
 
 fload ${BP}/fm/kernel/sparc/kerncode.fth
-32\ fload ${BP}/fm/kernel/sparc/divrem.fth
-64\ fload ${BP}/fm/kernel/sparc/divrem9.fth
+32\ fload ${BP}/cpu/sparc/divrem.fth
+64\ fload ${BP}/cpu/sparc/divrem9.fth
 
 fload ${BP}/fm/kernel/uservars.fth	\ I init task link.
 32\ fload ${BP}/fm/kernel/sparc/multiply.fth
