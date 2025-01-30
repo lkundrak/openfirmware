@@ -1022,23 +1022,7 @@ headerless
 \  of the target of the IS is made at compile-time rather than
 \  at run-time.
 
-code (is-user)  ( n -- )
-   tos       sp   push		\  Do the  (')  in-line
-   ip 0      tos  rtget 		\  Next token in caller
-   tos base  tos  add			\  TOS <= ACF-of-next-token-in-caller
-   ip /token ip	  add			\  Complete the  (') 
-				\  Do the  >body  in-line
-   tos   0 >body-t   tos	add
-
-	tos	%g0	scr	\  Do the  >user  in-line
-\t32				lduw
-\t16				lduh
-
-   ( 4 B: ) start-of-!   bra			\  Go to the !
-	up	scr	tos	add	\  TOS <= user-addr of IS-target
-end-code
-
-code (is-defer)  ( acf -- )
+code isdefer  ( acf -- )
    tos  base  scr  sub		\  Start the token!
 \t16  scr tshift-t  scr      srl	\  SCR <= token to store
 				\  Do the  (')  in-line
@@ -1061,6 +1045,64 @@ code (is-defer)  ( acf -- )
 
 	sp   tos  pop
 c;
+
+code isuser  ( n -- )
+   tos       sp   push		\  Do the  (')  in-line
+   ip 0      tos  rtget 		\  Next token in caller
+   tos base  tos  add			\  TOS <= ACF-of-next-token-in-caller
+   ip /token ip	  add			\  Complete the  (') 
+				\  Do the  >body  in-line
+   tos   0 >body-t   tos	add
+
+	tos	%g0	scr	\  Do the  >user  in-line
+\t32				lduw
+\t16				lduh
+
+   ( 4 B: ) start-of-!   bra			\  Go to the !
+	up	scr	tos	add	\  TOS <= user-addr of IS-target
+end-code
+
+code isvalue  ( n -- )
+   tos       sp   push		\  Do the  (')  in-line
+   ip 0      tos  rtget 		\  Next token in caller
+   tos base  tos  add			\  TOS <= ACF-of-next-token-in-caller
+   ip /token ip	  add			\  Complete the  (') 
+				\  Do the  >body  in-line
+   tos   0 >body-t   tos	add
+
+	tos	%g0	scr	\  Do the  >user  in-line
+\t32				lduw
+\t16				lduh
+
+   ( 4 B: ) start-of-!   bra			\  Go to the !
+	up	scr	tos	add	\  TOS <= user-addr of IS-target
+end-code
+
+
+code isconstant  ( n -- )
+   tos       sp   push		\  Do the  (')  in-line
+   ip 0      tos  rtget 		\  Next token in caller
+   tos base  tos  add			\  TOS <= ACF-of-next-token-in-caller
+   ip /token ip	  add			\  Complete the  (') 
+				\  Do the  >body  in-line
+   tos   4 >body-t   tos	add
+
+   ( 4 B: ) start-of-!   bra			\  Go to the !
+	up	scr	tos	add	\  TOS <= user-addr of IS-target
+end-code
+
+code isvariable  ( n -- )
+   tos       sp   push		\  Do the  (')  in-line
+   ip 0      tos  rtget 		\  Next token in caller
+   tos base  tos  add			\  TOS <= ACF-of-next-token-in-caller
+   ip /token ip	  add			\  Complete the  (') 
+				\  Do the  >body  in-line
+   tos   4 >body-t   tos	add
+
+   ( 4 B: ) start-of-!   bra			\  Go to the !
+	up	scr	tos	add	\  TOS <= user-addr of IS-target
+end-code
+
 
 
 headers
