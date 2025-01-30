@@ -57,7 +57,8 @@ fload ${BP}/cpu/sparc/metainit.fth
 \ always-headers    \ Keep all the headers
 \ sometimes-headers \ Keep some instead
 
-sometimes-headers
+\ sometimes-headers
+always-headers
 
 \ Comment out the following line(s) when debugging
 -1  threshold  !	\ Turn OFF ALL debugging messages
