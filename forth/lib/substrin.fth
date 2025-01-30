@@ -32,6 +32,7 @@ headers
    again
 ;
 
+[ifdef] bscan
 \ This version is faster (due to bscan being a code word) and arguably more convenient than sindex
 : $sindex  ( small$ big$ -- rem$ )
    2 pick 0=  if  4drop 0  then  \ Null string is initial substring of anything
@@ -44,6 +45,7 @@ headers
    repeat                        ( small$ rem$  r: firstchar )
    2swap r> 3drop                ( rem$ )
 ;
+[then]
 
 only forth also definitions
 
