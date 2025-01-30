@@ -84,13 +84,13 @@ label cold-code  ( -- )
    up        'user up0  nput
 
 \ Establish the return stack and set the rp0 user variable
-   %i2       rp          move	\ Set rp
-   rp        'user .rp0  nput
-   %i2 rs-size-t   %i2   sub    \ allocate space for the return stack
+   %i2       rp         move	\ Set rp
+   rp        'user rp0  nput
+   %i2 rs-size-t   %i2  sub    \ allocate space for the return stack
 
 \ Establish the Parameter Stack
-   %i2       'user .sp0  nput
-   %i2  /n   sp          add	\ /n accounts for the top of stack register
+   %i2       'user sp0  nput
+   %i2  /n   sp         add	\ /n accounts for the top of stack register
 
    %i2 ps-size-t   %i2   sub	\ Allocate the stuff on the stack
 
