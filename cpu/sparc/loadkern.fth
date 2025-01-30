@@ -135,7 +135,7 @@ fload ${BP}/fm/lib/cstrings.fth		\ I init cstrbuf
 [undef] miniforth?
 
 [ifndef] miniforth?
-fload ${BP}/fm/kernel/sparc/filecode.fth
+fload ${BP}/cpu/sparc/filecode.fth
 fload ${BP}/fm/kernel/filecomm.fth	 \ I init 'word and fds
 fload ${BP}/fm/kernel/disk.fth
 fload ${BP}/fm/kernel/readline.fth
