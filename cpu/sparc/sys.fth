@@ -123,8 +123,6 @@ headerless
 ;
 
 headers
-\ Depends on null-termination of Forth strings
-overload: cstr  ( pstr -- cstr )  1+  ;
 
 \ Rounds down to a block boundary.  This causes all file accesses to the
 \ underlying operating system to occur on disk block boundaries.  Some
