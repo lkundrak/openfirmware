@@ -533,6 +533,12 @@ c;
 code (endof)  ( -- )   ip  scr  bget    ip scr  ip   add    c;
 code (endcase)  ( n -- )      sp   tos  pop    c;
 
+\ ($endof) is the same as branch, and ($endcase) is the same as drop,
+\ but redefining them this way makes the decompiler much easier.
+
+code ($endof)  ( -- )   ip  scr  bget    ip scr  ip   add    c;
+code ($endcase)  ( n -- )      sp   tos  pop    c;
+
 \ ---- Ordinary Forth words.
 
 headers
