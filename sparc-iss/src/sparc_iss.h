@@ -69,6 +69,10 @@ typedef int   (*p_memcallback_t) (const uint64 ByteAddr, const int NumBytes, uin
 
 // Function prototypes
 
+extern void Jump (uint32 newPC);
+
+extern void Reset (void);
+
 extern uint64 Run (const char*  ElfFileName, 
                    const uint32 ExecCount, 
                    const uint32 UserBreakpoint, 

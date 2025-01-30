@@ -26,7 +26,8 @@ extern FILE *ofp;
 
 ///////////////////////
 // Major state of model
-static uint32 PC;
+//static uint32 PC;
+extern uint32 PC;
 
 extern uint32 Memory [];
 

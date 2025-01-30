@@ -37,7 +37,7 @@ p_memcallback_t pMemCallback = NULL;
 
 ///////////////////////
 // Major state of model
-static uint32 PC;
+uint32 PC;
 static uint32 nPC;
 
 static uint32 PSR;
@@ -99,14 +99,24 @@ uint32 GetPSR (void) { return PSR; }
 uint32 GetIRL (void) { return IRL; }
 
 //------------------------------------------------------------------------
+// Jump()
+//
+// Reset major state. Called when run from time 0.
+//
+void Jump(uint32 newPC)
+{
+    PC  = newPC;
+    nPC = newPC + 4;
+}
+
+//------------------------------------------------------------------------
 // Reset()
 //
 // Reset major state. Called when run from time 0.
 //
-static void Reset(void)
+void Reset(void)
 {
-    PC  = 0;
-    nPC = 4;
+    Jump(0);
 
     //PSR = (1 << PSR_ENABLE_TRAPS) | (1 << PSR_SUPER_MODE);
     ((pPSR_t)&PSR)->et = 1;
@@ -246,7 +256,7 @@ uint64 Run(const char* fname, const uint32 ExecCount, const uint32 UserBreakpoin
     ofp     = UserOfp;
 
     // Only run from the beginning if not single stepping
-    if (UserBreakpoint != TERMINATE_STEP) {
+    if (fname && UserBreakpoint != TERMINATE_STEP) {
 
         // Reset the device
         Reset();
