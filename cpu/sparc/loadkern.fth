@@ -52,15 +52,7 @@ fload ${BP}/fm/meta/compilin.fth
 
 only forth also definitions
 
-[ifdef] XREF
-xref-init
-\ Init the first reference file
-" ${BP}/fm/kernel/sparc/loadkern.fth" xref-push-file 2drop
-\ The include-exit hook in metainit will pop this file
-" ${BP}/fm/kernel/sparc/metainit.fth" xref-push-file 2drop
-[then]
-
-fload ${BP}/fm/kernel/sparc/metainit.fth
+fload ${BP}/cpu/sparc/metainit.fth
 
 \ always-headers    \ Keep all the headers
 \ sometimes-headers \ Keep some instead
@@ -75,7 +67,7 @@ warning-t  off  	\ Turn OFF target warning messages
 \ show? on  1 granularity !  1 threshold !
 warning-t on
 
-fload ${BP}/fm/kernel/sparc/kerncode.fth
+fload ${BP}/cpu/sparc/kerncode.fth
 32\ fload ${BP}/cpu/sparc/divrem.fth
 64\ fload ${BP}/cpu/sparc/divrem9.fth
 
