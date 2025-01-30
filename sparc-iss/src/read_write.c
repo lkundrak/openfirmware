@@ -62,17 +62,19 @@ static void DispReadReg (const uint32 reg_no, uint32 *value)
 
 //------------------------------------------------------------------------
 //
+extern uint32 Y;
 void RegisterDump (void) {
 
     uint32 a, b, c, d;
 
     ReadReg (OUTREG6, &a);
-    fprintf(ofp, "Ma PC=%08x nPC=%08x PSR()=%08x (RegWin=%d N=%d Z=%d V=%d C=%d PIL=%x IRL=%x)\n",
+    fprintf(ofp, "Ma PC=%08x nPC=%08x PSR()=%08x (RegWin=%d N=%d Z=%d V=%d C=%d PIL=%x IRL=%x) Y=%08x\n",
              GetPC(), GetnPC(), GetPSR(), GetPSR() & LOBITS4,
              (GetPSR() >> PSR_CC_NEGATIVE) & LOBITS1,
              (GetPSR() >> PSR_CC_ZERO) & LOBITS1,
              (GetPSR() >> PSR_CC_OVERFLOW) & LOBITS1,
-             (GetPSR() >> PSR_CC_CARRY) & LOBITS1, (GetPSR() >> PSR_INTERRUPT_LEVEL_0) & LOBITS4, GetIRL());
+             (GetPSR() >> PSR_CC_CARRY) & LOBITS1, (GetPSR() >> PSR_INTERRUPT_LEVEL_0) & LOBITS4, GetIRL(),
+	     Y);
     fprintf(ofp, "Ma g0=(%08x) g1=(%08x) g2=(%08x) g3=(%08x)\n",
              Globals[0], Globals[1], Globals[2], Globals[3]);
     fprintf(ofp, "Ma g4=(%08x) g5=(%08x) g6=(%08x) g7=(%08x)\n",

@@ -27,7 +27,7 @@ uint32 TrapType;
 uint32 TBR;
 uint32 WIM;
 
-static uint32 Y;
+uint32 Y;
 
 extern FILE *ofp;
 

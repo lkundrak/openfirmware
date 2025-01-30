@@ -27,6 +27,7 @@
 extern uint32 TrapType;
 extern uint32 TBR;
 extern uint32 WIM;
+extern uint32 Y;
 
 extern void UNIMP   (pDecode_t d);
 extern void CALL    (pDecode_t d);
