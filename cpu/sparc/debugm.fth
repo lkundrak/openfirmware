@@ -4,7 +4,7 @@
 \ copyright: Use is subject to license terms.
 \ Machine-dependent support routines for Forth debugger.
 
-\dtc [define] T32_KERNEL
+\dtc create T32_KERNEL
 [ifdef] T32_KERNEL
 hex
 
