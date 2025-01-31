@@ -131,6 +131,8 @@ fload ${BP}/fm/kernel/guarded.fth
 
 fload ${BP}/fm/lib/cstrings.fth		\ I init cstrbuf
 
+fload ${BP}/cpu/sparc/field.fth
+
 \ Bootstrapping onto a minikernel does not work yet so we need these.
 [undef] miniforth?
 
