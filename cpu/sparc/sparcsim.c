@@ -9,14 +9,17 @@
 //   Load a SPARC Forth dictionary:
 //   $ sparcfth kernel.dic
 //
-//   Enable syscall trace:
+//   Enable call trace:
 //   $ SPARCSIM_TRACE=1 sparcfth kernel.dic
 //
-//   Enable syscall + instruction trace:
-//   $ SPARCSIM_TRACE=2 sparcfth kernel.dic
-//
-//   Enable syscall + instruction + register trace:
+//   Enable call + insn trace:
 //   $ SPARCSIM_TRACE=3 sparcfth kernel.dic
+//
+//   Enable call + insn + memory trace:
+//   $ SPARCSIM_TRACE=7 sparcfth kernel.dic
+//
+//   Enable call + insn + memory + register trace:
+//   $ SPARCSIM_TRACE=15 sparcfth kernel.dic
 
 #define _GNU_SOURCE
 #include <dlfcn.h>
@@ -34,6 +37,8 @@
 
 extern void restoremode();
 
+int trace_delay = 0;
+uint32_t trace_delayed;
 uint32_t trace;
 
 static int
@@ -47,17 +52,17 @@ mem_access (const uint64_t ByteAddr, const int NumBytes, uint32_t *Data, int Typ
 
 	switch (Type) {
 	case SPARC_MEM_CB_RD:
-		if (trace >= 2)
+		if (trace & 4)
 			fprintf(stderr, ">>> RD [%s] ba=%lx num=%d", __func__, addr, NumBytes);
 		fflush(stderr);
 		*Data = be32toh(*(uint32_t *)(addr & ~3));
-		if (trace >= 2)
+		if (trace & 4)
 			fprintf(stderr, " %08x (%08x)\n", *Data, Type);
 
 		if (NumBytes != 1
 			&& NumBytes != 2
 			&& NumBytes != 4) {
-			if (trace >= 1)
+			if (trace & 4)
 				fputc('\n', stderr);
 			else
 				fprintf(stderr, ">>> RD [%s] ba=%lx num=%d\n", __func__, addr, NumBytes);
@@ -66,7 +71,7 @@ mem_access (const uint64_t ByteAddr, const int NumBytes, uint32_t *Data, int Typ
 
 		return 1;
 	case SPARC_MEM_CB_WR:
-		if (trace >= 2)
+		if (trace & 4)
 			fprintf(stderr, ">>> WR [%s] ba=%lx num=%d %08x (%08x)\n", __func__, addr, NumBytes, *Data, Type);
 
 		if (NumBytes == 1) {
@@ -84,7 +89,7 @@ mem_access (const uint64_t ByteAddr, const int NumBytes, uint32_t *Data, int Typ
 		} else if (NumBytes == 4) {
 			*(uint32_t *)addr = htobe32(*Data);
 		} else {
-			if (trace < 1)
+			if ((trace & 4) == 0)
 				fprintf(stderr, ">>> WR [%s] ba=%lx num=%d %08x (%08x)\n", __func__, addr, NumBytes, *Data, Type);
 			abort();
 		}
@@ -119,6 +124,11 @@ simulate(uint8_t *mem,
                 xfunctions[i] = htobe32((long)xpage + i * 4);
 
 	trace = atoi(getenv("SPARCSIM_TRACE") ?: "0");
+	trace_delay = atoi(getenv("SPARCSIM_TRACE_DELAY") ?: "0");
+	if (trace_delay) {
+		trace_delayed = trace;
+		trace = 1;
+	}
 	if (trace) {
 		fprintf(stderr, "mem=0x%08x start=0x%08x header=0x%08x "
 			"xfunctions=0x%08x syscall_vec=0x%08x memtop=0x%08x "
@@ -146,9 +156,12 @@ simulate(uint8_t *mem,
 		static int i = 0;
 		uint32 PC;
 
+		if (trace_delay && (--trace_delay == 0))
+			trace = trace_delayed;
+
 		PC = GetnPC();
 
-		if (trace >= 2)
+		if (trace & 4)
 			fprintf(stderr, "\n=== %d %x ===\n", i, PC);
 		i++;
 
@@ -183,7 +196,7 @@ simulate(uint8_t *mem,
 				}
 				if (name[0] & 0x80)
 					name[0] = '\0';
-				if (trace && name[0]) {
+				if ((trace & 1) && name[0]) {
 					ReadReg (GLOBALREG4, &tos);
 					ReadReg (GLOBALREG7, (uint32 *)&sp);
 					fprintf(stderr, " == INTERPRET [%08x %08x %08x %08x %08x]  {%s} [%02x] %08x %08x\n",
@@ -202,7 +215,7 @@ simulate(uint8_t *mem,
 			handler = *(handler_t *)(syscall_vec+(PC & 0xffff));
 			dladdr(handler, &dli);
 
-			if (trace >= 2) {
+			if (trace & 4) {
 				fprintf(stderr, "=== HYPERCALL %d %x {%s} {%p} {%s} {%p}===\n",
 					 PC & 0xffff, handler,
 					dli.dli_fname, dli.dli_fbase, dli.dli_sname, dli.dli_saddr);
@@ -216,14 +229,14 @@ simulate(uint8_t *mem,
 			ReadReg (OUTREG4, &args[4]);
 			ReadReg (OUTREG5, &args[5]);
 
-			if (trace) {
+			if (trace & 1) {
 				fprintf(stderr,"SYSCALL %s (%x,%x,%x,%x,%x) =>", dli.dli_sname,
 					args[0], args[1], args[2], args[3], args[4], args[5]);
 			}
 
 			args[0] = handler(args[0], args[1], args[2], args[3], args[4], args[5]);
 
-			if (trace) {
+			if (trace & 1) {
 				fprintf(stderr," (%x)\n", args[0]);
 			}
 
@@ -233,10 +246,10 @@ simulate(uint8_t *mem,
 		}
 
 		reason = 0;
-		Run(NULL, 1, 0, 0, trace >= 2 ? 1 : 0, stderr, &reason);
+		Run(NULL, 1, 0, 0, trace & 2 ? 1 : 0, stderr, &reason);
 		if (reason)
 			putchar ('\n');
-		if (trace >= 2)
+		if (trace & 8)
 			RegisterDump();
 	} while (reason == 0);
 
