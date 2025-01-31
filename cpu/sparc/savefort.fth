@@ -1,10 +1,10 @@
 \ savefort.fth 2.5 94/09/01
 \ Copyright 1985-1990 Bradley Forthware
 
-\ save-forth  ( filename -- )
+\ $save-forth  ( filename -- )
 \	Saves the Forth dictionary to a file so it may be later used under Unix
 \
-\ save-image  ( header-adr header-len init-routine-name filename -- )
+\ $save-image  ( header-adr header-len init-routine-name filename -- )
 \	Primitive save routine.  Saves the dictionary image to a file.
 \	The header is placed at the start of the file.  The latest definition
 \	whose name is the same as the "init-routine-name" argument is
@@ -14,8 +14,8 @@ only forth also hidden also  forth definitions
 
 
 headerless
-: save-image  ( header header-len init-routine-name filename -- )
-   new-file   ( header header-len init-routine-name )
+: $save-image  ( header header-len init-routine-name filename -- )
+   $new-file   ( header header-len init-routine-name )
 
    init-save  ( header header-len )
 
@@ -29,8 +29,8 @@ headers
 0 value growth-size
 
 \ Save an image of the target system in a file.
-: save-forth  ( str -- )
-   >r
+: $save-forth  ( str -- )
+   2>r
 
    30800008    h_magic l!	\ This is a   ba,a .+0x20   instruction
    text-size   h_tlen  l!       \ Set the text size in program header
@@ -42,7 +42,7 @@ headers
    0           h_drlen l!       \ Set the data relocation size
 
    " unix-init-io"  $find-name is init-io
-   bin-header  /bin-header  " unix-init" r>  save-image
+   bin-header /bin-header " unix-init" 2r> $save-image
 ;
 
 only forth also definitions
