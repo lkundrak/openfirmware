@@ -1957,13 +1957,6 @@ headerless
    dodefer place-cf
 \dtc   param>scr-instr	 set-delay-slot 	\ apf  scr  ld
 ;
-\  Indicate whether the word whose ACF is given 
-\  was defined with  defer .
-: defer?  ( acf -- flag )
-\dtc     dup
-   word-type dodefer origin+ =
-\dtc     swap la1+ l@  param>scr-instr  =  and	\ apf  scr  ld
-;
 : 2constant-cf  ( -- )  do2constant place-cf  ;
 
 \t16 2 constant /branch
