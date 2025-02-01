@@ -18,7 +18,7 @@ headerless
 nuser 'debug   \ code field for high level trace
 nuser <ip      \ lower limit of ip
 nuser ip>      \ upper limit of ip
-nuser cnt      \ how many times thru debug next
+nuser cntx     \ how many times thru debug next
 
 label _flush_cache  ( -- )
    %o7 8  %g0  jmpl
@@ -116,12 +116,12 @@ label debnext
       'user ip>  scr  nget
       ip         scr  cmp
       u<= if  nop
-         'user cnt  scr  nget
+         'user cntx scr  nget
          scr 1      scr  add
-	 scr  'user cnt  nput
+	 scr  'user cntx nput
          scr        2    cmp
 	 = if  nop
-            %g0             'user cnt  nput
+            %g0             'user cntx nput
             normal-next origin -  scr  set	\ Relative address
             scr base              scr  add	\ Absolute address
             scr      'user debug-next  nput
