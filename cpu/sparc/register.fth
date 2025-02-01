@@ -181,6 +181,9 @@ defer cached-window?  ( -- [ last? ] handled? )  ' false is cached-window?
 
 headerless
 defer .other-regs  ' noop is .other-regs
+\ From obp/fm/lib/util.fth:
+: .nx  ( l -- )  push-hex [ /n 2* 1+ ] literal u.r  pop-base ;
+: .ndump ( adr n -- )   /n* bounds  ?do  i @ .nx  /n +loop  ;
 headers
 : .registers ( -- )
    ??cr
