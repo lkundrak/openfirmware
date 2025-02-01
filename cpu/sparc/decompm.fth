@@ -38,6 +38,6 @@ only forth also hidden also  definitions
 \ variable isvar  \ already defined
 \ create iscreate \ already defined
 
-headerless0
+\ headerless0
 only forth also definitions
 headers
